@@ -22,7 +22,7 @@ namespace SampleApi.DAL
         /// Creates a new user.
         /// </summary>
         /// <param name="user"></param>
-        void CreateUser(User user);
+        string CreateUser(User user);
 
         /// <summary>
         /// Updates a user.
