@@ -5,7 +5,7 @@ GO
 USE CityTours;
 GO
 
-IF OBJECT_ID('Users')			IS NOT NULL DROP TABLE users;
+IF OBJECT_ID('Users')			IS NOT NULL DROP TABLE Users;
 
 IF OBJECT_ID('RegisterUser')	IS NOT NULL DROP PROCEDURE RegisterUser
 
