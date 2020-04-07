@@ -74,9 +74,8 @@ SET IDENTITY_INSERT LandmarkCategories OFF;
 
 SET IDENTITY_INSERT Landmarks ON;
 	INSERT INTO Landmarks (landmark_id, landmark_name, city, state, days_open, hours_of_operation, category_id, description ) 
-	VALUES(1, 'Skyline Chili', 'Cincinnati', 'OH',  'MON-FRI', '8AM - 10PM', 1, 'Cincinnati style chili');
-	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id, description ) 
-	VALUES(2, 'Fountain Square', 'Cincinnati', 'OH', 'SAT SUN', '8AM - 6PM', 2, 'Center of the city');
+	VALUES	(1, 'Skyline Chili', 'Cincinnati', 'OH',  'MON-FRI', '8AM - 10PM', 1, 'Cincinnati style chili'),
+			(2, 'Fountain Square', 'Cincinnati', 'OH', 'SAT SUN', '8AM - 6PM', 2, 'Center of the city');
 SET IDENTITY_INSERT Landmarks OFF;
 
 SET IDENTITY_INSERT LandmarkImages ON;
@@ -92,8 +91,8 @@ BEGIN TRANSACTION
 -- ADD FOREIGN KEY CONSTRAINTS
 
 ALTER TABLE Landmarks 
-ADD FOREIGN KEY(category_id)
-REFERENCES Categories(category_id);
+ADD CONSTRAINT Landmarks_LandmarkCatergories FOREIGN KEY(category_id)
+REFERENCES LandmarkCategories(category_id);
 
 COMMIT TRANSACTION
 GO
@@ -173,5 +172,49 @@ BEGIN
 	END
 
 	SELECT @result
+END
+GO
+
+IF OBJECT_ID('SelecetLandmarkInfo') IS NOT NULL DROP VIEW SelectLandmarkInfo
+GO
+CREATE VIEW SelectLandmarkInfo
+AS
+SELECT
+	A.landmark_id,
+	A.landmark_name,
+	A.days_open,
+	A.hours_of_operation,
+	A.description AS landmark_description,
+	B.category_id,
+	B.category_name,
+	C.image_id,
+	C.image_url,
+	C.description AS image_description,
+	C.credits	
+FROM
+	Landmarks AS A
+	INNER JOIN LandmarkCategories AS B
+	ON (A.category_id = B.category_id)
+	INNER JOIN LandmarkImages AS C
+	ON (A.landmark_id = C.landmark_id)
+GO
+
+
+IF OBJECT_ID('SearchForLandmark') IS NOT NULL DROP PROCEDURE SearchForLandmark
+GO
+CREATE PROCEDURE SearchForLandmark
+	@query VARCHAR(100)
+AS
+BEGIN
+SELECT DISTINCT
+	*
+FROM
+	SelectLandmarkInfo
+WHERE
+	landmark_name			LIKE '%'+@query+'%'
+OR	landmark_description	LIKE '%'+@query+'%'
+OR	category_name			LIKE '%'+@query+'%'
+OR	image_description		LIKE '%'+@query+'%'
+OR	credits					LIKE '%'+@query+'%'
 END
 GO
