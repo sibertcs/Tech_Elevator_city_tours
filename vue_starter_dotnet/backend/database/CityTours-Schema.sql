@@ -1,7 +1,13 @@
 USE master;
 GO
---CREATE DATABASE CityTours;
+
+-- Delete the  database (IF EXISTS)
+DROP DATABASE IF EXISTS CityTours;
 GO
+
+CREATE DATABASE CityTours;
+GO
+
 USE CityTours;
 GO
 
@@ -23,6 +29,52 @@ CREATE TABLE Users(
 )
 COMMIT TRANSACTION
 GO
+
+BEGIN TRANSACTION
+CREATE TABLE Landmarks(
+	landmark_id		   INT IDENTITY(1,1),
+	landmark_name	   VARCHAR(100) NOT NULL,
+	days_open          VARCHAR(100) NOT NULL, -- eg Mon-Fri, Mon Wed Fri, Mon - Sun
+    hours_of_operation VARCHAR(100) NOT NULL, -- eg 8AM - 8PM, 8AM - 12PM : 1PM - 5PM
+	category_id		   INTEGER NOT NULL
+	CONSTRAINT Landmarks_PK PRIMARY KEY (landmark_id) 
+)
+COMMIT TRANSACTION
+GO
+
+BEGIN TRANSACTION
+CREATE TABLE Categories(
+	category_id		INT IDENTITY(1,1),
+	category_name   VARCHAR(100) NOT NULL
+	CONSTRAINT Categories_PK PRIMARY KEY (category_id)
+)
+COMMIT TRANSACTION
+GO
+
+--Add Test Data
+BEGIN TRANSACTION
+SET IDENTITY_INSERT Categories ON;
+	INSERT INTO Categories (category_id, category_name) VALUES(1, 'Food');
+	INSERT INTO Categories (category_id, category_name) VALUES(2, 'Park');
+SET IDENTITY_INSERT Categories OFF;
+
+SET IDENTITY_INSERT Landmarks ON;
+	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id ) VALUES(1, 'Carew Tower', 'MON-FRI', '8AM - 10PM', 1);
+	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id ) VALUES(2, 'Fountain Square', 'SAT SUN', '8AM - 6PM', 2)
+SET IDENTITY_INSERT Landmarks OFF;
+COMMIT TRANSACTION
+GO
+
+BEGIN TRANSACTION
+-- ADD FOREIGN KEY CONSTRAINTS
+
+ALTER TABLE Landmarks 
+ADD FOREIGN KEY(category_id)
+REFERENCES Categories(category_id);
+COMMIT TRANSACTION
+GO
+
+
 
 CREATE PROCEDURE RegisterUser
 	@emailAddress	VARCHAR(254),
