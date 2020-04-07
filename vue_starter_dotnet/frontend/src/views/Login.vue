@@ -13,31 +13,31 @@
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
       <div class="login-box">
-      <p class="username-login">
-      <label for="username" class="sr-only">Username</label>
-      <input
-        type="text"
-        id="username"
-        class="form-control"
-        placeholder="Username"
-        v-model="user.username"
-        required
-        autofocus
-      />
-      </p>
-      <p class= "password-login">
-      <label for="password" class="sr-only">Password</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        placeholder="Password"
-        v-model="user.password"
-        required
-      />
-      <router-link :to="{ name: 'register' }">Need an account?</router-link>
-      <button type="submit">Sign in</button>
-      </p>
+        <p class="username-login">
+          <label for="username" class="sr-only">Username</label>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            placeholder="Username"
+            v-model="user.username"
+            required
+            autofocus
+          />
+        </p>
+        <p class="password-login">
+          <label for="password" class="sr-only">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="Password"
+            v-model="user.password"
+            required
+          />
+          <router-link :to="{ name: 'register' }">Need an account?</router-link>
+          <button type="submit">Sign in</button>
+        </p>
       </div>
     </form>
   </div>
@@ -91,43 +91,63 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
+
 body {
   background: url("https://cdn.hipwallpaper.com/i/21/62/f2kHL9.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
-  
 }
+
 h1 {
   color: whitesmoke;
   display: flex;
   justify-content: center;
   border-top: solid whitesmoke;
   border-bottom: solid whitesmoke;
-  padding-bottom:5px;
-  padding-top:2px;
+  padding-bottom: 5px;
+  padding-top: 8px;
+  font-family: "Josefin Sans";
 }
 
 .sr-only {
-  color:whitesmoke;
+  color: whitesmoke;
   display: grid;
   justify-items: center;
-  
+  font-family: "Josefin Sans";
+  padding-bottom: 5px;
 }
+
 .password-login {
   display: grid;
   justify-items: center;
-  
-}
-.username-login {
-  display:grid;
-  justify-items: center;
-}
-.login-box {
-  border: solid white;
-    border-radius: 5px;
-    background-color: hsla(281, 40%, 43%, 0.4);
-    margin-right: 40%;
-    margin-left: 40%;
 }
 
+.username-login {
+  display: grid;
+  justify-items: center;
+}
+
+.login-box {
+  border: solid white;
+  border-radius: 5px;
+  background-color: hsla(177, 66%, 36%, 0.4);
+  margin-right: 40%;
+  margin-left: 40%;
+}
+
+button {
+  font-family: "Josefin Sans";
+  font-size: 18px;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 900px) {
+  .login-box {
+   border-top: solid white;
+   border-bottom:solid white;
+   margin-right: 0%;
+  margin-left: 0%;
+  }
+}
 </style>
