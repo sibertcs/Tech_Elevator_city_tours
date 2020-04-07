@@ -11,11 +11,15 @@ GO
 USE CityTours;
 GO
 
-IF OBJECT_ID('Users')			IS NOT NULL DROP TABLE Users;
+IF OBJECT_ID('Users')					IS NOT NULL DROP TABLE Users;
 
-IF OBJECT_ID('RegisterUser')	IS NOT NULL DROP PROCEDURE RegisterUser
+IF OBJECT_ID('RegisterUser')			IS NOT NULL DROP PROCEDURE RegisterUser;
 
-IF OBJECT_ID('Login')			IS NOT NULL DROP PROCEDURE Login
+IF OBJECT_ID('Login')					IS NOT NULL DROP PROCEDURE Login;
+
+IF OBJECT_ID('LandmarkCategories')		IS NOT NULL DROP TABLE LandmarkCategories;
+
+IF OBJECT_ID('Landmarks')				IS NOT NULL	DROP TABLE Landmarks;
 GO
 
 BEGIN TRANSACTION
@@ -27,42 +31,50 @@ CREATE TABLE Users(
 	role		VARCHAR(16)		DEFAULT('user'),
 	CONSTRAINT Users_PK PRIMARY KEY (user_id)
 )
-COMMIT TRANSACTION
-GO
 
-BEGIN TRANSACTION
 CREATE TABLE Landmarks(
-	landmark_id		   INT IDENTITY(1,1),
-	landmark_name	   VARCHAR(100) NOT NULL,
-	days_open          VARCHAR(100) NOT NULL, -- eg Mon-Fri, Mon Wed Fri, Mon - Sun
-    hours_of_operation VARCHAR(100) NOT NULL, -- eg 8AM - 8PM, 8AM - 12PM : 1PM - 5PM
-	category_id		   INTEGER NOT NULL
+	landmark_id				INT IDENTITY(1,1),
+	landmark_name			VARCHAR(100)	NOT NULL,
+	days_open				VARCHAR(100)	NOT NULL, -- eg Mon-Fri, Mon Wed Fri, Mon - Sun
+    hours_of_operation		VARCHAR(100)	NOT NULL, -- eg 8AM - 8PM, 8AM - 12PM : 1PM - 5PM
+	category_id				INTEGER			NOT NULL,
+	description				VARCHAR(1000)	NOT NULL,
 	CONSTRAINT Landmarks_PK PRIMARY KEY (landmark_id) 
 )
-COMMIT TRANSACTION
-GO
 
-BEGIN TRANSACTION
-CREATE TABLE Categories(
+CREATE TABLE LandmarkCategories(
 	category_id		INT IDENTITY(1,1),
 	category_name   VARCHAR(100) NOT NULL
-	CONSTRAINT Categories_PK PRIMARY KEY (category_id)
+	CONSTRAINT LandmarkCategories_PK PRIMARY KEY (category_id)
 )
+
+CREATE TABLE LandmarkImages(
+	landmark_id			INT				NOT NULL,
+	image_id			INT				IDENTITY(1,1),
+	image_url			VARCHAR(1000)	NOT NULL,
+	description			VARCHAR(1000)	NOT NULL,
+	credits				VARCHAR(1000)	NOT NULL,
+	CONSTRAINT	LandmarkImages_PK PRIMARY KEY (landmark_id, image_id)
+)
+
+ALTER TABLE Landmarks ADD CONSTRAINT LandmarkImages_Landmarks_FK
+FOREIGN KEY (landmark_id) REFERENCES Landmarks (landmark_id)
+
 COMMIT TRANSACTION
 GO
 
 --Add Test Data
-BEGIN TRANSACTION
-SET IDENTITY_INSERT Categories ON;
-	INSERT INTO Categories (category_id, category_name) VALUES(1, 'Food');
-	INSERT INTO Categories (category_id, category_name) VALUES(2, 'Park');
-SET IDENTITY_INSERT Categories OFF;
+--BEGIN TRANSACTION
+--SET IDENTITY_INSERT LandmarkCategories ON;
+--	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(1, 'Food');
+--	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(2, 'Park');
+--SET IDENTITY_INSERT LandmarkCategories OFF;
 
-SET IDENTITY_INSERT Landmarks ON;
-	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id ) VALUES(1, 'Carew Tower', 'MON-FRI', '8AM - 10PM', 1);
-	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id ) VALUES(2, 'Fountain Square', 'SAT SUN', '8AM - 6PM', 2)
-SET IDENTITY_INSERT Landmarks OFF;
-COMMIT TRANSACTION
+--SET IDENTITY_INSERT Landmarks ON;
+--	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id ) VALUES(1, 'Carew Tower', 'MON-FRI', '8AM - 10PM', 1);
+--	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id ) VALUES(2, 'Fountain Square', 'SAT SUN', '8AM - 6PM', 2)
+--SET IDENTITY_INSERT Landmarks OFF;
+--COMMIT TRANSACTION
 GO
 
 BEGIN TRANSACTION

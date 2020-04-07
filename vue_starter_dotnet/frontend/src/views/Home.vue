@@ -1,10 +1,14 @@
 <template>
   <div class="nav-button">
     <div class="home">
-      <h1>Test Test Test Test</h1>
-      <div>
+      <h1>Jack's City Tours</h1>
+      <div class="site-search">
         <landmark-search></landmark-search>
-        <!-- <landmark-search-Results v-if="showLandmarkResults"> -->
+        <!-- <landmark-search-Results 
+        v-if="showLandmarkResults" 
+        v-bind:searchQuery="API_URL"
+        
+        > -->
       </div>
     </div>
   </div>
