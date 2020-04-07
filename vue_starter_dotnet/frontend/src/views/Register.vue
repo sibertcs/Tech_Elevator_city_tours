@@ -1,8 +1,9 @@
 <template>
+
   <div id="register" class="card">
     
     <b-form @submit.prevent="register">
-      
+      <h1 class="h3 mb-3 font-weight-normal">Create An Account</h1>
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         There were problems registering this user.
       </div>
@@ -28,7 +29,7 @@
                   v-model="user.password"
                   required />
                   </b-form-group>
-          <b-form-group>
+          <b-form-group style="margin-bottom:0px">
             <b-input type="password"
                   id="confirmPassword"
                   class="mb-2 mr-sm-2 mb-sm-0"
@@ -38,10 +39,11 @@
                   
           </b-form-group>
              
-      
+      <p class="password-login" style="margin-bottom:0px">
       <router-link :to="{ name: 'login' }">
         Have an account?
       </router-link>
+      </p>
       <b-button class="btn btn-lg btn-primary btn-block" type="submit">
         Create Account
       </b-button>

@@ -27,7 +27,7 @@ const router = new Router({
       name: 'home',
       component: Home,
       meta: {
-        requiresAuth: true
+        requiresAuth: false
       }
     },
     {
@@ -54,9 +54,9 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   const user = auth.getUser();
 
-  // If it does and they are not logged in, send the user to "/login"
+  // If it does and they are not logged in, send the user to "/home"
   if (requiresAuth && !user) {
-    next("/login");
+    next("/home");
   } else {
     // Else let them go to their next destination
     next();

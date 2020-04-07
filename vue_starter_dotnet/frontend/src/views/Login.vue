@@ -14,7 +14,7 @@
         role="alert"
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
-      <div id="login-wrapper" class="card" style="background:rgba(59, 61, 64, 0)">
+      <div id="login-wrapper"  style="background:rgba(59, 61, 64, 0)">
       <div class="login-box">
         <p class="username-login">
           <label for="username" class="sr-only">Username</label>
@@ -39,7 +39,7 @@
             required
           />
           <router-link :to="{ name: 'register' }">Need an account?</router-link>
-          <button type="submit">Sign in</button>
+          <button class="btn btn-lg btn-primary btn-block btn-secondary"  type="submit">Sign in</button>
         </p>
       </div>
 

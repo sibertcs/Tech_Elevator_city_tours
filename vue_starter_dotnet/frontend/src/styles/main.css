@@ -13,6 +13,7 @@
     padding-top: 8px;
     padding-bottom: 5px;
     font-family: 'Josefin Sans';
+    
   }
   
   a:visited {
@@ -20,7 +21,7 @@
   }
   
   body {
-   background: url("https://cdn.hipwallpaper.com/i/21/62/f2kHL9.jpg");
+    background: url("https://cdn.hipwallpaper.com/i/21/62/f2kHL9.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     margin: 0px;  
@@ -52,24 +53,8 @@
     justify-items: center;
   }
   
-  .username-login {
-    display: grid;
-    justify-items: center;
-  }
   
- 
-
-  .login-box {
-    
-    border-radius: 5px;
-    /*background-color: var(--main-bg-color);*/    
-  }
   
- /* button {
-    font-family: "Josefin Sans";
-    font-size: 18px;
-    border-radius: 5px;
-  }*/
   
   @media only screen and (max-width: 900px) {
     .login-box {
@@ -82,6 +67,7 @@
     }
   }
   
+
   .card {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -115,3 +101,11 @@
     padding: 1em;
     color: whitesmoke;
   }
+
+  #nav > a{
+      padding-right: 1em;
+  }
+  
+  
+
+  
