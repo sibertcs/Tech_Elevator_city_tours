@@ -14,6 +14,7 @@ props: {
             landmarkResult:[]
         }        
     },
+    // Need to create a method to fetch the API.
 }
 </script>
 

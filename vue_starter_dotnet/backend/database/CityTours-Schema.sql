@@ -185,6 +185,8 @@ SELECT
 	A.days_open,
 	A.hours_of_operation,
 	A.description AS landmark_description,
+	A.city,
+	A.state,
 	B.category_id,
 	B.category_name,
 	C.image_id,
