@@ -1,4 +1,6 @@
 <template>
+<body>
+
   <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
       <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
@@ -12,6 +14,7 @@
         role="alert"
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
+      <div id="login-wrapper" class="card">
       <div class="login-box">
         <p class="username-login">
           <label for="username" class="sr-only">Username</label>
@@ -39,8 +42,11 @@
           <button type="submit">Sign in</button>
         </p>
       </div>
+
+      </div>
     </form>
   </div>
+  </body>
 </template>
 
 <script>
@@ -93,61 +99,6 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 
-body {
-  background: url("https://cdn.hipwallpaper.com/i/21/62/f2kHL9.jpg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
 
-h1 {
-  color: whitesmoke;
-  display: flex;
-  justify-content: center;
-  border-top: solid whitesmoke;
-  border-bottom: solid whitesmoke;
-  padding-bottom: 5px;
-  padding-top: 8px;
-  font-family: "Josefin Sans";
-}
 
-.sr-only {
-  color: whitesmoke;
-  display: grid;
-  justify-items: center;
-  font-family: "Josefin Sans";
-  padding-bottom: 5px;
-}
-
-.password-login {
-  display: grid;
-  justify-items: center;
-}
-
-.username-login {
-  display: grid;
-  justify-items: center;
-}
-
-.login-box {
-  border: solid white;
-  border-radius: 5px;
-  background-color: hsla(177, 66%, 36%, 0.4);
-  margin-right: 40%;
-  margin-left: 40%;
-}
-
-button {
-  font-family: "Josefin Sans";
-  font-size: 18px;
-  border-radius: 5px;
-}
-
-@media only screen and (max-width: 900px) {
-  .login-box {
-   border-top: solid white;
-   border-bottom:solid white;
-   margin-right: 0%;
-  margin-left: 0%;
-  }
-}
 </style>

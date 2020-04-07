@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div id="nav">      
       <router-link to="/">Home</router-link>
     </div>
     <router-view/>
@@ -8,20 +8,9 @@
 </template>
 
 
-<style>
-
-#nav {
-  font-family: 'Josefin Sans';
-  color:whitesmoke;
-}
-
-a:link {
-  color: whitesmoke;
-  padding-top: 8px;
-  padding-bottom: 5px;
-  font-family: 'Josefin Sans';
-}
-
+<style scope src='./styles/main.css'>
+@import './node_modules/bootstrap/scss/bootstrap';
+@import './node_modules/bootstrap-vue/src/index.scss';
 
 
 </style>
