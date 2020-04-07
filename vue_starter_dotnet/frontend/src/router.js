@@ -5,7 +5,9 @@ import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 
+
 Vue.use(Router)
+
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
