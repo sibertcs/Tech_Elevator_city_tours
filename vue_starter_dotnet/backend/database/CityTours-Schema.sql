@@ -17,6 +17,8 @@ IF OBJECT_ID('RegisterUser')			IS NOT NULL DROP PROCEDURE RegisterUser;
 
 IF OBJECT_ID('Login')					IS NOT NULL DROP PROCEDURE Login;
 
+IF OBJECT_ID('LandmarkImages')			IS NOT NULL	DROP TABLE LandmarkImages;
+
 IF OBJECT_ID('LandmarkCategories')		IS NOT NULL DROP TABLE LandmarkCategories;
 
 IF OBJECT_ID('Landmarks')				IS NOT NULL	DROP TABLE Landmarks;
