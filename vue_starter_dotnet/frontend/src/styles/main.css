@@ -27,9 +27,10 @@
     margin: 0px;  
   }
 
-.site-search {
-  justify-content: center;
+#landmark-search-wrapper {
+align-self: stretch;
 }
+
   h1 {
     color: whitesmoke;
     display: flex;
