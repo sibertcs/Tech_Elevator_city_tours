@@ -35,6 +35,8 @@ CREATE TABLE Users(
 CREATE TABLE Landmarks(
 	landmark_id				INT IDENTITY(1,1),
 	landmark_name			VARCHAR(100)	NOT NULL,
+	city					VARCHAR(100)	NOT NULL,
+	state					VARCHAR(2)		NOT NULL,
 	days_open				VARCHAR(100)	NOT NULL, -- eg Mon-Fri, Mon Wed Fri, Mon - Sun
     hours_of_operation		VARCHAR(100)	NOT NULL, -- eg 8AM - 8PM, 8AM - 12PM : 1PM - 5PM
 	category_id				INTEGER			NOT NULL,
@@ -64,17 +66,26 @@ COMMIT TRANSACTION
 GO
 
 --Add Test Data
---BEGIN TRANSACTION
---SET IDENTITY_INSERT LandmarkCategories ON;
---	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(1, 'Food');
---	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(2, 'Park');
---SET IDENTITY_INSERT LandmarkCategories OFF;
+BEGIN TRANSACTION
+SET IDENTITY_INSERT LandmarkCategories ON;
+	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(1, 'Food');
+	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(2, 'Park');
+SET IDENTITY_INSERT LandmarkCategories OFF;
 
---SET IDENTITY_INSERT Landmarks ON;
---	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id ) VALUES(1, 'Carew Tower', 'MON-FRI', '8AM - 10PM', 1);
---	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id ) VALUES(2, 'Fountain Square', 'SAT SUN', '8AM - 6PM', 2)
---SET IDENTITY_INSERT Landmarks OFF;
---COMMIT TRANSACTION
+SET IDENTITY_INSERT Landmarks ON;
+	INSERT INTO Landmarks (landmark_id, landmark_name, city, state, days_open, hours_of_operation, category_id, description ) 
+	VALUES(1, 'Skyline Chili', 'Cincinnati', 'OH',  'MON-FRI', '8AM - 10PM', 1, 'Cincinnati style chili');
+	INSERT INTO Landmarks (landmark_id, landmark_name, days_open, hours_of_operation, category_id, description ) 
+	VALUES(2, 'Fountain Square', 'Cincinnati', 'OH', 'SAT SUN', '8AM - 6PM', 2, 'Center of the city');
+SET IDENTITY_INSERT Landmarks OFF;
+
+SET IDENTITY_INSERT LandmarkImages ON;
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(1, 1, 'https://upload.wikimedia.org/wikipedia/en/8/8f/Skyline_Chili_Logo.png', 'Logo of skyline chili', 'wikipedia' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(2, 2, 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/TylerDavidsonFountainAtNight.jpg/386px-TylerDavidsonFountainAtNight.jpg', 'Fountain Square at night', 'wikipedia' );
+SET IDENTITY_INSERT LandmarkImages OFF;
+COMMIT TRANSACTION
 GO
 
 BEGIN TRANSACTION
@@ -83,6 +94,7 @@ BEGIN TRANSACTION
 ALTER TABLE Landmarks 
 ADD FOREIGN KEY(category_id)
 REFERENCES Categories(category_id);
+
 COMMIT TRANSACTION
 GO
 
