@@ -14,7 +14,7 @@
         role="alert"
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
-      <div id="login-wrapper" class="card">
+      <div id="login-wrapper" class="card" style="background:rgba(59, 61, 64, 0)">
       <div class="login-box">
         <p class="username-login">
           <label for="username" class="sr-only">Username</label>

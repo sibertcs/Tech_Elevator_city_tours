@@ -16,7 +16,7 @@
   }
   
   a:visited {
-    color: unset;
+    color: whitesmoke;
   }
   
   body {
@@ -57,22 +57,19 @@
     justify-items: center;
   }
   
-  #login-wrapper{
-    margin-right: 33%;
-    margin-left: 33%;
-  }
+ 
 
   .login-box {
-    border: solid white;
+    
     border-radius: 5px;
-    background-color: var(--main-bg-color);    
+    /*background-color: var(--main-bg-color);*/    
   }
   
-  button {
+ /* button {
     font-family: "Josefin Sans";
     font-size: 18px;
     border-radius: 5px;
-  }
+  }*/
   
   @media only screen and (max-width: 900px) {
     .login-box {
@@ -99,4 +96,22 @@
   /* Add some padding inside the card container */
   .container {
     padding: 2px 16px;
+  }
+
+  #register{
+    margin-right: 33%;
+    margin-left: 33%;  
+    background-color: var(--main-bg-color);
+    margin-top: 2em;
+    padding: 1em;
+    color: whitesmoke;
+  }
+
+  #login{
+    margin-right: 33%;
+    margin-left: 33%;  
+    background-color: var(--main-bg-color);
+    margin-top: 2em;
+    padding: 1em;
+    color: whitesmoke;
   }
