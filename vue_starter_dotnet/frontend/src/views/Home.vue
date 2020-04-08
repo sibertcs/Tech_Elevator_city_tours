@@ -3,7 +3,7 @@
     <div class="home">
       <h1>Test Test Test Test</h1>
       <div>
-        <landmark-search></landmark-search>
+        <landmark-search v-bind:search="searchQuery"></landmark-search>
         <!-- <landmark-search-Results v-if="showLandmarkResults"> -->
       </div>
     </div>
@@ -24,15 +24,15 @@ export default {
   // props: {
   //   searchQuery: String
   // }
-  //  data() {
-  //   return {
+    data() {
+     return {
   //     API_URL: "https://localhost:44359/api/reviews", // <-- Will need to update API to local API form sql.
-  //     showLandmarkResults: true,
+       showLandmarkResults: true,
   //     landmarkID: 0
   //   },
-  // methods: {
-
-  // }
+   methods: {
+     landmarkSearchResults()
+   }
 };
 </script>
 

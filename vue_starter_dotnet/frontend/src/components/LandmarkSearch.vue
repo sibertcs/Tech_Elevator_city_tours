@@ -16,6 +16,7 @@ export default {
     methods: {
         search(){            
             alert(this.searchQuery);
+            this.$emit('search',searchQuery);
         }
     }
 }
