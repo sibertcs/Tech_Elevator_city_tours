@@ -72,12 +72,24 @@ BEGIN TRANSACTION
 SET IDENTITY_INSERT LandmarkCategories ON;
 	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(1, 'Food');
 	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(2, 'Park');
+	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(3, 'Museum');
 SET IDENTITY_INSERT LandmarkCategories OFF;
 
 SET IDENTITY_INSERT Landmarks ON;
 	INSERT INTO Landmarks (landmark_id, landmark_name, city, state, days_open, hours_of_operation, category_id, description ) 
 	VALUES	(1, 'Skyline Chili', 'Cincinnati', 'OH',  'MON-FRI', '8AM - 10PM', 1, 'Cincinnati style chili'),
-			(2, 'Fountain Square', 'Cincinnati', 'OH', 'SAT SUN', '8AM - 6PM', 2, 'Center of the city');
+			(2, 'Fountain Square', 'Cincinnati', 'OH', 'SAT SUN', '8AM - 6PM', 2, 'Center of the city'),
+			(3, 'Musem Center at Union Terminal', 'Cincinnati', 'OH', 'SUN-SAT', '10AM -6PM', 3, 'Cincinnati Museum Center at Union Terminal is home to the Cincinnati History Museum, Duke Energy Children''s Museum, Museum of Natural History & Science, and Robert D. Lindner Family OMNIMAX Theater.'),
+			(4, 'Sawyer Point Park & Yeatman''s Cove', 'Cincinnati', 'OH', 'SUN-SAT', '9AM-7PM', 2, 'Sawyer Point Park & Yeatman''s Cove are a pair of side-by-side parks on the riverfront of downtown Cincinnati, Ohio, United States. The two linear parks stretch one mile along the north shore of the Ohio River. Since 2012, the parks have been the location for the annual Bunbury Music Festival.'),
+			(5, 'Ault Park', 'Cincinnati', 'OH', 'SUN-SAT', '9AM-7PM', 2, 'Ault Park is the fourth-largest park in Cincinnati at 223.949 acres, owned and operated by the Cincinnati Park Board. It lies in the Mount Lookout neighborhood on the city''s east side.'),
+			(6, 'Findlay Market', 'Cincinnati', 'OH', 'TUES-SUN', '7AM-6PM', 1, 'Longtime hub of vendors selling meat, produce & other local foods, plus a seasonal farmers'' market.'),
+			(7, 'Rhinegeist Brewery', 'Cincinnati', 'OH', 'SUN-SAT', '11AM-9PM', 1, 'Taproom located in a historic bottling plant offering house-brewed beers, Ping-Pong, cornhole & TVs.'),
+			(8, 'Contemporary Arts Center', 'Cincinnati', 'OH', 'TUES-SUN', '10AM-6PM', 3, 'The Contemporary Arts Center is a contemporary art museum in Cincinnati, Ohio and one of the first contemporary art institutions in the United States. The CAC is a non-collecting museum that focuses on new developments in painting, sculpture, photography, architecture, performance art and new media.'),
+			(9, 'Cincinnati Art Museum', 'Cincinnati', 'OH', 'TUES-SUN', '10AM-6PM', 3, 'The Cincinnati Art Museum is an art museum in the Eden Park neighborhood of Cincinnati, Ohio. Founded in 1881, it was the first purpose-built art museum west of the Alleghenies, and is one of the oldest in the United States.'),
+			(10, 'Cincinnati Zoo & Botanical Garden', 'Cincinnati', 'OH', 'SUN-SAT', '10AM-7PM', 2, 'Cincinnati Zoo & Botanical Garden is the fifth-oldest zoo in the United States, opening in 1875, after the Philadelphia Zoo, the Roger Williams Park Zoo, the Lincoln Park Zoo, and the Central Park Zoo. It is located in the Avondale neighborhood of Cincinnati, Ohio.'),
+			(11, 'Washington Park', 'Cincinnati', 'OH', 'SUN-SAT', '10AM-7PM', 2, 'Washington Park is bounded by West 12th, Race and Elm Streets in the Over-the-Rhine neighborhood of Cincinnati, Ohio, United States. The park is owned and operated by the Cincinnati Park Board. The 6-acre park served as Presbyterian and Episcopal cemeteries before it was acquired by the city from 1858 to 1863.'),
+			(12, 'Taft Museum of Art', 'Cincinnati', 'OH', 'TUES-SUN', '10AM-6PM', 3, 'The Taft Museum of Art is housed in the 200-year-old historic house at 316 Pike Street. The house – the oldest domestic wooden structure in downtown Cincinnati in situ – was built about 1820 and housed several prominent Cincinnatians, including Martin Baum, Nicholas Longworth, David Sinton, Anna Sinton Taft and Charles Phelps Taft. It now holds a fine art collection, is on the National Register of Historic Places listings, and is a contributing property to the Lytle Park Historic District.');
+			
 SET IDENTITY_INSERT Landmarks OFF;
 
 SET IDENTITY_INSERT LandmarkImages ON;
@@ -226,7 +238,7 @@ GO
 IF OBJECT_ID('GetLandmarkImages') IS NOT NULL DROP PROCEDURE GetLandmarkImages;
 GO
 CREATE PROCEDURE GetLandmarkImages
-	@landmarkID INT NOT NULL
+	@landmarkID INT
 AS
 BEGIN
 	SELECT
