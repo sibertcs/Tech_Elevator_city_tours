@@ -4,10 +4,10 @@
       <h1>Jackie Chan's Action Tours</h1>
       <div class="site-search">
         <landmark-search v-on:search="searchforResult" ></landmark-search>
-         <landmark-search-Results 
+         <landmark-search-results 
         v-if="showLandmarkResults" 
         v-bind:searchQuery="searchQuery"        
-        > </landmark-search-Results>
+        > </landmark-search-results>
       </div>
     </div>
   </div>
