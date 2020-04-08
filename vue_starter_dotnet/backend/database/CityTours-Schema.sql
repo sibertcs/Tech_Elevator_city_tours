@@ -73,6 +73,7 @@ SET IDENTITY_INSERT LandmarkCategories ON;
 	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(1, 'Food');
 	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(2, 'Park');
 	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(3, 'Museum');
+	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(4, 'Arena/Stadium');
 SET IDENTITY_INSERT LandmarkCategories OFF;
 
 SET IDENTITY_INSERT Landmarks ON;
@@ -88,7 +89,10 @@ SET IDENTITY_INSERT Landmarks ON;
 			(9, 'Cincinnati Art Museum', 'Cincinnati', 'OH', 'TUES-SUN', '10AM-6PM', 3, 'The Cincinnati Art Museum is an art museum in the Eden Park neighborhood of Cincinnati, Ohio. Founded in 1881, it was the first purpose-built art museum west of the Alleghenies, and is one of the oldest in the United States.'),
 			(10, 'Cincinnati Zoo & Botanical Garden', 'Cincinnati', 'OH', 'SUN-SAT', '10AM-7PM', 2, 'Cincinnati Zoo & Botanical Garden is the fifth-oldest zoo in the United States, opening in 1875, after the Philadelphia Zoo, the Roger Williams Park Zoo, the Lincoln Park Zoo, and the Central Park Zoo. It is located in the Avondale neighborhood of Cincinnati, Ohio.'),
 			(11, 'Washington Park', 'Cincinnati', 'OH', 'SUN-SAT', '10AM-7PM', 2, 'Washington Park is bounded by West 12th, Race and Elm Streets in the Over-the-Rhine neighborhood of Cincinnati, Ohio, United States. The park is owned and operated by the Cincinnati Park Board. The 6-acre park served as Presbyterian and Episcopal cemeteries before it was acquired by the city from 1858 to 1863.'),
-			(12, 'Taft Museum of Art', 'Cincinnati', 'OH', 'TUES-SUN', '10AM-6PM', 3, 'The Taft Museum of Art is housed in the 200-year-old historic house at 316 Pike Street. The house – the oldest domestic wooden structure in downtown Cincinnati in situ – was built about 1820 and housed several prominent Cincinnatians, including Martin Baum, Nicholas Longworth, David Sinton, Anna Sinton Taft and Charles Phelps Taft. It now holds a fine art collection, is on the National Register of Historic Places listings, and is a contributing property to the Lytle Park Historic District.');
+			(12, 'Taft Museum of Art', 'Cincinnati', 'OH', 'TUES-SUN', '10AM-6PM', 3, 'The Taft Museum of Art is housed in the 200-year-old historic house at 316 Pike Street. The house – the oldest domestic wooden structure in downtown Cincinnati in situ – was built about 1820 and housed several prominent Cincinnatians, including Martin Baum, Nicholas Longworth, David Sinton, Anna Sinton Taft and Charles Phelps Taft. It now holds a fine art collection, is on the National Register of Historic Places listings, and is a contributing property to the Lytle Park Historic District.'),
+			(13, 'MadTree Brewing', 'Cincinnati', 'OH', 'SUN-SAT', '11AM-8PM', 1, 'Bustling taproom offering craft beers, wood-fired pizzas, growler fills & keg sales, plus a patio.'),
+			(14, 'Great American Ball Park', 'Cincinnati', 'OH', 'OPEN FOR EVENTS', 'TIMES VARY', 4, 'Great American Ball Park is a baseball stadium in Cincinnati, Ohio, which is the home field of Major League Baseball''s Cincinnati Reds. It opened in 2003, replacing Cinergy Field, their home field from 1970 to 2002. The park''s name comes from Great American Insurance Group.'),
+			(15, 'Paul Brown Stadium', 'Cincinnati', 'OH', 'OPEN FOR EVENTS', 'TIMES VARY', 4, 'Paul Brown Stadium is an outdoor football stadium in Cincinnati, Ohio. It is the home venue of the Cincinnati Bengals of the National Football League and opened on August 19, 2000.');
 			
 SET IDENTITY_INSERT Landmarks OFF;
 
@@ -97,6 +101,33 @@ SET IDENTITY_INSERT LandmarkImages ON;
 	VALUES(1, 1, 'https://upload.wikimedia.org/wikipedia/en/8/8f/Skyline_Chili_Logo.png', 'Logo of skyline chili', 'wikipedia' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
 	VALUES(2, 2, 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/TylerDavidsonFountainAtNight.jpg/386px-TylerDavidsonFountainAtNight.jpg', 'Fountain Square at night', 'wikipedia' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(3, 3, 'https://photos.citybeat.com/wp-content/uploads/2018/11/UnionTerminal_DevinLuginbill1.jpg', 'Museum Center', 'city beat' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(4, 4, 'https://cincinnatiusa.com/sites/default/files/styles/Array/public/attractionphotos/bunbury8_Enquirer%20Media_Adam%20Birkan.JPG', 'A Concert at Sawyer Point', 'cincinnati USA' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(5, 5, 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Ault_Pavilion_view.jpg/1280px-Ault_Pavilion_view.jpg', 'View from the Pavillion', 'wikipedia' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(6, 6, 'https://www.fox19.com/resizer/grZyGM6YGhHvsbVg6BLBofrIB_g=/1200x600/arc-anglerfish-arc2-prod-raycom.s3.amazonaws.com/public/QYIAY5NSPJGXHNDZJA33ETD47M.jpg', 'Diners at Findlay Market', 'fox 19' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(7, 7, 'https://photos.citybeat.com/wp-content/uploads/2018/10/RareBeerFest_DevinLuginbill3.jpg', 'The Taproom at Rhinegeist', 'city beat' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(8, 8, 'https://cincinnatiusa.com/sites/default/files/styles/Array/public/attractionphotos/Contemporary%20Arts%20Center_%40shamanslife%20%28NO%20logos%20or%20stamps%20on%20image%29.jpg', 'The Contemporary Arts Center', 'cincinnati USA' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(9, 9, 'https://sibcyclinenews.files.wordpress.com/2014/06/museumentrance2.jpg?w=768&h=512', 'The Art Museum After Rain', 'sibcy cline' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(10, 10, 'https://cincinnatiusa.com/sites/default/files/styles/Array/public/attractionphotos/Michelle%20Curley%203.JPG', 'An Idyllic Day at the Zoo', 'cincinnati USA' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(11, 11, 'https://cdn.citybeat.com/files/base/scomm/cb/image/2019/04/16x9/640w/WashingtonPark_HB.5cabc414016ae.jpg', 'View of Music Hall from Washington Park', 'city beat' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(12, 12, 'https://cdn.citybeat.com/files/base/scomm/cb/image/2019/08/640w/FarFlungWillowTrees_HB_9.5aeca34d5fc84.5d49b7971a33b.jpg', 'The Grounds Leading to The Taft House', 'city beat' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(13, 13, 'https://365cincinnati.com/wp-content/uploads/2019/05/indoor-bar-at-madtree-1536x1152.jpg', 'The Main Bar at Madtree''s Taproom', '365 cincinnati' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(14, 14, 'https://d1marr3m5x4iac.cloudfront.net/images/edpborder500/I0-001/003/981/612-7.jpeg_/great-american-ball-park-12.jpeg', 'The Stadium with The City''s Skyline Behind it', 'eventful' );
+	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
+	VALUES(15, 15, 'https://d3pxppq3195xue.cloudfront.net/media/images/13/01/25/Paul-BrownExterior_966x668.jpg', 'The Stadium Lighting up the Night Sky', 'nbbj' );
+
 SET IDENTITY_INSERT LandmarkImages OFF;
 COMMIT TRANSACTION
 GO
