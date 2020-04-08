@@ -24,7 +24,6 @@ export default {
     },
     methods: {
         search(){            
-            alert(this.searchQuery);
             this.$emit('search', this.searchQuery);
         },
         searchIfKeyIsEnter(){
