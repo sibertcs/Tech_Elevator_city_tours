@@ -199,7 +199,7 @@ FROM
 	Landmarks AS A
 	INNER JOIN LandmarkCategories AS B
 	ON (A.category_id = B.category_id)
-	INNER JOIN LandmarkImages AS C
+	LEFT JOIN LandmarkImages AS C
 	ON (A.landmark_id = C.landmark_id)
 GO
 
