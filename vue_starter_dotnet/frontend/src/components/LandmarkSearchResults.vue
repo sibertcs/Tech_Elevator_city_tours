@@ -2,7 +2,7 @@
     <div>
 <h1>Your Search Results</h1>
 <div v-for="landmark in landmarkResults" :key="landmark"></div>
-
+<div>{{landmark.name}}</div>
     </div>
 </template>
 

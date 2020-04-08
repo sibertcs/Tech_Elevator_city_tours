@@ -1,5 +1,5 @@
 <template>
-<body>
+
 
   <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
@@ -46,7 +46,7 @@
       </div>
     </form>
   </div>
-  </body>
+
 </template>
 
 <script>
