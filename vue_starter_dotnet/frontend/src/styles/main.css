@@ -35,7 +35,7 @@
   background-repeat: no-repeat;
   backface-visibility: hidden;
   animation:slideBg 40s linear infinite 0s;
-  animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  animation-timing-function: cubic-bezier(1, 0.2, 0.2, 1);
   background-image:url("https://cdn.hipwallpaper.com/i/58/38/E9suBe.jpg") ;
 }
 
@@ -81,10 +81,14 @@
     justify-items: center;
   }
   
-  /* not working yet */
+ .search-bar-div {
+   display:flex;
+   justify-content: center;
+  
+ }
   .landmark-search-wrapper {
     
-    justify-content: center;
+    color:blueviolet;
   }
   
   @media only screen and (max-width: 900px) {

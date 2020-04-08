@@ -20,8 +20,9 @@ namespace SampleApi.Controllers
     {
         private ITokenGenerator tokenGenerator;
         private IPasswordHasher passwordHasher;
-        private IUserDAO userDao;
-
+        private IUserDAO userDao { get { return cityTourDAOs.userDAO; } }        
+        private ICityTourDAOs cityTourDAOs;
+        
         /// <summary>
         /// Creates a new account controller.
         /// </summary>
@@ -32,7 +33,7 @@ namespace SampleApi.Controllers
         {
             this.tokenGenerator = tokenGenerator;
             this.passwordHasher = passwordHasher;
-            this.userDao = cityTourDAOs.userDAO;
+            this.cityTourDAOs = cityTourDAOs;
         }
 
         /// <summary>

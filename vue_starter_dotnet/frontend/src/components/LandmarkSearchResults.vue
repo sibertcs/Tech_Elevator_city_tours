@@ -1,6 +1,6 @@
 <template>
     <div>
-<!-- Creat a v-for to go through the items in the array. Will be displayed on the home page. -->
+<!-- Creat a v-for to go through the items in the array and display them. Will be displayed on the home page. -->
     </div>
 </template>
 

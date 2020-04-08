@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="search-bar-div">
     <div class="landmark-search-wrapper">
         <div class="landmark-search-text-input-wrapper">
             <input class="form-control mr-sm-2 landmark-search-text-input" type="search" aria-label="Search" v-model="searchQuery" v-on:submit="search" @keyup.enter="search" minlength="1" placeholder="Search Popular Landmarks..." />

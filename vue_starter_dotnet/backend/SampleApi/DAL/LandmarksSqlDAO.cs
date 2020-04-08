@@ -31,7 +31,7 @@ namespace SampleApi.DAL
         {
             List<Landmark> landmarks = new List<Landmark>();
 
-            using(SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 const string procedureName = "SearchForLandmark";
@@ -46,16 +46,21 @@ namespace SampleApi.DAL
                     landmarks.Add(landmark);
                 }
 
-                if(landmarks.Count > 0)
+                reader.Close();
+
+                if (landmarks.Count > 0)
                 {
-                    foreach(Landmark landmark in landmarks)
+                    foreach (Landmark landmark in landmarks)
                     {
                         GetLandmarkImages(landmark, conn);
+
+
+
                     }
                 }
             }
 
-            return landmarks;            
+            return landmarks;
         }
 
         private void GetLandmarkImages(Landmark landmark, SqlConnection conn)
@@ -64,7 +69,11 @@ namespace SampleApi.DAL
             SqlCommand cmd = new SqlCommand(procedureName, conn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@landmarkID", landmark.ID);
-            landmark.AddImages((IDataReader)cmd.ExecuteReader());
+            IDataReader imageReader = cmd.ExecuteReader();
+
+            landmark.AddImages(imageReader);
+
+            imageReader.Close();
         }
     }
 }

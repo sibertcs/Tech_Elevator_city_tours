@@ -1,7 +1,7 @@
 <template>
   <div class="nav-button">
     <div class="home">
-      <h1>Big Jackola's City Tourolas</h1>
+      <h1>Jackie Chan's Action Tours</h1>
       <div class="site-search">
         <landmark-search v-on:search="searchforResult" ></landmark-search>
          <landmark-search-Results 
