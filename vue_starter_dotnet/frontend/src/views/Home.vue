@@ -1,7 +1,7 @@
 <template>
   <div class="nav-button">
     <div class="home">
-      <h1>Jack's City Tours</h1>
+      <h1>Big Jackola's City Tourolas</h1>
       <div class="site-search">
         <landmark-search v-on:search="searchforResult" ></landmark-search>
          <landmark-search-Results 
@@ -28,11 +28,12 @@ export default {
     data() {
     return {
       searchQuery: "",
-       showLandmarkResults: true,
+       showLandmarkResults: false,
     }
     },
    methods: {
        searchforResult(searchQuery){ //This method gets the searchQuery string from LandmarkSearch.vue using v-bind in the template above. IA
+       this.showLandmarkResults = true;
 this.searchQuery = searchQuery
        }
    }

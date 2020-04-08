@@ -222,3 +222,18 @@ OR	image_description		LIKE '%'+@query+'%'
 OR	credits					LIKE '%'+@query+'%'
 END
 GO
+
+IF OBJECT_ID('GetLandmarkImages') IS NOT NULL DROP PROCEDURE GetLandmarkImages;
+GO
+CREATE PROCEDURE GetLandmarkImages
+	@landmarkID INT NOT NULL
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		LandmarkImages
+	WHERE
+		landmark_id = @landmarkID
+END
+GO

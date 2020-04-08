@@ -28,11 +28,11 @@ namespace SampleApi.Controllers
         /// <param name="tokenGenerator">A token generator used when creating auth tokens.</param>
         /// <param name="passwordHasher">A password hasher used when hashing passwords.</param>
         /// <param name="userDao">A data access object to store user data.</param>
-        public AccountController(ITokenGenerator tokenGenerator, IPasswordHasher passwordHasher, IUserDAO userDao)
+        public AccountController(ITokenGenerator tokenGenerator, IPasswordHasher passwordHasher, ICityTourDAOs cityTourDAOs)
         {
             this.tokenGenerator = tokenGenerator;
             this.passwordHasher = passwordHasher;
-            this.userDao = userDao;
+            this.userDao = cityTourDAOs.userDAO;
         }
 
         /// <summary>
