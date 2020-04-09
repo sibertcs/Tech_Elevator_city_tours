@@ -1,12 +1,14 @@
 <template>
+
   <div class="landmark-results-wrapper">
     <h1>Your Search Results</h1>
     <div
       v-for="landmark in landmarkResults"
       :key="landmark.id"
-      v-on:click="redirectMethod(landmark)"
+     
       class="landmark-search-result-tile card"
     >
+    <router-link
       <div>{{landmark.name}}</div>
       <b-img
         class="landmark-search-result-image"
@@ -30,8 +32,8 @@ export default {
   methods: {
     redirectMethod(landmark) {
       alert(JSON.stringify(landmark));
-      this.$emit("redirectMethod", landmark);
-      this.$router.push({path: "/LandmarkDetails"});
+      //this.$emit("redirectMethod", landmark);
+      this.$router.push({path: "/LandmarkDetails/" + landmark.id});
     },
     loadLandmarkResults() {
       //This methoed calls the api and returns an array to be displayed in the <template>

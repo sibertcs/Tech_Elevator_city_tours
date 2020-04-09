@@ -22,7 +22,7 @@ export default {
     data() {
         return {
             // allLandmarks: data,
-            // landmark: null
+             //selectedLandmark: null
         }
     },
     props:{
@@ -32,12 +32,27 @@ export default {
     goBack() {
       this.$router.go(-1);
     }
-  }/*,
+  },
      created() {
-        this.landmark = this.allLandmarks.find(l => l.id == this.$route.params.id)
-    } */
 
-}
+          fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${this.$route.params.id}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            // // no reason to be here send them back to the list view
+            // this.$router.push({ path: "/" });
+          }
+        })
+        .then(data => {
+          this.selectedLandmark = data;
+        })
+        .catch(err => console.error(err));
+    }
+        //this.landmark = this.allLandmarks.find(l => l.id == this.$route.params.id)
+    } 
+
+
 </script>
 
 <style>
