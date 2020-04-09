@@ -53,14 +53,41 @@ namespace SampleApi.DAL
                     foreach (Landmark landmark in landmarks)
                     {
                         GetLandmarkImages(landmark, conn);
-
-
-
                     }
                 }
             }
 
             return landmarks;
+        }
+
+
+        public Landmark LandmarkSearch(int id)
+        {
+            Landmark landmark = null;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+               
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Landmarks WHERE landmark_id = @id" , conn);
+                
+                cmd.Parameters.AddWithValue("@id", id);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    landmark = new Landmark(reader);
+                }
+               
+                reader.Close();
+
+                if (landmark != null)
+                {
+                    GetLandmarkImages(landmark, conn);
+                }
+            }
+
+            return landmark;
         }
 
         private void GetLandmarkImages(Landmark landmark, SqlConnection conn)

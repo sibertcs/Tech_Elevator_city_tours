@@ -22,10 +22,14 @@ namespace SampleApi.Controllers
 
         [HttpGet("{query}", Name = "GetLandmarks")]
         public IEnumerable<Landmark> GetLandmarks(string query)
-        {            
+        {                        
             return landmarksDAO.LandmarksSearch((query == null ? "" : query));
         }
+
+        [HttpGet("{id}", Name = "GetLandmark")]
+        public Landmark GetLandmark(int id)
+        {
+            return landmarksDAO.LandmarkSearch(id);
+        }
     }
-
-
 }
