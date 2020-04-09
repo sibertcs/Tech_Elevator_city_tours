@@ -222,9 +222,9 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('SelecetLandmarkInfo') IS NOT NULL DROP VIEW SelectLandmarkInfo
+IF OBJECT_ID('SelecetLandmarkInfo') IS NOT NULL DROP VIEW AllLandmarkInfo
 GO
-CREATE VIEW SelectLandmarkInfo
+CREATE VIEW AllLandmarkInfo
 AS
 SELECT
 	A.landmark_id,
@@ -260,7 +260,7 @@ BEGIN
 SELECT DISTINCT
 	*
 FROM
-	SelectLandmarkInfo
+	AllLandmarkInfo
 WHERE
 	landmark_name			LIKE '%'+@query+'%'
 OR	landmark_description	LIKE '%'+@query+'%'
@@ -280,6 +280,22 @@ BEGIN
 		*
 	FROM
 		LandmarkImages
+	WHERE
+		landmark_id = @landmarkID
+END
+GO
+
+IF OBJECT_ID('GetLandmarkByID') IS NOT NULL DROP PROCEDURE GetLandmarkByID
+GO
+
+CREATE PROCEDURE GetLandmarkByID
+	@landmarkID INT
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		AllLandmarkInfo
 	WHERE
 		landmark_id = @landmarkID
 END

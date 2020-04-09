@@ -69,9 +69,9 @@ namespace SampleApi.DAL
             {
                 conn.Open();
                
-                SqlCommand cmd = new SqlCommand("SELECT * FROM SelectLandmarkInfo WHERE landmark_id = @id" , conn);
-                
-                cmd.Parameters.AddWithValue("@id", id);
+                SqlCommand cmd = new SqlCommand("GetLandmarkByID", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@landmarkID", id);
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
