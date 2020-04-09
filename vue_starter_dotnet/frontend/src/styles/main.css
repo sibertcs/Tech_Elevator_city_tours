@@ -1,5 +1,5 @@
 :root{
-    --main-bg-color: hsla(177, 66%, 36%, 0.4);
+    --main-bg-color: hsla(177, 66%, 36%, 0.8);
 }
 #nav {
     font-family: 'Josefin Sans';
@@ -90,16 +90,7 @@
     color:blueviolet;
   }
   
-  @media only screen and (max-width: 900px) {
-    .login-box {
-     border-top: solid white;
-     border-bottom:solid white;     
-    }
-    #login-wrapper{
-        margin-left: 0%;
-        margin-right: 0%;
-    }
-  }
+  
   .landmark-search-result-tile {
     font-family: 'Josefin Sans';
     font-size: x-large;
@@ -115,13 +106,13 @@
 
   .card {
     /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.4);
     transition: 0.3s;
   }
   
   /* On mouse-over, add a deeper shadow */
   .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
   }
   
   /* Add some padding inside the card container */
@@ -136,7 +127,24 @@
     margin-top: 2em;
     padding: 1em;
     color: whitesmoke;
+    font-family: "Josefin Sans";
   }
+  .landmark-details  {
+    margin-right: 33%;
+    margin-left: 33%;  
+    background-color: var(--main-bg-color);
+    margin-top: 2em;
+    padding: 1em;
+    color: whitesmoke;
+    font-family: "Josefin Sans";
+  }
+.landmark-details img {
+  height:100%;
+  width:100%;
+}
+.landmark-details h1 {
+  text-align: center;
+}
 
   #login{
     margin-right: 33%;
@@ -154,5 +162,18 @@
   .home{
     overflow-y: hidden;
   }
-
+  @media only screen and (max-width: 900px) {
+    .login-box {
+     border-top: solid white;
+     border-bottom:solid white;     
+    }
+    #login-wrapper{
+      margin-left: 0%;
+      margin-right: 0%;
+    }
+    .landmark-details  {
+      margin-left: 5%;
+      margin-right:5%;
+    }
+  }
   

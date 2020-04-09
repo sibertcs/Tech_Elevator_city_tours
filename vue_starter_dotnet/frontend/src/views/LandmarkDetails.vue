@@ -1,15 +1,17 @@
 <template>
-    <div class="landmark-details">
-      <h1>here</h1>
-         <h1>{{selectedLandmark.id}}</h1>
+    <div class="landmark-details card">
+      <h1>Great Choice!</h1>
+         <h1>{{selectedLandmark.name}}</h1>
          <img v-bind:src="selectedLandmark.images[0].url" />
-         <div><span>Description:</span>{{selectedLandmark.description}}</div>
-        <div><span>Days Open:</span>{{selectedLandmark.days_open}}</div>
-        <div><span>Hours of Operation:</span>{{selectedLandmark.hours_of_operation}}</div>
-        <div><span>Landmark Type:</span>{{selectedLandmark.category_name}}</div>
+         <div style="font-size: 10px;"><span>{{selectedLandmark.images[0].description}} (Photo Credits: {{selectedLandmark.images[0].credits}})</span></div>
+         <div><span>DESCRIPTION: </span>{{selectedLandmark.description}}</div>
+        <div><span>DAYS OPEN: </span>{{selectedLandmark.daysOpen}}</div>
+        <div><span>HOURS OF OPERATION: </span>{{selectedLandmark.hoursOfOperation}}</div>
+        <div><span>LANDMARK TYPE: </span>{{selectedLandmark.category}}</div>
+        <div><span>Address: {{selectedLandmark.streetAddress}} {{selectedLandmark.city}}, {{selectedLandmark.state}} {{selectedLandmark.zipCode}}</span></div>
 
         <div>
-            <button v-on:click="goBack">GO BACK</button>
+            <button class="btn btn-lg btn-primary btn-block btn-secondary" v-on:click="goBack">GO BACK</button>
         </div>
     </div>
     

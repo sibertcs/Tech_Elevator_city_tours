@@ -3,7 +3,7 @@
   <div id="app">
     <div id="nav">      
       <router-link to="/">Home</router-link>
-      <router-link to="/Login">Login</router-link>
+      <router-link v-if="isLoggedIn() == false" to="/Login">Login</router-link>
     </div>
     <router-view/> 
     
@@ -17,3 +17,16 @@
 
 
 </style>
+
+<script>
+export default {
+    data(){
+      return {user: null};//this.$auth.user};
+    },
+    methods: {
+        isLoggedIn(){
+          return false;//this.user != null;
+        }
+    }
+}
+</script>
