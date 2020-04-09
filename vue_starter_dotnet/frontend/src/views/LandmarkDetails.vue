@@ -35,7 +35,7 @@ export default {
   },
      created() {
 
-          fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${this.$route.params.id}`)
+          fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/getlandmark/${this.$route.params.id}`)
         .then(response => {
           if (response.ok) {
             return response.json();

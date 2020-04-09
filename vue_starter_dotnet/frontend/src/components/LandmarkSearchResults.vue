@@ -5,7 +5,7 @@
     <div
       v-for="landmark in landmarkResults"
       :key="landmark.id"
-     
+      
       class="landmark-search-result-tile card"
     >
     <router-link
@@ -38,7 +38,7 @@ export default {
     loadLandmarkResults() {
       //This methoed calls the api and returns an array to be displayed in the <template>
       console.log("Load Landmarks...");
-      fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${this.searchQuery}`)
+      fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/getlandmarks/${this.searchQuery}`)
         .then(response => {
           if (response.ok) {
             return response.json();
