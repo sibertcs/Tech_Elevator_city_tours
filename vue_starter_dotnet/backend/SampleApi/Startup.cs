@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace SampleApi
 
         public IConfiguration Configuration { get; }
 
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         /// <summary>
         /// Configures all of the services used by the application.
@@ -138,6 +140,12 @@ namespace SampleApi
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            // Landmarks API routing 
+            
+            
         }
+
+     
     }
 }

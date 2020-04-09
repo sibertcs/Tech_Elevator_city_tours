@@ -20,13 +20,13 @@ namespace SampleApi.Controllers
             this.cityTourDAOs = cityTourDAOs;
         }
 
-        [HttpGet("GetLandmarks-{query}", Name = "GetLandmarks"), Route("GetLandmarks")]
+        [HttpGet("getlandmarks/{query}", Name = "GetLandmarks"), Route("GetLandmarks")]
         public IEnumerable<Landmark> GetLandmarks(string query)
         {                        
             return landmarksDAO.LandmarksSearch((query == null ? "" : query));
         }
 
-        [HttpGet("GetLandmark-{id}", Name = "GetLandmark"), Route("GetLandmark")]
+        [HttpGet("getlandmark/{id}", Name = "GetLandmark"), Route("GetLandmark")]
         public Landmark GetLandmark(int id)
         {
             return landmarksDAO.LandmarkSearch(id);
