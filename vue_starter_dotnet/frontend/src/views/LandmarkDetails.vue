@@ -40,9 +40,6 @@ export default {
         .then(response => {
           if (response.ok) {
             return response.json();
-          } else {
-            // // no reason to be here send them back to the list view
-            // this.$router.push({ path: "/" });
           }
         })
         .then(data => {

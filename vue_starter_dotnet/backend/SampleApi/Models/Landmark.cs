@@ -26,11 +26,19 @@ namespace SampleApi.Models
         /// <summary>
         /// 
         /// </summary>
+        public string StreetAddress { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string City { get; private set; }
         /// <summary>
         /// 
         /// </summary>
         public string State { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ZipCode { get; private set; }
         /// <summary>
         /// 
         /// </summary>
@@ -70,8 +78,10 @@ namespace SampleApi.Models
             ID = Convert.ToInt32(data["landmark_id"]);
             Name = Convert.ToString(data["landmark_name"]);
             Description = Convert.ToString(data["landmark_description"]);
+            StreetAddress = Convert.ToString(data["street_address"]);
             City = Convert.ToString(data["city"]);
             State = Convert.ToString(data["state"]);
+            ZipCode = Convert.ToString(data["zip_code"]);
             DaysOpen = Convert.ToString(data["days_open"]);
             HoursOfOperation = Convert.ToString(data["hours_of_operation"]);
             Category = Convert.ToString(data["category_name"]);
