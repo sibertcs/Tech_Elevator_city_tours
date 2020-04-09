@@ -69,7 +69,7 @@ namespace SampleApi.DAL
             {
                 conn.Open();
                
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Landmarks WHERE landmark_id = @id" , conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM SelectLandmarkInfo WHERE landmark_id = @id" , conn);
                 
                 cmd.Parameters.AddWithValue("@id", id);
 
