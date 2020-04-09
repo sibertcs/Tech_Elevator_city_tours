@@ -1,8 +1,9 @@
 <template>
     <div class="landmark-details">
-        <h1>{{selectedLandmark.landmark_name}}</h1>
-        <img v-bind:src="require(selectedLandmark.image_url)" />
-        <div><span>Description:</span>{{selectedLandmark.description}}</div>
+      <h1>here</h1>
+         <h1>{{selectedLandmark.id}}</h1>
+         <img v-bind:src="selectedLandmark.images[0].url" />
+         <div><span>Description:</span>{{selectedLandmark.description}}</div>
         <div><span>Days Open:</span>{{selectedLandmark.days_open}}</div>
         <div><span>Hours of Operation:</span>{{selectedLandmark.hours_of_operation}}</div>
         <div><span>Landmark Type:</span>{{selectedLandmark.category_name}}</div>
@@ -18,16 +19,16 @@
 //import data from ''
 
 export default {
-    name: 'landmark',
+    name: 'landmark-details',
     data() {
         return {
             // allLandmarks: data,
-             //selectedLandmark: null
+             selectedLandmark: null
         }
     },
-    props:{
-         selectedLandmark: Object
-    },
+    // props:{
+    //      id: Number
+    // },
     methods: {
     goBack() {
       this.$router.go(-1);

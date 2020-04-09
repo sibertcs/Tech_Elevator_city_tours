@@ -4,7 +4,7 @@ import auth from './auth'
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
-import LandmarkDetails from './views/LandmarkDetails'
+import LandmarkDetails from './views/LandmarkDetails.vue'
 
 Vue.use(Router)
 
@@ -47,13 +47,13 @@ const router = new Router({
       }
     },
     {
-      path: "/LandmarkDetails/:landmark_id",
-      name: "landmarkdetails",
+      path: "/LandmarkDetails/:id",
+      name: "landmark-details",
       component: LandmarkDetails,
       meta: {
         requiresAuth: false
-      }
-    },
+      }      
+    }
 
   ]
 })

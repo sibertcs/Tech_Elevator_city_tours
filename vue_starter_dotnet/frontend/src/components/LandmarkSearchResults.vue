@@ -5,16 +5,21 @@
     <div
       v-for="landmark in landmarkResults"
       :key="landmark.id"
-      
       class="landmark-search-result-tile card"
+      v-on:click="redirectMethod(landmark.id)"
     >
-    <router-link
-      <div>{{landmark.name}}</div>
-      <b-img
-        class="landmark-search-result-image"
-        v-if="landmark.images.length > 0"
-        v-bind:src="landmark.images[0].url"
-      />
+      <div>
+      
+        <div>
+          {{landmark.name}}
+        </div>
+        <b-img
+          class="landmark-search-result-image"
+          v-if="landmark.images.length > 0"
+          v-bind:src="landmark.images[0].url"
+        />
+      
+      </div>
     </div>
   </div>
 </template>
@@ -30,10 +35,11 @@ export default {
     searchQuery: String
   },
   methods: {
-    redirectMethod(landmark) {
-      alert(JSON.stringify(landmark));
+    redirectMethod(id) {
+      //alert(JSON.stringify(landmark));
       //this.$emit("redirectMethod", landmark);
-      this.$router.push({path: "/LandmarkDetails/" + landmark.id});
+      //alert(landmark.id);
+      this.$router.push({path: "/LandmarkDetails/" + id});
     },
     loadLandmarkResults() {
       //This methoed calls the api and returns an array to be displayed in the <template>
