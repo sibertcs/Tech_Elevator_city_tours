@@ -91,7 +91,7 @@ SET IDENTITY_INSERT Landmarks ON;
 			(9, 'Cincinnati Art Museum', '953 Eden Park Dr', 'Cincinnati', 'OH', 45202, 'TUES-SUN', '10AM-6PM', 3, 'The Cincinnati Art Museum is an art museum in the Eden Park neighborhood of Cincinnati, Ohio. Founded in 1881, it was the first purpose-built art museum west of the Alleghenies, and is one of the oldest in the United States.'),
 			(10, 'Cincinnati Zoo & Botanical Garden', '3400 Vine St', 'Cincinnati', 'OH', 45220, 'SUN-SAT', '10AM-7PM', 2, 'Cincinnati Zoo & Botanical Garden is the fifth-oldest zoo in the United States, opening in 1875, after the Philadelphia Zoo, the Roger Williams Park Zoo, the Lincoln Park Zoo, and the Central Park Zoo. It is located in the Avondale neighborhood of Cincinnati, Ohio.'),
 			(11, 'Washington Park', '1230 Elm St', 'Cincinnati', 'OH', 45202, 'SUN-SAT', '10AM-11PM', 2, 'Washington Park is bounded by West 12th, Race and Elm Streets in the Over-the-Rhine neighborhood of Cincinnati, Ohio, United States. The park is owned and operated by the Cincinnati Park Board. The 6-acre park served as Presbyterian and Episcopal cemeteries before it was acquired by the city from 1858 to 1863.'),
-			(12, 'Taft Museum of Art', '316 Pike St', 'Cincinnati', 'OH', 45202, 'TUES-SUN', '10AM-6PM', 3, 'The Taft Museum of Art is housed in the 200-year-old historic house at 316 Pike Street. The house – the oldest domestic wooden structure in downtown Cincinnati in situ – was built about 1820 and housed several prominent Cincinnatians, including Martin Baum, Nicholas Longworth, David Sinton, Anna Sinton Taft and Charles Phelps Taft. It now holds a fine art collection, is on the National Register of Historic Places listings, and is a contributing property to the Lytle Park Historic District.'),
+			(12, 'Taft Museum of Art', '316 Pike St', 'Cincinnati', 'OH', 45202, 'WED-SUN', '11AM-5PM', 3, 'The Taft Museum of Art is housed in the 200-year-old historic house at 316 Pike Street. The house – the oldest domestic wooden structure in downtown Cincinnati in situ – was built about 1820 and housed several prominent Cincinnatians, including Martin Baum, Nicholas Longworth, David Sinton, Anna Sinton Taft and Charles Phelps Taft. It now holds a fine art collection, is on the National Register of Historic Places listings, and is a contributing property to the Lytle Park Historic District.'),
 			(13, 'MadTree Brewing','3301 Madison Rd', 'Cincinnati', 'OH', 45209, 'SUN-SAT', '11AM-8PM', 1, 'Bustling taproom offering craft beers, wood-fired pizzas, growler fills & keg sales, plus a patio.'),
 			(14, 'Great American Ball Park','100 Joe Nuxhall Way', 'Cincinnati', 'OH', 45202, 'OPEN FOR EVENTS', 'TIMES VARY', 4, 'Great American Ball Park is a baseball stadium in Cincinnati, Ohio, which is the home field of Major League Baseball''s Cincinnati Reds. It opened in 2003, replacing Cinergy Field, their home field from 1970 to 2002. The park''s name comes from Great American Insurance Group.'),
 			(15, 'Paul Brown Stadium', '1 Paul Brown Stadium', 'Cincinnati', 'OH', 45202, 'OPEN FOR EVENTS', 'TIMES VARY', 4, 'Paul Brown Stadium is an outdoor football stadium in Cincinnati, Ohio. It is the home venue of the Cincinnati Bengals of the National Football League and opened on August 19, 2000.');
@@ -100,35 +100,35 @@ SET IDENTITY_INSERT Landmarks OFF;
 
 SET IDENTITY_INSERT LandmarkImages ON;
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(1, 1, 'https://upload.wikimedia.org/wikipedia/en/8/8f/Skyline_Chili_Logo.png', 'Logo of skyline chili', 'wikipedia' );
+	VALUES(1, 1, 'https://i.imgur.com/39XnIpm.jpg', 'A Classic 3-way', 'imgur' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(2, 2, 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/TylerDavidsonFountainAtNight.jpg/386px-TylerDavidsonFountainAtNight.jpg', 'Fountain Square at night', 'wikipedia' );
+	VALUES(2, 2, 'https://cdn.wedding-spot.com/__sized__/images/venues/14674/Fountain-Square-Cincinnati-OH-12fa7214-7bcd-4335-83ca-641f93415a7e-97450e389c42885476f1fbe9bc5bca5a.jpg', 'Setting up for a Concert', 'cdn' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(3, 3, 'https://photos.citybeat.com/wp-content/uploads/2018/11/UnionTerminal_DevinLuginbill1.jpg', 'Museum Center', 'city beat' );
+	VALUES(3, 3, 'https://www.fox19.com/resizer/zk9s08le9XZqv9r_OMweNs2KQ5o=/1200x600/arc-anglerfish-arc2-prod-raycom.s3.amazonaws.com/public/62R2JFQZMVGRXDRUJQZ32F7FXE.jpg', 'Museum Center at Night', 'fox 19' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(4, 4, 'https://cincinnatiusa.com/sites/default/files/styles/Array/public/attractionphotos/bunbury8_Enquirer%20Media_Adam%20Birkan.JPG', 'A Concert at Sawyer Point', 'cincinnati USA' );
+	VALUES(4, 4, 'https://www.cincinnatiparks.com/wp-content/uploads/2019/04/Smale-Riverfront-Park-Heekin-Playground-Slide.jpg', 'Slides at Sawyer Point', 'cincinnati parks' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(5, 5, 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Ault_Pavilion_view.jpg/1280px-Ault_Pavilion_view.jpg', 'View from the Pavillion', 'wikipedia' );
+	VALUES(5, 5, 'https://cdn.wedding-spot.com/__sized__/images/venues/4097/Ault-Park-Pavilion-Cincinnati-OH-84c08ce9-6d6b-4c40-911b-2f5463ea0eb6-97450e389c42885476f1fbe9bc5bca5a.jpg', 'Setting up for a Wedding', 'cdn' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(6, 6, 'https://www.fox19.com/resizer/grZyGM6YGhHvsbVg6BLBofrIB_g=/1200x600/arc-anglerfish-arc2-prod-raycom.s3.amazonaws.com/public/QYIAY5NSPJGXHNDZJA33ETD47M.jpg', 'Diners at Findlay Market', 'fox 19' );
+	VALUES(6, 6, 'https://www.gannett-cdn.com/-mm-/363fa591bf68e82c3e833d8ccf05f64e76fe4ada/c=0-258-5084-3130/local/-/media/2017/06/03/Cincinnati/Cincinnati/636320947999485551-060317-GERMAN-HERITAGE-35.jpg?width=1600&height=800&fit=crop', 'Diners at Findlay Market', 'gannett' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(7, 7, 'https://photos.citybeat.com/wp-content/uploads/2018/10/RareBeerFest_DevinLuginbill3.jpg', 'The Taproom at Rhinegeist', 'city beat' );
+	VALUES(7, 7, 'https://cdn.craftbeer.com/wp-content/uploads/20180801121856/Rooftop-Breweries-Hero.jpg', 'The Rooftop at Rhinegeist', 'craftbeer.com' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(8, 8, 'https://cincinnatiusa.com/sites/default/files/styles/Array/public/attractionphotos/Contemporary%20Arts%20Center_%40shamanslife%20%28NO%20logos%20or%20stamps%20on%20image%29.jpg', 'The Contemporary Arts Center', 'cincinnati USA' );
+	VALUES(8, 8, 'https://blog.virginatlantic.com/wp-content/uploads/2016/05/5865i989892B378D4E81C.jpg', 'The Strinking Facade of the Contemporary Arts Center', 'virginia atlantic' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(9, 9, 'https://sibcyclinenews.files.wordpress.com/2014/06/museumentrance2.jpg?w=768&h=512', 'The Art Museum After Rain', 'sibcy cline' );
+	VALUES(9, 9, 'https://cdn.wedding-spot.com/__sized__/images/venues/8360/Cincinnati-Art-Museum-Cincinnati-OH-520aaa25-9b54-4be9-962e-5ae1d3e76176-97450e389c42885476f1fbe9bc5bca5a.jpg', 'Front Entrance of the Art Museum', 'cdn' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(10, 10, 'https://cincinnatiusa.com/sites/default/files/styles/Array/public/attractionphotos/Michelle%20Curley%203.JPG', 'An Idyllic Day at the Zoo', 'cincinnati USA' );
+	VALUES(10, 10, 'https://www.fox19.com/resizer/HVSX4vAgX_T6wkGTnIRG5r6EiaY=/1200x600/arc-anglerfish-arc2-prod-raycom.s3.amazonaws.com/public/EMBZ3YKIENFNFA7NIRHHW3IFM4.jpg', 'Everyone''s Favorite Hippo, Fiona', 'fox 19' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(11, 11, 'https://cdn.citybeat.com/files/base/scomm/cb/image/2019/04/16x9/640w/WashingtonPark_HB.5cabc414016ae.jpg', 'View of Music Hall from Washington Park', 'city beat' );
+	VALUES(11, 11, 'https://www.gannett-cdn.com/-mm-/13c67fbf77a16dabe79f291ad1930ca157e9d115/c=0-315-3558-2325/local/-/media/2015/12/29/Cincinnati/Cincinnati/635869977343471707-cover.jpg?width=1600&height=800&fit=crop', 'View of Music Hall from Washington Park', 'gannett' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(12, 12, 'https://cdn.citybeat.com/files/base/scomm/cb/image/2019/08/640w/FarFlungWillowTrees_HB_9.5aeca34d5fc84.5d49b7971a33b.jpg', 'The Grounds Leading to The Taft House', 'city beat' );
+	VALUES(12, 12, 'https://app.contenttools.co/system/images/photos/000/082/151/thumb/Taft_Museum_of_Art_celebrates_Slow_Art_D_2810840000_16521646_ver1.0_640_480.jpg?1463007607', 'The Taft House', 'WCPO' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(13, 13, 'https://365cincinnati.com/wp-content/uploads/2019/05/indoor-bar-at-madtree-1536x1152.jpg', 'The Main Bar at Madtree''s Taproom', '365 cincinnati' );
+	VALUES(13, 13, 'https://media.xogrp.com/images/5971621b-d20d-4fd5-8db8-8e0dab4a34ca~rs_840.h?ordering=explicit', 'The Biergarten at Madtree''s Taproom', 'the knot' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(14, 14, 'https://d1marr3m5x4iac.cloudfront.net/images/edpborder500/I0-001/003/981/612-7.jpeg_/great-american-ball-park-12.jpeg', 'The Stadium with The City''s Skyline Behind it', 'eventful' );
+	VALUES(14, 14, 'https://www.fox19.com/resizer/7fVCMgsFFHVeh049YNY3iNu6cpc=/1200x600/arc-anglerfish-arc2-prod-raycom.s3.amazonaws.com/public/WUXDKNK7QJBEBLN3Z2R3UDGN3I.jpg', 'The Stadium with The Ohio River Behind im the Background', 'fox 19' );
 	INSERT INTO LandmarkImages (landmark_id, image_id, image_url, description, credits)
-	VALUES(15, 15, 'https://d3pxppq3195xue.cloudfront.net/media/images/13/01/25/Paul-BrownExterior_966x668.jpg', 'The Stadium Lighting up the Night Sky', 'nbbj' );
+	VALUES(15, 15, 'https://cdn10.bigcommerce.com/s-fw2plafw/products/4608/images/6080/8336-2__07798.1429237559.1280.1280.jpg?c=2', 'The Stadium Sits on the Riverfront', 'cdn' );
 
 SET IDENTITY_INSERT LandmarkImages OFF;
 COMMIT TRANSACTION
