@@ -34,6 +34,22 @@ CREATE TABLE Users(
 	CONSTRAINT Users_PK PRIMARY KEY (user_id)
 )
 
+CREATE TABLE Itineraries(
+	itinerary_id	INT IDENTITY(1,1),
+	user_id			INT NOT NULL,
+	itinerary_date	DATE,
+	starting_location VARCHAR(100)
+	CONSTRAINT itineraries_pk PRIMARY KEY (itinerary_id, user_id)
+)
+
+CREATE TABLE itinerary_landmarks(
+	itinerary_id    INT NOT NULL,
+	landmark_id     INT NOT NULL,
+	order           INT NOT NULL,
+	CONSTRAINT itinerary_landmarks PRIMARY KEY (itinerary_id, landmark_id)
+)
+
+
 CREATE TABLE Landmarks(
 	landmark_id				INT IDENTITY(1,1),
 	landmark_name			VARCHAR(100)	NOT NULL,
@@ -65,6 +81,9 @@ CREATE TABLE LandmarkImages(
 
 ALTER TABLE Landmarks ADD CONSTRAINT LandmarkImages_Landmarks_FK
 FOREIGN KEY (landmark_id) REFERENCES Landmarks (landmark_id)
+
+ALTER TABLE itineraries itineraries_users_FK
+FOREIGN KEY (user_id) REFERENCES users (user_id)
 
 COMMIT TRANSACTION
 GO
