@@ -11,7 +11,10 @@
         <div><span>Address: {{selectedLandmark.streetAddress}} {{selectedLandmark.city}}, {{selectedLandmark.state}} {{selectedLandmark.zipCode}}</span></div>
 
         <div>
-            <button class="btn btn-lg btn-primary btn-block btn-secondary" v-on:click="goBack">GO BACK</button>
+          <button class="btn btn-lg btn-primary btn-block btn-secondary" v-on:click="goBack">GO BACK</button>
+        </div>
+        <div>
+          <button class="btn btn-lg btn-primary btn-block btn-secondary" v-on:click="addToItinerary">ADD TO ITINERARY</button>
         </div>
     </div>
     
@@ -48,9 +51,13 @@ export default {
           this.selectedLandmark = data;
         })
         .catch(err => console.error(err));
-    }
-        //this.landmark = this.allLandmarks.find(l => l.id == this.$route.params.id)
+    },
+    addToItinerary(){
+      alert("to be implemented");
     } 
+        //this.landmark = this.allLandmarks.find(l => l.id == this.$route.params.id)
+    }
+    
 
 
 </script>

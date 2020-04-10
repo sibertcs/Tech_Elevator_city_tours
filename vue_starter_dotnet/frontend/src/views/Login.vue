@@ -51,6 +51,7 @@
 
 <script>
 import auth from "../auth";
+import AppVue from '../App.vue';
 
 export default {
   name: "login",
@@ -87,7 +88,12 @@ export default {
               token = token.replace(/"/g, "");
             }
             auth.saveToken(token);
+            this.$emit("update");
+            AppVue.user = auth.getUser();
+            alert(JSON.stringify(AppVue.user));
+            //this.$router.
             this.$router.push("/");
+            
           }
         })
         .catch(err => console.error(err));

@@ -11,6 +11,10 @@ GO
 USE CityTours;
 GO
 
+IF OBJECT_ID('ItineraryLandmarks')		IS NOT NULL DROP TABLE ItineraryLandmarks;
+
+IF OBJECT_ID('Itineraries')				IS NOT NULL DROP TABLE Itineraries;
+
 IF OBJECT_ID('Users')					IS NOT NULL DROP TABLE Users;
 
 IF OBJECT_ID('RegisterUser')			IS NOT NULL DROP PROCEDURE RegisterUser;
@@ -39,14 +43,14 @@ CREATE TABLE Itineraries(
 	user_id			INT NOT NULL,
 	itinerary_date	DATE,
 	starting_location VARCHAR(100)
-	CONSTRAINT itineraries_pk PRIMARY KEY (itinerary_id, user_id)
+	CONSTRAINT Itineraries_PK PRIMARY KEY (itinerary_id, user_id)
 )
 
-CREATE TABLE itinerary_landmarks(
+CREATE TABLE ItineraryLandmarks(
 	itinerary_id    INT NOT NULL,
 	landmark_id     INT NOT NULL,
-	order           INT NOT NULL,
-	CONSTRAINT itinerary_landmarks PRIMARY KEY (itinerary_id, landmark_id)
+	sort_order      INT NOT NULL,
+	CONSTRAINT ItineraryLandmarks_PK PRIMARY KEY (itinerary_id, landmark_id)
 )
 
 
@@ -82,8 +86,8 @@ CREATE TABLE LandmarkImages(
 ALTER TABLE Landmarks ADD CONSTRAINT LandmarkImages_Landmarks_FK
 FOREIGN KEY (landmark_id) REFERENCES Landmarks (landmark_id)
 
-ALTER TABLE itineraries itineraries_users_FK
-FOREIGN KEY (user_id) REFERENCES users (user_id)
+ALTER TABLE Itineraries ADD CONSTRAINT Itineraries_Users_FK
+FOREIGN KEY (user_id) REFERENCES Users (user_id)
 
 COMMIT TRANSACTION
 GO
