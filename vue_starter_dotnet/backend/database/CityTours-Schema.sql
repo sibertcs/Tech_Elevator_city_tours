@@ -43,7 +43,8 @@ CREATE TABLE Itineraries(
 	user_id			INT NOT NULL,
 	name			VARCHAR(100),
 	itinerary_date	DATE,
-	starting_location VARCHAR(100)
+	starting_location VARCHAR(100),
+	currently_selected BIT DEFAULT 0,
 	CONSTRAINT Itineraries_PK PRIMARY KEY (itinerary_id, user_id)
 )
 
@@ -336,6 +337,7 @@ SELECT
 	B.itinerary_date,
 	B.name,
 	B.starting_location,
+	B.currently_selected,
 	C.landmark_id,
 	C.sort_order
 FROM
@@ -383,6 +385,44 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID('GetSelectedItinerary') IS NOT NULL DROP PROCEDURE GetSelectedItinerary
+GO
+
+CREATE PROCEDURE GetSelectedItinerary
+	@user_id INT
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		UserItineraryLandmarks
+	WHERE
+		user_id				= @user_id
+	AND	currently_selected	= 1
+END
+GO
+
+IF OBJECT_ID('SetSelectedItinerary') IS NOT NULL DROP PROCEDURE SetSelectedItinerary
+GO
+
+CREATE PROCEDURE SetSelectedItinerary
+	@itinerary_id INT,
+	@user_id INT
+AS 
+BEGIN
+	UPDATE Itineraries
+	SET currently_selected = 1
+	WHERE 
+		itinerary_id	= @itinerary_id
+	AND user_id			= @user_id
+
+	UPDATE Itineraries
+	SET currently_selected = 0
+	WHERE
+		itinerary_id <> @itinerary_id
+	AND user_id = @user_id
+END
+GO
 IF OBJECT_ID('CreateItinerary') IS NOT NULL DROP PROCEDURE CreateItinerary
 GO
 
@@ -393,10 +433,19 @@ CREATE PROCEDURE CreateItinerary
 	@starting_location VARCHAR(100) = ''
 AS
 BEGIN TRANSACTION
-	INSERT INTO Itineraries (user_id, name, itinerary_date, starting_location)
-	VALUES					(@user_id, @name, @date, @starting_location)
+	INSERT INTO Itineraries (user_id, name, itinerary_date, starting_location, currently_selected)
+	VALUES					(@user_id, @name, @date, @starting_location, 1)
 
-	SELECT SCOPE_IDENTITY()
+	DECLARE @new_id AS INT = SCOPE_IDENTITY();
+
+	UPDATE Itineraries
+	SET
+		currently_selected = 0
+	WHERE
+		user_id			= @user_id
+	AND itinerary_id	<> @new_id 
+
+	SELECT @new_id
 COMMIT TRANSACTION
 GO
 
