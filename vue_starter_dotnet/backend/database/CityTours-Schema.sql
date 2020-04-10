@@ -171,6 +171,8 @@ GO
 
 
 
+
+GO
 CREATE PROCEDURE RegisterUser
 	@emailAddress	VARCHAR(254),
 	@password		VARCHAR(64),
@@ -587,29 +589,30 @@ BEGIN TRANSACTION
 	AND landmark_id		= @landmark_id
 
 	-- Automagically update the sort order if there's at least 1 landmark in the itinerary
-	IF((SELECT COUNT(*) FROM ItineraryLandmarks WHERE itinerary_id = @itinerary_id AND landmark_id = @landmark_id) > 0)
+	IF((SELECT COUNT(*) FROM ItineraryLandmarks WHERE itinerary_id = @itinerary_id) > 0)
 	BEGIN
 		UPDATE ItineraryLandmarks 
 		SET
 			sort_order = A.new_sort_order
 		FROM
+		ItineraryLandMarks AS T
+		INNER JOIN
 		(
 			SELECT
 				itinerary_id,
 				landmark_id,
 				sort_order,
-				RANK() OVER
+				ROW_NUMBER() OVER
 				(
-					PARTITION BY itinerary_id, landmark_id ORDER BY sort_order ASC
+					PARTITION BY itinerary_id ORDER BY sort_order ASC
 				) AS new_sort_order
 			FROM
-				ItineraryLandmarks
-			WHERE
-				itinerary_id	= @itinerary_id
-			AND	landmark_id		= @landmark_id
+				ItineraryLandmarks					
 		) AS A
+		ON T.itinerary_id = A.itinerary_id
+		AND T.landmark_id = A.landmark_id
 		WHERE
-			A.landmark_id = @landmark_id
+				T.itinerary_id	= @itinerary_id	
 	END
 
 	-- Select everything from itinerary view so the caller can update their local copy
@@ -623,3 +626,26 @@ BEGIN TRANSACTION
 		sort_order ASC
 
 COMMIT TRANSACTION
+GO
+SET IDENTITY_INSERT Users ON
+INSERT INTO Users(user_id, email, password, salt, role)
+VALUES (1, 'test', 'test', 'test', 'test')
+SET IDENTITY_INSERT Users OFF
+
+SET IDENTITY_INSERT Itineraries ON
+INSERT INTO Itineraries(itinerary_id,user_id,name, itinerary_date, starting_location, currently_selected)
+VALUES (1,1,'Test',GETDATE(),'Test',1)
+SET IDENTITY_INSERT Itineraries OFF
+
+INSERT INTO ItineraryLandmarks (itinerary_id, landmark_id, sort_order)
+VALUES	(1,1,1),
+		(1,2,2),
+		(1,3,3),
+		(1,5,4)
+
+		SELECT * FROM UserItineraryLandmarks
+		SELECT * FROM Itineraries
+
+		EXECUTE RemoveLandmarkFromItinerary 1, 2
+		SELECT * FROM UserItineraryLandmarks
+
