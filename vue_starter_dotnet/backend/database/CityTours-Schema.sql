@@ -410,7 +410,7 @@ BEGIN
 		WHERE
 			user_id				= @user_id
 	)
-
+	
 	IF(@hasItinerary = 0)
 	BEGIN
 		EXECUTE CreateItinerary @user_id
@@ -474,7 +474,7 @@ BEGIN TRANSACTION
 		user_id			= @user_id
 	AND itinerary_id	<> @new_id 
 
-	SELECT @new_id
+	--SELECT @new_id
 COMMIT TRANSACTION
 GO
 
@@ -670,10 +670,10 @@ VALUES	(1,1,1),
 		(1,3,3),
 		(1,5,4)
 
-		SELECT * FROM UserItineraryLandmarks
-		SELECT * FROM Itineraries
+--SELECT * FROM UserItineraryLandmarks
+--SELECT * FROM Itineraries
 
-		EXECUTE RemoveLandmarkFromItinerary 1, 2
-		SELECT * FROM UserItineraryLandmarks
-EXECUTE DeleteItinerary 1
-EXECUTE GetSelectedItinerary 1
+--EXECUTE RemoveLandmarkFromItinerary 1, 2
+--SELECT * FROM UserItineraryLandmarks
+--EXECUTE DeleteItinerary 1
+--EXECUTE GetSelectedItinerary 1

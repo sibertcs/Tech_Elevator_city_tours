@@ -63,7 +63,7 @@ namespace SampleApi.Controllers
             userDao.CreateUser(user);
 
             // Generate a token
-            var token = tokenGenerator.GenerateToken(user.Username, user.Role);
+            var token = tokenGenerator.GenerateToken(user.Username, user.Role, user.Id.ToString());
 
             // Return the token
             return Ok(token);
@@ -88,7 +88,7 @@ namespace SampleApi.Controllers
             if (user != null && passwordHasher.VerifyHashMatch(user.Password, model.Password, user.Salt))
             {
                 // Create an authentication token
-                var token = tokenGenerator.GenerateToken(user.Username, user.Role);
+                var token = tokenGenerator.GenerateToken(user.Username, user.Role, user.Id.ToString());
 
                 // Switch to 200 OK
                 result = Ok(token);

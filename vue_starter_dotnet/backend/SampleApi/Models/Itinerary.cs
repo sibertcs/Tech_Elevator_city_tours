@@ -19,6 +19,7 @@ namespace SampleApi.Models
         }
         public int ItineraryID { get; private set; }
         public DateTime ItineraryDate { get; private set; }
+        public bool IsSelectedItinerary { get; private set; }
         public string Name { get; private set; }
         public string StartingLocation { get; private set; }
         private List<ItineraryLandmark> _landmarks = new List<ItineraryLandmark>();
@@ -35,6 +36,7 @@ namespace SampleApi.Models
         {
             UserID = Convert.ToInt32(data["user_id"]);
             ItineraryID = Convert.ToInt32(data["itinerary_id"]);
+            IsSelectedItinerary = Convert.ToBoolean(data["currently_selected"]);
             ItineraryDate = Convert.ToDateTime(data["itinerary_date"]);
             Name = Convert.ToString(data["name"]);
             StartingLocation = Convert.ToString(data["starting_location"]);
@@ -44,8 +46,12 @@ namespace SampleApi.Models
         {
             while (reader.Read())
             {
-                ItineraryLandmark landmark = new ItineraryLandmark(reader);
-                _landmarks.Add(landmark);
+                if(!(reader["landmark_id"] is DBNull))
+                {
+                    ItineraryLandmark landmark = new ItineraryLandmark(reader);
+                    _landmarks.Add(landmark);
+                }
+                
 
             }
             reader.Close();

@@ -31,8 +31,9 @@ namespace SampleApi.Providers.Security
         /// </summary>
         /// <param name="username"></param>
         /// <param name="role"></param>
+        /// <param name="userID"></param>
         /// <returns></returns>
-        public string GenerateToken(string username, string role)
+        public string GenerateToken(string username, string role, string userID)
         {
             // Creates the sample token to send to the client.
             /*
@@ -48,6 +49,7 @@ namespace SampleApi.Providers.Security
             {
                 new Claim("sub", username),
                 new Claim("rol", role),
+                new Claim("id", userID),
                 new Claim("iat", DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
             };
 
