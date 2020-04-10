@@ -41,6 +41,7 @@ CREATE TABLE Users(
 CREATE TABLE Itineraries(
 	itinerary_id	INT IDENTITY(1,1),
 	user_id			INT NOT NULL,
+	name			VARCHAR(100),
 	itinerary_date	DATE,
 	starting_location VARCHAR(100)
 	CONSTRAINT Itineraries_PK PRIMARY KEY (itinerary_id, user_id)
@@ -323,3 +324,251 @@ BEGIN
 		landmark_id = @landmarkID
 END
 GO
+
+IF OBJECT_ID('UserItineraryLandmarks') IS NOT NULL DROP VIEW UserItineraryLandmarks
+GO
+
+CREATE VIEW UserItineraryLandmarks
+AS
+SELECT
+	A.user_id,
+	B.itinerary_id,
+	B.itinerary_date,
+	B.name,
+	B.starting_location,
+	C.landmark_id,
+	C.sort_order
+FROM
+	Users AS A
+	INNER JOIN Itineraries AS B
+		INNER JOIN ItineraryLandmarks AS C
+		ON B.itinerary_id = C.itinerary_id
+	ON A.user_id = B.user_id
+
+GO
+
+IF OBJECT_ID('GetItineraryInfo') IS NOT NULL DROP PROCEDURE GetItineraryInfo
+GO
+
+CREATE PROCEDURE GetItineraryInfo
+	@itinerary_id INT
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		UserItineraryLandmarks
+	WHERE
+		itinerary_id = @itinerary_id
+	ORDER BY
+		sort_order ASC
+END
+GO
+
+IF OBJECT_ID('GetUsersItineraries') IS NOT NULL DROP PROCEDURE GetUsersItineraries
+GO
+
+CREATE PROCEDURE GetUsersItineraries
+	@user_id INT
+AS
+BEGIN
+	SELECT 
+		*
+	FROM
+		Itineraries
+	WHERE
+		user_id = @user_id
+END
+GO
+
+IF OBJECT_ID('CreateItinerary') IS NOT NULL DROP PROCEDURE CreateItinerary
+GO
+
+CREATE PROCEDURE CreateItinerary
+	@user_id int,
+	@name VARCHAR(100) = '',
+	@date DATE = GETDATE,
+	@starting_location VARCHAR(100) = ''
+AS
+BEGIN TRANSACTION
+	INSERT INTO Itineraries (user_id, name, itinerary_date, starting_location)
+	VALUES					(@user_id, @name, @date, @starting_location)
+
+	SELECT SCOPE_IDENTITY()
+COMMIT TRANSACTION
+GO
+
+IF OBJECT_ID('EditItinerary') IS NOT NULL DROP PROCEDURE EditItinerary
+GO
+
+CREATE PROCEDURE EditItinerary
+	@itinerary_id		INT,
+	@name				VARCHAR(100) = NULL,
+	@date				DATE = NULL,
+	@starting_location	VARCHAR(100) = NULL
+AS
+BEGIN TRANSACTION
+
+	UPDATE Itineraries
+	SET
+		name = 
+				(
+					SELECT
+						CASE
+							WHEN
+								@name IS NULL
+							THEN
+								name
+							ELSE
+								@name
+						END
+					FROM
+						Itineraries
+					WHERE
+						itinerary_id = @itinerary_id
+				),
+		itinerary_date = 
+				(
+					SELECT
+						CASE
+							WHEN
+								@date IS NULL
+							THEN
+								itinerary_date
+							ELSE
+								@date
+						END
+					FROM
+						Itineraries
+					WHERE
+						itinerary_id = @itinerary_id
+				),
+		starting_location = 
+				(
+					SELECT
+						CASE
+							WHEN
+								@starting_location IS NULL
+							THEN
+								starting_location
+							ELSE
+								@starting_location
+						END
+					FROM
+						Itineraries
+					WHERE
+						itinerary_id = @itinerary_id
+				)
+			WHERE
+				itinerary_id = @itinerary_id
+					
+COMMIT TRANSACTION
+GO
+
+IF OBJECT_ID('DeleteItinerary')	IS NOT NULL DROP PROCEDURE DeleteItinerary
+GO
+
+CREATE PROCEDURE DeleteItinerary
+	@itinerary_id	INT
+AS
+BEGIN TRANSACTION
+	DELETE FROM ItineraryLandmarks
+	WHERE itinerary_id = @itinerary_id
+
+	DELETE FROM Itineraries
+	WHERE itinerary_id = @itinerary_id
+COMMIT TRANSACTION
+GO
+
+IF OBJECT_ID('AddLandmarkToItinerary') IS NOT NULL DROP PROCEDURE AddLandmarkToItinerary
+GO
+
+CREATE PROCEDURE AddLandmarkToItinerary
+	@itinerary_id INT,
+	@landmark_id INT
+AS
+BEGIN TRANSACTION
+
+	DECLARE @sort_order AS INT =
+	(
+		SELECT
+			COALESCE(MAX(sort_order), 1)
+		FROM
+			ItineraryLandmarks
+		WHERE
+			itinerary_id = @itinerary_id
+	)
+	
+	INSERT INTO ItineraryLandmarks (itinerary_id,  landmark_id, sort_order)
+	VALUES (@itinerary_id, @landmark_id, @sort_order)
+
+COMMIT TRANSACTION
+GO
+
+IF OBJECT_ID('EditItineraryLandmarkSortOrder') IS NOT NULL DROP PROCEDURE EditItineraryLandmarkSortOrder
+GO
+
+CREATE PROCEDURE EditItineraryLandmarkSortOrder
+	@itinerary_id INT,
+	@landmark_id INT,
+	@sort_order INT
+AS
+BEGIN TRANSACTION
+	UPDATE ItineraryLandmarks
+	SET sort_order = @sort_order
+	WHERE
+		itinerary_id	= @itinerary_id
+	AND	landmark_id		= @landmark_id
+COMMIT TRANSACTION
+GO
+
+IF OBJECT_ID('RemoveLandmarkFromItinerary') IS NOT NULL DROP PROCEDURE RemoveLandmarkFromItinerary
+GO
+
+CREATE PROCEDURE RemoveLandmarkFromItinerary
+	@itinerary_id INT,
+	@landmark_id INT
+AS
+BEGIN TRANSACTION
+	DELETE FROM ItineraryLandmarks
+	WHERE
+		itinerary_id	= @itinerary_id
+	AND landmark_id		= @landmark_id
+
+	-- Automagically update the sort order if there's at least 1 landmark in the itinerary
+	IF((SELECT COUNT(*) FROM ItineraryLandmarks WHERE itinerary_id = @itinerary_id AND landmark_id = @landmark_id) > 0)
+	BEGIN
+		UPDATE ItineraryLandmarks 
+		SET
+			sort_order = A.new_sort_order
+		FROM
+		(
+			SELECT
+				itinerary_id,
+				landmark_id,
+				sort_order,
+				RANK() OVER
+				(
+					PARTITION BY itinerary_id, landmark_id ORDER BY sort_order ASC
+				) AS new_sort_order
+			FROM
+				ItineraryLandmarks
+			WHERE
+				itinerary_id	= @itinerary_id
+			AND	landmark_id		= @landmark_id
+		) AS A
+		WHERE
+			A.landmark_id = @landmark_id
+	END
+
+	-- Select everything from itinerary view so the caller can update their local copy
+	SELECT
+		*
+	FROM
+		UserItineraryLandmarks
+	WHERE
+		itinerary_id = @itinerary_id
+	ORDER BY
+		sort_order ASC
+
+COMMIT TRANSACTION
