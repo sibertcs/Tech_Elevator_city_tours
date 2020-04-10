@@ -378,6 +378,8 @@ BEGIN
 		Itineraries
 	WHERE
 		user_id = @user_id
+	ORDER BY
+		itinerary_date DESC
 END
 GO
 
