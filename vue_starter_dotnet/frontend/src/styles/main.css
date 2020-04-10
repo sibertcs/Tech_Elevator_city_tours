@@ -164,6 +164,23 @@
     margin-top: 2em;
     padding: 1em;
     color: whitesmoke;
+    font-family: "Josefin Sans";
+  }
+
+  #navbar {
+    background-color: var(--main-bg-color);
+    padding-top:5px;
+    padding-bottom: 5px;
+    font-size:x-large;
+
+  }
+  #home {
+    padding-right: 2em;
+    padding-left: 1em;
+  }
+
+  #manage-itinerary {
+    padding-left: 2em;
   }
 
   #nav > a{
@@ -190,5 +207,15 @@
       margin-right: 5%;
       margin-left: 5%;  
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
 }
   

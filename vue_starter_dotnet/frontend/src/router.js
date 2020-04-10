@@ -55,11 +55,11 @@ const router = new Router({
       }      
     },
     {
-      path: "/ManageItinerary",
+      path: "/ManageItinerary/:landmark_id",
       name: "manage-itinerary",
       component: ManageItinerary,
       meta: {
-        requiresAuth: false
+        requiresAuth: false   //!!!!!!!!!!!!!!!!!change to true!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
       }
     }
 
@@ -73,7 +73,7 @@ router.beforeEach((to, from, next) => {
 
   // If it does and they are not logged in, send the user to "/home"
   if (requiresAuth && !user) {
-    next("/home");
+    next("/login");
   } else {
     // Else let them go to their next destination
     next();

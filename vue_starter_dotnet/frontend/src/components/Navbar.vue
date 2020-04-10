@@ -1,27 +1,18 @@
 <template>
-  <div id="app">
-    <navbar></navbar>
-    <transition name="fade" mode="out-in">
-    <router-view />
-    </transition>
-    <b-button v-on:click="getUser">User</b-button>
-  </div>
+  <div id="navbar">
+      <router-link id="home" to="/">Home</router-link>
+      <router-link v-on:update="location.reload();" v-if="isLoggedIn() == false" to="/Login">Login</router-link>
+      <a href="#" @click.prevent="logout" v-if="isLoggedIn() == true">Log Out</a>
+      <router-link id="manage-itinerary" to="/ManageItinerary">Create Itinerary</router-link>
+    </div>
 </template>
 
-
-<style scope src='./styles/main.css'>
-</style>
-
 <script>
-import auth from "./auth";
-import Navbar from "@/components/Navbar.vue";
-
+import auth from "../auth";
 export default {
+  //name: "navbar",
   data() {
     return { user: auth.getUser() };
-  },
-  components: {
-    Navbar
   },
   methods: {
     isLoggedIn() {
@@ -53,3 +44,7 @@ export default {
   }
 };
 </script>
+
+<style>
+
+</style>

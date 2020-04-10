@@ -1,0 +1,36 @@
+onSubmit() {
+        this.formSubmitted = true;
+      this.validateForm();
+      let t = true;
+      let f = false;
+      if (t == f) {
+        const userID = this.$route.params.id;
+        const apiEndpoint = this.isEditForm ? `api/landmarks/getuseritinerary/${userID}` : 'api/landmarks/getuseritinerary/';
+        fetch(`${process.env.VUE_APP_REMOTE_API}/${apiEndpoint}`, {
+          method: this.isEditForm ? 'PUT' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + auth.getUser(),
+          },
+          body: JSON.stringify(this.itinerary),
+        })
+          .then((response) => {
+            if (response.ok) {
+              this.$router.push({ path: '/' });
+            }
+          });//.catch((err) => console.error(err));
+      }
+    },
+    validateForm() {
+      this.errors = [];
+      Object.entries(this.itinerary).forEach((field) => {
+        if (field[1] === '') {
+          this.errors.push(field[0]);
+        }
+      });
+      // the filename must include an extension
+    //   console.log(this.itinerary.name.includes('.'));
+    //   if (!this.snippet.name.includes('.')) {
+    //     this.errors.push('');
+    //   }
+    },

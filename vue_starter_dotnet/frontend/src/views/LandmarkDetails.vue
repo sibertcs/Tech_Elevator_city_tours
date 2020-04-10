@@ -37,7 +37,12 @@ export default {
     methods: {
     goBack() {
       this.$router.go(-1);
-    }
+    },
+    addToItinerary(){
+      //alert("to be implemented" + id.toString());
+      // router push path /manageitinerary?landmarkId=? + id
+      this.$router.push({path: "/ManageItinerary/" + this.selectedLandmark.id.toString()});
+    } 
   },
      created() {
 
@@ -51,10 +56,8 @@ export default {
           this.selectedLandmark = data;
         })
         .catch(err => console.error(err));
-    },
-    addToItinerary(){
-      alert("to be implemented");
-    } 
+    }
+    
         //this.landmark = this.allLandmarks.find(l => l.id == this.$route.params.id)
     }
     

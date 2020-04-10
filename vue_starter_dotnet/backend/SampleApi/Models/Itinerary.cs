@@ -19,6 +19,7 @@ namespace SampleApi.Models
         }
         public int ItineraryID { get; private set; }
         public DateTime ItineraryDate { get; private set; }
+
         public bool IsSelectedItinerary { get; private set; }
         public string Name { get; private set; }
         public string StartingLocation { get; private set; }
@@ -37,7 +38,7 @@ namespace SampleApi.Models
             UserID = Convert.ToInt32(data["user_id"]);
             ItineraryID = Convert.ToInt32(data["itinerary_id"]);
             IsSelectedItinerary = Convert.ToBoolean(data["currently_selected"]);
-            ItineraryDate = Convert.ToDateTime(data["itinerary_date"]);
+            ItineraryDate = Convert.ToDateTime(data["itinerary_date"]).Date;
             Name = Convert.ToString(data["name"]);
             StartingLocation = Convert.ToString(data["starting_location"]);
         }
