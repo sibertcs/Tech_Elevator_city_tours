@@ -4,8 +4,11 @@
       <router-link id="home" to="/">Home</router-link>
       <router-link v-on:update="location.reload();" v-if="isLoggedIn() == false" to="/Login">Login</router-link>
       <a href="#" @click.prevent="logout" v-if="isLoggedIn() == true">Log Out</a>
+      <router-link id="home" to="/">Home</router-link>
     </div>
+    <transition name="fade" mode="out-in">
     <router-view />
+    </transition>
     <b-button v-on:click="getUser">User</b-button>
   </div>
 </template>

@@ -9,7 +9,7 @@ namespace SampleApi.DAL
     public interface ILandmarksDAO
     {
         IEnumerable<Landmark> LandmarksSearch(string query);
-
         Landmark LandmarkSearch(int id);
+        Itinerary GetUserItinerary(int userID);
     }
 }

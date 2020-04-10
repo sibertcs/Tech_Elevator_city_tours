@@ -31,5 +31,11 @@ namespace SampleApi.Controllers
         {
             return landmarksDAO.LandmarkSearch(id);
         }
+
+        [HttpGet("getuseritinerary/{user_id}")]
+        public Itinerary GetUserItinerary(int user_id)
+        {
+            return landmarksDAO.GetUserItinerary(user_id);
+        }
     }
 }

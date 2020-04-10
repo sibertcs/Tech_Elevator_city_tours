@@ -102,5 +102,41 @@ namespace SampleApi.DAL
 
             imageReader.Close();
         }
+
+        public Itinerary GetUserItinerary(int userID)
+        {
+            Itinerary itinerary = null;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                const string procedureName = "GetSelectedItinerary";
+                SqlCommand cmd = new SqlCommand(procedureName, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@user_id", userID);
+                IDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    itinerary = new Itinerary(reader);
+                }                
+                reader.Close();
+                if(itinerary != null)
+                {
+                    GetItineraryLandmarks(itinerary, conn);
+                }
+                
+            }
+                
+            return itinerary;
+        }
+
+        private void GetItineraryLandmarks(Itinerary itinerary, SqlConnection conn)
+        {
+            const string procedureName = "GetItineraryInfo";
+            SqlCommand cmd = new SqlCommand(procedureName, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@itinerary_id", itinerary.ItineraryID);
+            IDataReader dataReader = cmd.ExecuteReader();
+            itinerary.AddLandmarks(dataReader);
+        }
     }
 }

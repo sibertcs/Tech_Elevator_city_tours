@@ -5,7 +5,7 @@ import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import LandmarkDetails from './views/LandmarkDetails.vue'
-
+import ManageItinerary from './views/ManageItinerary.vue'
 Vue.use(Router)
 
 
@@ -53,6 +53,14 @@ const router = new Router({
       meta: {
         requiresAuth: false
       }      
+    },
+    {
+      path: "/ManageItinerary",
+      name: "manage-itinerary",
+      component: ManageItinerary,
+      meta: {
+        requiresAuth: false
+      }
     }
 
   ]

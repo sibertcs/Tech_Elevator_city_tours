@@ -146,6 +146,17 @@
   text-align: center;
 }
 
+.manage-itinerary {
+  margin-right: 33%;
+    margin-left: 33%;  
+    background-color: var(--main-bg-color);
+    margin-top: 2em;
+    padding: 1em;
+    color: whitesmoke;
+    font-family: "Josefin Sans";
+    font-size: large;
+}
+
   #login{
     margin-right: 33%;
     margin-left: 33%;  
@@ -175,5 +186,9 @@
       margin-left: 5%;
       margin-right:5%;
     }
+    .manage-itinerary {
+      margin-right: 5%;
+      margin-left: 5%;  
   }
+}
   

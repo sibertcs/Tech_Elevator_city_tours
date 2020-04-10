@@ -1,4 +1,4 @@
-<template>
+  <template>
 
   <div class="landmark-results-wrapper">
     <h1>Your Search Results</h1>
