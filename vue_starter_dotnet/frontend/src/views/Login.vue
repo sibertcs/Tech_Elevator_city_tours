@@ -88,7 +88,7 @@ export default {
               token = token.replace(/"/g, "");
             }
             auth.saveToken(token);
-            this.$emit("update");
+            this.$emit("update", []);
             AppVue.user = auth.getUser();
             alert(JSON.stringify(AppVue.user));
             //this.$router.
