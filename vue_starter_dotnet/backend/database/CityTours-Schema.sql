@@ -394,6 +394,28 @@ CREATE PROCEDURE GetSelectedItinerary
 	@user_id INT
 AS
 BEGIN
+	DECLARE @hasItinerary AS BIT =
+	(
+		SELECT
+			CASE
+				WHEN
+					COUNT(*) > 0
+				THEN
+					1
+				ELSE
+					0
+			END
+		FROM
+			UserItineraryLandmarks
+		WHERE
+			user_id				= @user_id
+	)
+
+	IF(@hasItinerary = 0)
+	BEGIN
+		EXECUTE CreateItinerary @user_id
+	END
+
 	SELECT
 		*
 	FROM
@@ -430,7 +452,7 @@ GO
 
 CREATE PROCEDURE CreateItinerary
 	@user_id int,
-	@name VARCHAR(100) = '',
+	@name VARCHAR(100) = 'New Itinerary',
 	@date DATE = GETDATE,
 	@starting_location VARCHAR(100) = ''
 AS
