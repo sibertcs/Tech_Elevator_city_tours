@@ -345,7 +345,7 @@ SELECT
 FROM
 	Users AS A
 	INNER JOIN Itineraries AS B
-		INNER JOIN ItineraryLandmarks AS C
+		LEFT JOIN ItineraryLandmarks AS C
 		ON B.itinerary_id = C.itinerary_id
 	ON A.user_id = B.user_id
 
@@ -453,10 +453,15 @@ GO
 CREATE PROCEDURE CreateItinerary
 	@user_id int,
 	@name VARCHAR(100) = 'New Itinerary',
-	@date DATE = GETDATE,
+	@date DATE = NULL,
 	@starting_location VARCHAR(100) = ''
 AS
 BEGIN TRANSACTION
+	IF(@date IS NULL)
+	BEGIN
+		SET @date = CONVERT(DATE, GETDATE())
+	END
+
 	INSERT INTO Itineraries (user_id, name, itinerary_date, starting_location, currently_selected)
 	VALUES					(@user_id, @name, @date, @starting_location, 1)
 
@@ -670,4 +675,5 @@ VALUES	(1,1,1),
 
 		EXECUTE RemoveLandmarkFromItinerary 1, 2
 		SELECT * FROM UserItineraryLandmarks
-
+EXECUTE DeleteItinerary 1
+EXECUTE GetSelectedItinerary 1
