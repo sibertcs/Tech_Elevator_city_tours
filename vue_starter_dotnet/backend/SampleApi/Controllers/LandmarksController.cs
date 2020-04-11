@@ -31,6 +31,13 @@ namespace SampleApi.Controllers
         {
             return landmarksDAO.LandmarkSearch(id);
         }
+
+        [HttpGet("CreateItinerary/{user_id}")]        
+        public Itinerary CreateItinerary(int user_id)
+        {
+            return landmarksDAO.CreateItinerary(user_id);
+        }
+
         [HttpGet("getitinerarybyid/{itinerary_id}")]
         public Itinerary GetItineraryByID(int itinerary_id)
         {
@@ -90,6 +97,28 @@ namespace SampleApi.Controllers
         public Itinerary AddLandmarksToItinerary([FromBody]Itinerary itinerary)
         {
             return landmarksDAO.AddLandmarksToItinerary(itinerary);
+        }
+
+        [HttpPut("EditItineraryLandmarkSortOrder")]
+        [Consumes("application/json")]
+        public Itinerary EditItineraryLandmarkSortOrder([FromBody]Itinerary itinerary)
+        {
+            return landmarksDAO.EditItineraryLandmarkSortOrder(itinerary);
+        }
+
+        [HttpDelete("RemoveLandmarkFromItinerary")]
+        [Consumes("application/json")]
+        public IActionResult RemoveLandmarkFromItinerary(int itineraryID, int landmarkID)
+        {
+            landmarksDAO.RemoveLandmarkFromItinerary(itineraryID, landmarkID);
+            return Ok();
+        }
+
+        [HttpDelete("DeleteItinerary/{itineraryID}")]
+        public IActionResult DeleteItinerary(int itineraryID)
+        {
+            landmarksDAO.DeleteItinerary(itineraryID);
+            return Ok();
         }
     }
 }

@@ -45,7 +45,7 @@ CREATE TABLE Itineraries(
 	itinerary_date	DATE,
 	starting_location VARCHAR(100),
 	currently_selected BIT DEFAULT 0,
-	CONSTRAINT Itineraries_PK PRIMARY KEY (itinerary_id, user_id)
+	CONSTRAINT Itineraries_PK PRIMARY KEY (itinerary_id)
 )
 
 CREATE TABLE ItineraryLandmarks(

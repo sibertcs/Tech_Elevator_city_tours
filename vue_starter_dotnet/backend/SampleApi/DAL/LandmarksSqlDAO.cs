@@ -103,6 +103,22 @@ namespace SampleApi.DAL
             imageReader.Close();
         }
 
+        public Itinerary CreateItinerary(int userID)
+        {
+            Itinerary itinerary = null;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                const string procedureName = "CreateItinerary";
+                SqlCommand cmd = new SqlCommand(procedureName, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@user_id", userID);
+                cmd.ExecuteNonQuery();
+            }
+
+            return GetUserItinerary(userID);
+        }
+
         public Itinerary GetUserItinerary(int userID)
         {
             Itinerary itinerary = null;
@@ -249,6 +265,55 @@ namespace SampleApi.DAL
             cmd.Parameters.AddWithValue("@itinerary_id", itineraryID);
             cmd.Parameters.AddWithValue("@landmark_id", landmarkID);
             cmd.ExecuteNonQuery();
+        }
+
+        public Itinerary EditItineraryLandmarkSortOrder(Itinerary itinerary)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                foreach (ItineraryLandmark itineraryLandmark in itinerary.Landmarks)
+                {
+                    EditSortOrder(itinerary.ItineraryID, itineraryLandmark, conn);
+                }
+            }
+
+            return GetItineraryByID(itinerary.ItineraryID);
+        }
+
+        private void EditSortOrder(int itineraryID, ItineraryLandmark landmark, SqlConnection conn)
+        {
+            SqlCommand cmd = new SqlCommand("EditItineraryLandmarkSortOrder", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@itinerary_id", itineraryID);
+            cmd.Parameters.AddWithValue("@landmark_id", landmark.LandmarkID);
+            cmd.Parameters.AddWithValue("@sort_order", landmark.SortOrder);
+            cmd.ExecuteNonQuery();
+        }
+
+        public void RemoveLandmarkFromItinerary(int itineraryID, int landmarkID)
+        {
+            using(SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("RemoveLandmarkFromItinerary", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@itinerary_id", itineraryID);
+                cmd.Parameters.AddWithValue("@landmark_id", landmarkID);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteItinerary(int itineraryID)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("DeleteItinerary", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@itinerary_id", itineraryID);
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }

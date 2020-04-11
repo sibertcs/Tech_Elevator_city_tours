@@ -10,11 +10,15 @@ namespace SampleApi.DAL
     {
         IEnumerable<Landmark> LandmarksSearch(string query);
         Landmark LandmarkSearch(int id);
+        Itinerary CreateItinerary(int userID);
         Itinerary GetUserItinerary(int userID);
         IEnumerable<Itinerary> GetUsersItineraries(int userID);
         void SetSelectedItinerary(Itinerary itinerary);
         void EditItinerary(Itinerary itinerary);
         Itinerary AddLandmarksToItinerary(Itinerary itinerary);
         Itinerary GetItineraryByID(int itineraryID);
+        Itinerary EditItineraryLandmarkSortOrder(Itinerary itinerary);
+        void RemoveLandmarkFromItinerary(int itineraryID, int landmarkID);
+        void DeleteItinerary(int itineraryID);
     }
 }
