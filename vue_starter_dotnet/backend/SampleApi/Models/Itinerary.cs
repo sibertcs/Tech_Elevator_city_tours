@@ -8,8 +8,8 @@ namespace SampleApi.Models
 {
     public class Itinerary
     {
-        public int UserID { get; private set; }
-        public User User { get; private set; }
+        public int UserID { get; set; }
+        public User User { get; set; }
         public bool HasUserObject
         {
             get
@@ -17,12 +17,12 @@ namespace SampleApi.Models
                 return User != null;
             }
         }
-        public int ItineraryID { get; private set; }
-        public DateTime ItineraryDate { get; private set; }
+        public int ItineraryID { get; set; }
+        public DateTime ItineraryDate { get; set; }
 
-        public bool IsSelectedItinerary { get; private set; }
-        public string Name { get; private set; }
-        public string StartingLocation { get; private set; }
+        public bool IsSelectedItinerary { get; set; }
+        public string Name { get; set; }
+        public string StartingLocation { get; set; }
         private List<ItineraryLandmark> _landmarks = new List<ItineraryLandmark>();
         public IEnumerable<ItineraryLandmark> Landmarks
         {
@@ -31,6 +31,15 @@ namespace SampleApi.Models
                 _landmarks.Sort();
                 return _landmarks;
             }
+            set
+            {
+                _landmarks = new List<ItineraryLandmark>(value);
+            }
+        }
+
+        public Itinerary()
+        {
+
         }
 
         public Itinerary(IDataReader data)
@@ -63,7 +72,7 @@ namespace SampleApi.Models
     {
         public int LandmarkID { get; set; }
         public int SortOrder { get; set; }
-        public Landmark Landmark { get; set; }
+        public Landmark Landmark { get; set; }     
         public bool HasLandmarkObject
         {
             get
@@ -71,11 +80,14 @@ namespace SampleApi.Models
                 return Landmark != null;
             }
         }
+        public ItineraryLandmark()
+        {                        
 
+        }
         public ItineraryLandmark(IDataReader data)
         {
             LandmarkID = Convert.ToInt32(data["landmark_id"]);
-            SortOrder = Convert.ToInt32(data["sort_order"]);
+            SortOrder = Convert.ToInt32(data["sort_order"]);           
         }
 
        

@@ -68,7 +68,7 @@ namespace SampleApi.DAL
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-               
+
                 SqlCommand cmd = new SqlCommand("GetLandmarkByID", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@landmarkID", id);
@@ -78,7 +78,7 @@ namespace SampleApi.DAL
                 {
                     landmark = new Landmark(reader);
                 }
-               
+
                 reader.Close();
 
                 if (landmark != null)
@@ -117,25 +117,25 @@ namespace SampleApi.DAL
                 if (reader.Read())
                 {
                     itinerary = new Itinerary(reader);
-                }                
+                }
                 reader.Close();
-                if(itinerary != null)
+                if (itinerary != null)
                 {
                     GetItineraryLandmarks(itinerary, conn);
-                    foreach(ItineraryLandmark itineraryLandmark in itinerary.Landmarks)
+                    foreach (ItineraryLandmark itineraryLandmark in itinerary.Landmarks)
                     {
                         itineraryLandmark.Landmark = LandmarkSearch(itineraryLandmark.LandmarkID);
                     }
                 }
-                
+
             }
-                
+
             return itinerary;
         }
 
         private void GetItineraryLandmarks(Itinerary itinerary, SqlConnection conn)
         {
-            const string procedureName = "GetItineraryInfo";
+            const string procedureName = "GetItinerary";
             SqlCommand cmd = new SqlCommand(procedureName, conn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@itinerary_id", itinerary.ItineraryID);
@@ -165,9 +165,7 @@ namespace SampleApi.DAL
 
             return itineraries;
         }
-
-
-        public void SetSelectedItinerary(int userID, int itineraryID)
+        private void SetSelectedItinerary(int userID, int itineraryID)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -177,14 +175,80 @@ namespace SampleApi.DAL
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@user_id", userID);
                 cmd.Parameters.AddWithValue("@itinerary_id", itineraryID);
-                IDataReader reader = cmd.ExecuteReader();
-                reader.Close();
+                cmd.ExecuteNonQuery();
             }
         }
 
         public void SetSelectedItinerary(Itinerary itinerary)
         {
             SetSelectedItinerary(itinerary.UserID, itinerary.ItineraryID);
+        }
+
+        public void EditItinerary(Itinerary itinerary)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                const string procedureName = "EditItinerary";
+                SqlCommand cmd = new SqlCommand(procedureName, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@itinerary_id", itinerary.ItineraryID);
+                cmd.Parameters.AddWithValue("@name", itinerary.Name);
+                cmd.Parameters.AddWithValue("@date", itinerary.ItineraryDate.ToShortDateString());
+                cmd.Parameters.AddWithValue("@starting_location", itinerary.StartingLocation);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public Itinerary GetItineraryByID(int itineraryID)
+        {
+            Itinerary itinerary = null;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                const string procedureName = "GetItinerary";
+                SqlCommand cmd = new SqlCommand(procedureName, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@itinerary_id", itineraryID);
+                IDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    itinerary = new Itinerary(reader);
+                }
+                reader.Close();
+                if (itinerary != null)
+                {
+                    GetItineraryLandmarks(itinerary, conn);
+                    foreach (ItineraryLandmark itineraryLandmark in itinerary.Landmarks)
+                    {
+                        itineraryLandmark.Landmark = LandmarkSearch(itineraryLandmark.LandmarkID);
+                    }
+                }
+
+            }
+
+            return itinerary;
+        }
+        public Itinerary AddLandmarksToItinerary(Itinerary itinerary)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                foreach(ItineraryLandmark itineraryLandmark in itinerary.Landmarks)
+                {
+                    AddLandmarkToItinerary(itinerary.ItineraryID, itineraryLandmark.LandmarkID, conn);
+                }
+            }
+
+            return GetItineraryByID(itinerary.ItineraryID);
+        }
+
+        private void AddLandmarkToItinerary(int itineraryID, int landmarkID, SqlConnection conn)
+        {
+            SqlCommand cmd = new SqlCommand("AddLandmarkToItinerary", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@itinerary_id", itineraryID);
+            cmd.Parameters.AddWithValue("@landmark_id", landmarkID);
+            cmd.ExecuteNonQuery();
         }
     }
 }

@@ -31,6 +31,11 @@ namespace SampleApi.Controllers
         {
             return landmarksDAO.LandmarkSearch(id);
         }
+        [HttpGet("getitinerarybyid/{itinerary_id}")]
+        public Itinerary GetItineraryByID(int itinerary_id)
+        {
+            return landmarksDAO.GetItineraryByID(itinerary_id);
+        }
 
         [HttpGet("getuseritinerary/{user_id}")]
         public Itinerary GetUserItinerary(int user_id)
@@ -44,13 +49,14 @@ namespace SampleApi.Controllers
             return landmarksDAO.GetUsersItineraries(user_id);
         }
 
-        [HttpGet("SetSelectedItinerary/{user_id}/{itinerary_id}")]
-        public IActionResult SetSelectedItinerary(int userID, int itineraryID)
+        [HttpPut("SetSelectedItinerary/")]
+        [Consumes("application/json")]
+        public IActionResult SetSelectedItinerary([FromBody]Itinerary itinerary)
         {
             IActionResult result = Ok();
             try
             {
-                landmarksDAO.SetSelectedItinerary(userID, itineraryID);
+                landmarksDAO.SetSelectedItinerary(itinerary);
                 result = Ok();
             }
             catch(Exception ex)
@@ -59,6 +65,31 @@ namespace SampleApi.Controllers
             }
 
             return result;
+        }
+
+        [HttpPut("EditItinerary/")]
+        [Consumes("application/json")]
+        public IActionResult EditItinerary([FromBody]Itinerary itinerary)
+        {
+            IActionResult result = Ok();
+            try
+            {
+                landmarksDAO.EditItinerary(itinerary);
+                result = Ok();
+            }
+            catch (Exception ex)
+            {
+                //result = 
+            }
+
+            return result;
+        }
+
+        [HttpPost("AddLandmarksToItinerary")]
+        [Consumes("application/json")]
+        public Itinerary AddLandmarksToItinerary([FromBody]Itinerary itinerary)
+        {
+            return landmarksDAO.AddLandmarksToItinerary(itinerary);
         }
     }
 }

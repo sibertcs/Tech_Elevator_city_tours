@@ -351,10 +351,10 @@ FROM
 
 GO
 
-IF OBJECT_ID('GetItineraryInfo') IS NOT NULL DROP PROCEDURE GetItineraryInfo
+IF OBJECT_ID('GetItinerary') IS NOT NULL DROP PROCEDURE GetItinerary
 GO
 
-CREATE PROCEDURE GetItineraryInfo
+CREATE PROCEDURE GetItinerary
 	@itinerary_id INT
 AS
 BEGIN
@@ -383,7 +383,7 @@ BEGIN
 	WHERE
 		user_id = @user_id
 	ORDER BY
-		itinerary_date DESC
+		currently_selected DESC, itinerary_date DESC
 END
 GO
 
@@ -568,23 +568,24 @@ CREATE PROCEDURE AddLandmarkToItinerary
 	@landmark_id INT
 AS
 BEGIN TRANSACTION
-
-	DECLARE @sort_order AS INT =
-	(
-		SELECT
-			COALESCE(MAX(sort_order), 1)
-		FROM
-			ItineraryLandmarks
-		WHERE
-			itinerary_id = @itinerary_id
-	)
+	IF((SELECT COUNT(*) FROM UserItineraryLandmarks WHERE itinerary_id = @itinerary_id AND landmark_id = @landmark_id) = 0)
+	BEGIN
+		DECLARE @sort_order AS INT =
+		(
+			SELECT
+				COALESCE(MAX(sort_order), 0) + 1
+			FROM
+				ItineraryLandmarks
+			WHERE
+				itinerary_id = @itinerary_id
+		)
 	
-	INSERT INTO ItineraryLandmarks (itinerary_id,  landmark_id, sort_order)
-	VALUES (@itinerary_id, @landmark_id, @sort_order)
+		INSERT INTO ItineraryLandmarks (itinerary_id,  landmark_id, sort_order)
+		VALUES (@itinerary_id, @landmark_id, @sort_order)
+	END
 
 COMMIT TRANSACTION
 GO
-
 IF OBJECT_ID('EditItineraryLandmarkSortOrder') IS NOT NULL DROP PROCEDURE EditItineraryLandmarkSortOrder
 GO
 
@@ -629,7 +630,7 @@ BEGIN TRANSACTION
 				itinerary_id,
 				landmark_id,
 				sort_order,
-				ROW_NUMBER() OVER
+				ROW_NUMBER() OVER -- 1 , 2 , 3 , 4 
 				(
 					PARTITION BY itinerary_id ORDER BY sort_order ASC
 				) AS new_sort_order
@@ -656,7 +657,7 @@ COMMIT TRANSACTION
 GO
 SET IDENTITY_INSERT Users ON
 INSERT INTO Users(user_id, email, password, salt, role)
-VALUES (1, 'test', 'test', 'test', 'test')
+VALUES (1, 'test', 'test', 'test1234', 'test')
 SET IDENTITY_INSERT Users OFF
 
 SET IDENTITY_INSERT Itineraries ON
@@ -670,10 +671,15 @@ VALUES	(1,1,1),
 		(1,3,3),
 		(1,5,4)
 
---SELECT * FROM UserItineraryLandmarks
---SELECT * FROM Itineraries
 
 --EXECUTE RemoveLandmarkFromItinerary 1, 2
+--SELECT * FROM UserItineraryLandmarks WHERE itinerary_id = 5
+--SELECT * FROM Itineraries
+SELECT * FROM Users
+EXECUTE RemoveLandmarkFromItinerary 1, 3
 --SELECT * FROM UserItineraryLandmarks
---EXECUTE DeleteItinerary 1
+--EXECUTE DeleteItinerary 3
 --EXECUTE GetSelectedItinerary 1
+--EXECUTE EditItinerary 3, null, '04/12/2020', '1234 Main St'
+--EXECUTE SetSelectedItinerary 1, 1
+--EXECUTE GetUsersItineraries 1
