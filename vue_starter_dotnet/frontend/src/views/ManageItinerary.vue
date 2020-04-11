@@ -166,19 +166,7 @@ export default {
   created() {
     this.getItinerary();
   },
-  computed: {
-    isEditForm() {
-      return this.$route.params.id === undefined ? false : true;
-    },
-    getPageTitle() {
-      return this.isEditForm ? "Edit Snippet" : "Add New Snippet";
-    },
-    getPageDescription() {
-      return this.editForm
-        ? "Use this form to edit a snippet in your collection."
-        : "Use this form to add a snippet to your collection.";
-    }
-  }
+
 };
 </script>
 
