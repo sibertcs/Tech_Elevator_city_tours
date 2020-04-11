@@ -139,6 +139,7 @@ namespace SampleApi
             app.UseAuthentication();
 
             app.UseHttpsRedirection();
+            
             app.UseMvc();
 
             // Landmarks API routing 

@@ -37,5 +37,28 @@ namespace SampleApi.Controllers
         {
             return landmarksDAO.GetUserItinerary(user_id);
         }
+
+        [HttpGet("getusersitineraries/{user_id}")]
+        public IEnumerable<Itinerary> GetUsersItineraries(int user_id)
+        {
+            return landmarksDAO.GetUsersItineraries(user_id);
+        }
+
+        [HttpGet("SetSelectedItinerary/{user_id}/{itinerary_id}")]
+        public IActionResult SetSelectedItinerary(int userID, int itineraryID)
+        {
+            IActionResult result = Ok();
+            try
+            {
+                landmarksDAO.SetSelectedItinerary(userID, itineraryID);
+                result = Ok();
+            }
+            catch(Exception ex)
+            {
+                //result = 
+            }
+
+            return result;
+        }
     }
 }

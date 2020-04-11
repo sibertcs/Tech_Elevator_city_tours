@@ -46,11 +46,9 @@ import auth from "../auth";
 //import AppVue from '../App.vue';
 export default {
     name: "manage-itinerary",
-
      data() {
     return {
-  itinerary: []
-    //userID : auth.getUser().
+        itinerary: []    
     }
      },
       methods: {

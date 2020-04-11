@@ -78,6 +78,8 @@ namespace SampleApi.Models
             SortOrder = Convert.ToInt32(data["sort_order"]);
         }
 
+       
+
         public int CompareTo(object obj)
         {
             int compareResult = 0;

@@ -122,6 +122,10 @@ namespace SampleApi.DAL
                 if(itinerary != null)
                 {
                     GetItineraryLandmarks(itinerary, conn);
+                    foreach(ItineraryLandmark itineraryLandmark in itinerary.Landmarks)
+                    {
+                        itineraryLandmark.Landmark = LandmarkSearch(itineraryLandmark.LandmarkID);
+                    }
                 }
                 
             }
@@ -137,6 +141,50 @@ namespace SampleApi.DAL
             cmd.Parameters.AddWithValue("@itinerary_id", itinerary.ItineraryID);
             IDataReader dataReader = cmd.ExecuteReader();
             itinerary.AddLandmarks(dataReader);
+        }
+
+        public IEnumerable<Itinerary> GetUsersItineraries(int userID)
+        {
+            List<Itinerary> itineraries = new List<Itinerary>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                const string procedureName = "GetUsersItineraries";
+                SqlCommand cmd = new SqlCommand(procedureName, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@user_id", userID);
+                IDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Itinerary itinerary = new Itinerary(reader);
+                    itineraries.Add(itinerary);
+                }
+                reader.Close();
+            }
+
+            return itineraries;
+        }
+
+
+        public void SetSelectedItinerary(int userID, int itineraryID)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                const string procedureName = "SetSelectedItinerary";
+                SqlCommand cmd = new SqlCommand(procedureName, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@user_id", userID);
+                cmd.Parameters.AddWithValue("@itinerary_id", itineraryID);
+                IDataReader reader = cmd.ExecuteReader();
+                reader.Close();
+            }
+        }
+
+        public void SetSelectedItinerary(Itinerary itinerary)
+        {
+            SetSelectedItinerary(itinerary.UserID, itinerary.ItineraryID);
         }
     }
 }

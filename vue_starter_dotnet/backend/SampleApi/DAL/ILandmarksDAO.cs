@@ -11,5 +11,7 @@ namespace SampleApi.DAL
         IEnumerable<Landmark> LandmarksSearch(string query);
         Landmark LandmarkSearch(int id);
         Itinerary GetUserItinerary(int userID);
+        IEnumerable<Itinerary> GetUsersItineraries(int userID);
+        void SetSelectedItinerary(int userID, int itineraryID);
     }
 }
