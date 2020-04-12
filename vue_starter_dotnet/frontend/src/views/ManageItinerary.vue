@@ -43,6 +43,7 @@
           >{{itineraryOption.itineraryName}}</option>
         </select>
       </div>
+      
       <div class="float-right">
         <button type="submit" class="btn btn-lg btn-primary btn-block btn-secondary">Save Itinerary</button>
       </div>
