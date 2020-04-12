@@ -76,28 +76,6 @@ export default {
   },
   created() {
       this.getItinerary();
-    // if (this.isEditForm) {
-    //   const snippetId = this.$route.params.id;
-    //   fetch(`${process.env.VUE_APP_REMOTE_API}/api/snippets/${snippetId}`, {
-    //     method: 'GET',
-    //     headers: new Headers({
-    //       Authorization: 'Bearer ' + auth.getToken(),
-    //     }),
-    //     credentials: 'same-origin',
-    //   })
-    //     .then((response) => {
-    //       if (response.ok) {
-    //         return response.json();
-    //       } else {
-    //         // no reason to be here send them back to the list view
-    //         this.$router.push({ path: '/' });
-    //       }
-    //     })
-    //     .then((data) => {
-    //       this.snippet = data;
-    //     })
-    //     .catch((err) => console.error(err));
-    //}
   },
   computed: {
     isEditForm() {
