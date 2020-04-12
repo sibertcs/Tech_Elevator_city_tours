@@ -14,43 +14,43 @@ namespace SampleApi.Models
         /// <summary>
         /// 
         /// </summary>
-        public int ID { get; private set; }
+        public int ID { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Description { get; private set; }
+        public string Description { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string StreetAddress { get; private set; }
+        public string StreetAddress { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string City { get; private set; }
+        public string City { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string State { get; private set; }
+        public string State { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string ZipCode { get; private set; }
+        public string ZipCode { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string DaysOpen { get; private set; }
+        public string DaysOpen { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string HoursOfOperation { get; private set; }
+        public string HoursOfOperation { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Category { get; private set; }
+        public string Category { get; set; }
         /// <summary>
         /// List of image objects
         /// </summary>
@@ -58,11 +58,16 @@ namespace SampleApi.Models
         /// <summary>
         /// Returns the contents of the private list of images
         /// </summary>
+        /// 
+        public Landmark()
+        {
+
+        }
         public IEnumerable<LandmarkImage> Images
         {
             get
             {
-                if(_images == null)
+                if (_images == null)
                 {
                     _images = new List<LandmarkImage>();
                 }
@@ -108,23 +113,30 @@ namespace SampleApi.Models
         /// <summary>
         /// The SQL ID of the Image
         /// </summary>
-        public int ID { get; private set; }
+        public int ID { get; set; }
         /// <summary>
         /// The url where the image is located
         /// </summary>
-        public string Url { get; private set; }
+        public string Url { get; set; }
         /// <summary>
         /// Description of the image
         /// </summary>
-        public string Description { get; private set; }
+        public string Description { get; set; }
         /// <summary>
         /// Who owns the image
         /// </summary>
-        public string Credits { get; private set; }
+        public string Credits { get; set; }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="reader"></param>
+        /// 
+
+        public LandmarkImage()
+        {
+
+        }
+
         public LandmarkImage(IDataReader reader)
         {
             ID = Convert.ToInt32(reader["image_id"]);
