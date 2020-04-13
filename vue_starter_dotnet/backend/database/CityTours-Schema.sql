@@ -697,7 +697,7 @@ VALUES	(1,1,1),
 
 
 --EXECUTE RemoveLandmarkFromItinerary 1, 2
---SELECT * FROM UserItineraryLandmarks WHERE itinerary_id = 5
+--SELECT * FROM UserItineraryLandmarks AS A JOIN landmarks AS B ON A.landmark_id = B.landmark_ID
 --SELECT * FROM Itineraries
 SELECT * FROM Users
 EXECUTE RemoveLandmarkFromItinerary 1, 3
