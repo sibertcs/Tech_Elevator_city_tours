@@ -90,7 +90,7 @@ export default {
             auth.saveToken(token);
             this.$emit("update", []);
             AppVue.user = auth.getUser();
-            alert(JSON.stringify(AppVue.user));
+            //alert(JSON.stringify(AppVue.user));
             //this.$router.
             this.$router.push("/");
             
