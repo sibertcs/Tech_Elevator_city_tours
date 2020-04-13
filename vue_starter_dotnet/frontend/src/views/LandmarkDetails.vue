@@ -11,7 +11,7 @@
         <div><span>Address: {{selectedLandmark.streetAddress}} {{selectedLandmark.city}}, {{selectedLandmark.state}} {{selectedLandmark.zipCode}}</span></div>
 
         <div>
-          <button class="btn btn-lg btn-primary btn-block btn-secondary" v-on:click="goBack">GO BACK</button>
+          <button id="go-back-button" class="btn btn-lg btn-primary btn-block btn-secondary" v-on:click="goBack">GO BACK</button>
         </div>
         <div>
           <button class="btn btn-lg btn-primary btn-block btn-secondary" v-on:click="addToItinerary">ADD TO ITINERARY</button>

@@ -3,7 +3,8 @@
       <router-link id="home" to="/">Home</router-link>
       <router-link v-on:update="location.reload();" v-if="isLoggedIn() == false" to="/Login">Login</router-link>
       <a href="#" @click.prevent="logout" v-if="isLoggedIn() == true">Log Out</a>
-      <router-link id="manage-itinerary" to="/ManageItinerary">Create Itinerary</router-link>
+      <router-link id="my-itineraries" to="">My Itineraries</router-link>
+      <router-link id="manage-itinerary" to="/ManageItinerary/0">Manage Itinerary</router-link>
     </div>
 </template>
 

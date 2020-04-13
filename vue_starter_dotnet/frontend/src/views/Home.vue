@@ -1,11 +1,11 @@
 <template>
   <div class="nav-button">
     <div class="home">
-      <h1>You Get a Tour! and You Get a Tour! Everyone Gets a Tour!</h1>
+      <h1>🚗These Tours Aren't Made For Walking 🚕</h1>
       <div class="site-search">
         <landmark-search v-on:search="searchforResult"></landmark-search>
         <landmark-search-results :key="searchResultsKey" v-if="showLandmarkResults" v-bind:searchQuery="searchQuery"></landmark-search-results>
-        
+ 
       </div>
     </div>
   </div>

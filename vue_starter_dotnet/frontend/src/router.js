@@ -6,6 +6,8 @@ import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import LandmarkDetails from './views/LandmarkDetails.vue'
 import ManageItinerary from './views/ManageItinerary.vue'
+//import AllItineraries from './views/AllItineraries.vue'
+import CreateItinerary from './views/CreateItinerary.vue'
 Vue.use(Router)
 
 
@@ -59,10 +61,27 @@ const router = new Router({
       name: "manage-itinerary",
       component: ManageItinerary,
       meta: {
-        requiresAuth: false   //!!!!!!!!!!!!!!!!!change to true!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
+        requiresAuth: true   //!!!!!!!!!!!!!!!!!change to true!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
       }
-    }
+    },
+    /*{
+      //need path and such for all itineraries
+      path:"/AllItineraries/:**INSERT CODE HERE**",
+      name:"all-itineraries",
+      component: AllItineraries,
+      meta: {
+        requiresAuth: true
+      }
 
+    },*/
+    {
+      path: "/CreateItinerary/:id",
+      name: "create-itinerary",
+      component: CreateItinerary,
+      meta: {
+        requiresAuth: false
+      }      
+    }
   ]
 })
 

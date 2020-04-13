@@ -146,6 +146,10 @@
   text-align: center;
 }
 
+#go-back-button {
+  margin-bottom:5px;
+}
+
 .manage-itinerary {
   margin-right: 33%;
     margin-left: 33%;  
@@ -157,6 +161,24 @@
     font-size: large;
 }
 
+#itinerary-buttons {
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+
+#dropdown-create-delete {
+  display:flex;
+  justify-content: space-between;
+}
+
+.landmark-sort-order-wrapper{
+  font-size: x-large;
+}
+
+#save-itinerary-button {
+  margin-top: 1em;
+}
   #login{
     margin-right: 33%;
     margin-left: 33%;  
@@ -182,6 +204,10 @@
   #manage-itinerary {
     padding-left: 2em;
   }
+  
+  #my-itineraries {
+    padding-left: 2em;
+  }
 
   #nav > a{
       padding-right: 1em;
@@ -190,7 +216,26 @@
   .home{
     overflow-y: hidden;
   }
-  @media only screen and (max-width: 900px) {
+  @media only screen and (max-width: 1900px) {
+    #dropdown-create-delete {
+      display:grid;
+      justify-self: center;
+    }
+    #four-buttons {
+      display:flex;
+      justify-content: center;
+    }
+    #addALandmark {
+      margin-top:1em;
+    }
+    #deleteItinerary {
+      margin-top:1em;
+    }
+    #createItinerary {
+      margin-top:1em;
+    }
+  }
+  @media only screen and (max-width: 800px) {
     .login-box {
      border-top: solid white;
      border-bottom:solid white;     
@@ -206,8 +251,27 @@
     .manage-itinerary {
       margin-right: 5%;
       margin-left: 5%;  
-  }
+    }
+    #dropdown-create-delete {
+      display:grid;
+      justify-self: center;
+    }
+    #four-buttons {
+      display:flex;
+      justify-content: center;
+    }
+    #addALandmark {
+      margin-top:1em;
+    }
+    #deleteItinerary {
+      margin-top:1em;
+    }
+    #createItinerary {
+      margin-top:1em;
+    }
 }
+
+
 .fade-enter-active,
 .fade-leave-active {
   transition-duration: 0.3s;

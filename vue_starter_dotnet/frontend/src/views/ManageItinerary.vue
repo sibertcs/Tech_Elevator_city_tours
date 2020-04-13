@@ -2,7 +2,7 @@
   <div id="manageItineraryWrapper">
     <div id="serverResponse" v-if="serverMessage.length > 0">
       <span>{{serverMessage}}</span>
-    </div>    
+    </div>
     <form @submit.prevent="saveChanges">
       <div class="manage-itinerary card">
         <div class="form-group">
@@ -17,14 +17,15 @@
           <div>Please provide a valid itinerary name.</div>
         </div>
         <div class="form-group">
-          <label for="startDate">Date</label>
+          <label for="startDate">Date 📅</label>
           <input
             v-if="itinerary.itineraryDate != null"
             type="date"
             class="form-control"
             id="startDate"
             placeholder="YYYY/MM/DD"
-            v-model.trim="itinerary.itineraryDate.split('T')[0]"
+            v-model="itinerary.itineraryDate.split('T')[0]"
+            v-on:change="dateChanged"
           />
           <div>Please provide a valid date.</div>
         </div>
@@ -40,64 +41,99 @@
           <div>Please provide a valid starting address.</div>
         </div>
         <div id="landmarksWrapper">
-          <div class="landmark-itinerary-object" v-for="landmark in itinerary.landmarks" v-bind:key="landmark.landmarkID">
-              <div class="landmark-sort-order-wrapper">
-                <span>{{landmark.sortOrder}}</span>
-              </div>
-              <div class="landmark-name-wrapper">
-                <span>{{landmark.name}}</span>
-              </div>
-              <div class="landmark-move-up-wrapper">
-                <b-button >UP</b-button>
-              </div>
-              <div class="landmark-move-down-wrapper">
-                <b-button >DOWN</b-button>
-              </div>
-              <div class="landmark-remove-wrapper">
-                <b-button >REMOVE</b-button>
-              </div>
+          <div
+            class="landmark-itinerary-object"
+            v-for="landmark in itinerary.landmarks"
+            v-bind:key="'landmark'+landmark.landmarkID"
+          >
+            <div class="landmark-sort-order-wrapper">
+              <span>{{landmark.sortOrder}})</span>
+              <span>{{landmark.landmark.name}}</span>
+            </div>
+            <div class="landmark-name-wrapper">
+              <b-button
+                class="btn-success"
+                id="itinerary-buttons"
+                v-on:click="moveLandmarkUp(landmark)"
+              >▲</b-button>
+              <b-button
+                class="btn-info"
+                id="itinerary-buttons"
+                v-on:click="moveLandmarkDown(landmark)"
+              >▼</b-button>
+              <b-button
+                class="btn-danger"
+                id="itinerary-buttons"
+                v-on:click="removeLandmarkFromItinerary(landmark.landmarkID)"
+              >REMOVE 🗑</b-button>
+            </div>
           </div>
         </div>
-        <div>
-          <select id="itineraryDropDown" v-on:change="onSelectChange">
-            <!-- <div Needs to be userID in order to get the right itinerary> -->
-            <option
-              v-for="itineraryOption in userItineraries"
-              v-bind:key="itineraryOption.userID"
-              v-bind:value="itineraryOption.itineraryID"
-              v-text="itineraryOption.name"
-            ></option>
-          </select>
+        <div id="four-buttons">
+          <div id="dropdown-create-delete">
+            <select
+              class="btn btn-secondary dropdown-toggle"
+              id="itineraryDropDown"
+              v-on:change="onSelectChange"
+            >
+              <!-- <div Needs to be userID in order to get the right itinerary> -->
+              <option
+                v-for="itineraryOption in userItineraries"
+                v-bind:key="'dropdown' + itineraryOption.itineraryID"
+                v-bind:value="itineraryOption.itineraryID"
+                v-text="itineraryOption.name"
+              ></option>
+            </select>
+            <b-button id="addALandmark" v-on:click="addALandmark">Add Landmark</b-button>
+            <b-button id="deleteItinerary" v-on:click="deleteItinerary">Delete Itinerary</b-button>
+            <b-button id="createItinerary" v-on:click="createItinerary">Create New Itinerary</b-button>
+          </div>
         </div>
 
         <div class="float-right">
           <button
+            id="save-itinerary-button"
             type="submit"
             class="btn btn-lg btn-primary btn-block btn-secondary"
-            v-model:
           >Save Itinerary</button>
         </div>
       </div>
     </form>
+    <div>
+      <div class="site-search">
+        <!-- <landmark-search v-if="isAddALandmark" v-on:search="searchforResult"></landmark-search>
+        <landmark-summary :key="searchResultsKey" v-if="isAddALandmark" v-bind:searchQuery="searchQuery"></landmark-summary>-->
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import auth from "../auth";
 //import AppVue from '../App.vue';
+//import LandmarkSearch from "@/components/LandmarkSearch";
+//import LandmarkSummary from "@/components/LandmarkSummary";
 export default {
   name: "manage-itinerary",
+  // components: {
+  // LandmarkSearch,
+  // LandmarkSummary
+  // },
   data() {
     return {
       itinerary: Object,
       userItineraries: [Object],
       sortOrderChanged: false,
       itineraryChanged: false,
+      isAddALandmark: false,
+      landmarkAddedOnDB: false,
       serverMessage: "",
+      searchQuery: "",
       incomingLandmarkID: Number
     };
   },
   methods: {
+    //New method:
     getItinerary() {
       const userID = auth.getUser().id;
       const apiEndpoint = `getuseritinerary/${userID}`;
@@ -116,12 +152,24 @@ export default {
         })
         .then(data => {
           this.itinerary = data;
-          this.getIncomingLandmark(); //oversight: this needs to add
+          this.getIncomingLandmark();
         });
     },
+    dateChanged(){
+      this.itinerary.itineraryDate = document.getElementById("startDate").value;
+    },
+    //New method:
     saveChanges() {
       this.EditItinerary();
+      if (!this.landmarkAddedOnDB) {
+        this.AddLandmarksToItinerary();
+      }
+      if (this.sortOrderChanged) {
+        this.updateSortOrders();
+      }
+      this.$router.go(0);
     },
+    //New method:
     EditItinerary() {
       //const userID = auth.getUser().id;
       const apiEndpoint = `edititinerary`;
@@ -142,31 +190,40 @@ export default {
           this.serverMessage = message;
         });
     },
-    onSelectChange() {
-      // const userID = auth.getUser().id;
-      // const apiEndpoint = `setSelectedItinerary/${userID.itineraryID}`;
-      // console.log("fetching: setSelectedItinerary");
-      // fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: "Bearer " + auth.getUser()
-      //   }
-      // })
-      //   .then(response => {
-      //     if (response.ok) {
-      //       return response.json();
-      //     }
-      //   })
-      //   .then(userItineraries => {
-      //     this.itinerary = userItineraries.find(itinerary => itinerary.id == new selected id)
-      //     this.getItinerary()
-      //   });
-      // get the new selected itineraryID from drop down
-      // set this.itinerary = userItineraries.find(itinerary => itinerary.id == new selected id)
-      // call setSelectedItinerary()
-      // call getItinerary()
+    //New method:
+    AddLandmarksToItinerary() {
+      const apiEndpoint = `addlandmarkstoitinerary`;
+
+      fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.getUser()
+        },
+
+        body: JSON.stringify(this.itinerary)
+      })
+        .then(response => {
+          if (response.ok) {
+            this.landmarkAddedOnDB = true;
+            return response;
+          }
+        })
+        .then(message => {
+          this.serverMessage = message;
+        });
     },
+    //New method:
+    onSelectChange() {
+      let nextItinerary = this.userItineraries.find(itinerary => {
+        return (
+          itinerary.itineraryID ==
+          document.getElementById("itineraryDropDown").value
+        );
+      });
+      this.setSelectedItinerary(nextItinerary);
+    },
+    //New method:
     getUserItinerary() {
       const userID = auth.getUser().id;
       const apiEndpoint = `getuseritinerary/${userID}`;
@@ -186,10 +243,10 @@ export default {
           this.itinerary = data;
         });
     },
+    //New method:
     getUserItineraries() {
       const userID = auth.getUser().id;
       const apiEndpoint = `getusersitineraries/${userID}`;
-      console.log("fetching: getusersitineraries" );
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
         method: "GET",
         headers: {
@@ -208,6 +265,7 @@ export default {
           //alert(this.userItineraries);
         });
     },
+    //New method:
     getItineraryById(itineraryID) {
       const apiEndpoint = `getitinerarybyid/${itineraryID}`;
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
@@ -226,11 +284,189 @@ export default {
           this.itinerary = data;
         });
     },
-
-    setSelectedItinerary() {
+    //New method:
+    setSelectedItinerary(nextItinerary) {
       const apiEndpoint = `setselecteditinerary`;
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
-        method: this.isEditForm ? "PUT" : "POST",
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.getToken()
+        },
+        body: JSON.stringify(nextItinerary)
+      })
+        .then(response => {
+          if (response.ok) {
+            this.$router.go(0);
+          }
+        })
+        .catch(err => console.error(err));
+    },
+    loadData() {
+      this.getItinerary();
+      this.getUserItineraries();
+    },
+    //New method:
+    getIncomingLandmark() {
+      console.log(JSON.stringify(this.itinerary));
+      if (
+        this.$route.params.landmark_id != null &&
+        this.$route.params.landmark_id != 0
+      ) {
+        this.incomingLandmarkID = this.$route.params.landmark_id;
+
+        //if (this.itinerary.landmarks != [] && this.itinerary.landmarks != null) {
+        if (
+          this.itinerary.landmarks.find(landmark => {
+            return landmark.landmarkID == this.incomingLandmarkID;
+          }) == null
+        ) {
+          console.log("fetching: getlandmark");
+          fetch(
+            `${process.env.VUE_APP_REMOTE_API_LANDMARKS}/getlandmark/${this.incomingLandmarkID}`
+          )
+            .then(response => {
+              if (response.ok) {
+                return response.json();
+              }
+            })
+            .then(data => {
+              let newLandmark = {
+                landmarkID: data.id,
+                name: data.name,
+                sortOrder:
+                  this.itinerary.landmarks.length == 0
+                    ? 1
+                    : this.getMaxSortOrder() + 1,
+                landmark: data,
+                addedByClient: true,
+                hasLandmarkObject: true
+              };
+              this.itinerary.landmarks.push(newLandmark);
+            })
+            .catch(err => console.error(err));
+        } else {
+          this.landmarkAddedOnDB = true;
+        }
+      }
+      //}
+    },
+    //New method:
+    deleteItinerary() {
+      if (confirm("Are you sure?")) {
+        //actually delete it now
+        const apiEndpoint = `deleteitinerary/${this.itinerary.itineraryID}`;
+        fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + auth.getUser()
+          }
+        }).then(response => {
+          if (response.ok) {
+            this.$router.go(0);
+          }
+        });
+      }
+    },
+    //New method:
+    createItinerary() {
+      const userID = auth.getUser().id;
+      const apiEndpoint = `createitinerary/${userID}`;
+      fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.getUser()
+        }
+      }).then(response => {
+        if (response.ok) {
+          this.$router.go(0);
+        }
+      });
+    },
+    //New method:
+    removeLandmarkFromItinerary(landmarkIdToRemove) {
+      if (confirm("Are you sure?")) {
+        let body = {
+          itineraryID: this.itinerary.itineraryID,
+          landmarkID: landmarkIdToRemove
+        };
+        // console.log(body);
+        // alert('look at console');
+        //actually delete it now
+        const apiEndpoint = `RemoveLandmarkFromItinerary/`;
+        fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + auth.getUser()
+          },
+          body: JSON.stringify(body)
+        }).then(response => {
+          if (response.ok) {
+            this.itinerary.landmarks = this.itinerary.landmarks.filter(
+              landmark => {
+                return landmark.landmarkID != landmarkIdToRemove;
+              }
+            );
+            this.$router.go(0);
+          }
+        });
+      }
+    },
+    addALandmark() {
+      // To implement
+    },
+    moveLandmarkUp(landmark) {
+      // landmark
+
+      if (landmark.sortOrder > 1) {
+        landmark.sortOrder--;
+        this.itinerary.landmarks.find(otherLandmark => {
+          return (
+            otherLandmark.sortOrder == landmark.sortOrder &&
+            otherLandmark.landmarkID != landmark.landmarkID
+          );
+        }).sortOrder++;
+        this.sortLandmarks();
+      }
+    },
+    moveLandmarkDown(landmark) {
+      let maxSortOrder = this.getMaxSortOrder();
+      if (landmark.sortOrder < maxSortOrder) {
+        landmark.sortOrder++;
+        this.itinerary.landmarks.find(otherLandmark => {
+          return (
+            otherLandmark.sortOrder == landmark.sortOrder &&
+            otherLandmark.landmarkID != landmark.landmarkID
+          );
+        }).sortOrder--;
+        this.sortLandmarks();
+      }
+    },
+    getMaxSortOrder() {
+      let maxSortOrder = 1;
+      if (this.itinerary.landmarks.length > 0) {
+        maxSortOrder = this.itinerary.landmarks[0].sortOrder;
+        for (let i = 0; i < this.itinerary.landmarks.length; i++) {
+          if (this.itinerary.landmarks[i].sortOrder > maxSortOrder) {
+            maxSortOrder = this.itinerary.landmarks[i].sortOrder;
+          }
+        }
+      }
+      return maxSortOrder;
+    },
+    sortLandmarks() {
+      this.itinerary.landmarks = this.itinerary.landmarks.sort(function(a, b) {
+        return a.sortOrder - b.sortOrder;
+      });
+      this.sortOrderChanged = true;
+    },
+    updateSortOrders() {
+      const apiEndpoint = `EditItineraryLandmarkSortOrder`;
+      fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + auth.getToken()
@@ -239,54 +475,21 @@ export default {
       })
         .then(response => {
           if (response.ok) {
-            this.$router.push({ path: "/" });
+            this.sortOrderChanged = false;
+            //this.$router.go(0);
           }
         })
         .catch(err => console.error(err));
     },
-    loadData() {
-      console.log("getItinerary");
-      this.getItinerary();
-      console.log("getUserItineraries");
-      this.getUserItineraries();
-      // console.log("getIncomingLandmark");
-      // this.getIncomingLandmark();
-    },
-    getIncomingLandmark() {
-      console.log(JSON.stringify(this.itinerary));
-      if (this.$route.params.landmark_id != null) {
-        this.incomingLandmarkID = this.$route.params.landmark_id;
-
-        //if (this.itinerary.landmarks != [] && this.itinerary.landmarks != null) {
-          if (
-            this.itinerary.landmarks.find(landmark => {
-              return landmark.landmarkID == this.incomingLandmarkID;
-            }) == null
-          ) {
-            console.log("fetching: getlandmark");
-            fetch(
-              `${process.env.VUE_APP_REMOTE_API_LANDMARKS}/getlandmark/${this.incomingLandmarkID}`
-            )
-              .then(response => {
-                if (response.ok) {
-                  return response.json();
-                }
-              })
-              .then(data => {
-                let newLandmark = {
-                  "landmarkID": data.landmarkID,
-                  "name": data.name,
-                  "sortOrder": (this.landmarks == null ? 1 : this.landmarks.length + 1),
-                  "landmark": data,
-                  "addedByClient": true,
-                  "hasLandmarkObject": true
-                }
-                this.itinerary.landmarks.push(newLandmark);
-              })
-              .catch(err => console.error(err));
-          }
-        }
-      //}
+    //New method:
+    searchforResult(searchQuery) {
+      //This method gets the searchQuery string from LandmarkSearch.vue using v-bind in the template above. IA
+      this.searchQuery = searchQuery;
+      if (this.isAddALandmark) {
+        this.searchResultsKey += 1; //force re-render
+      } else {
+        this.isAddALandmark = true; // first render
+      }
     }
   },
   created() {

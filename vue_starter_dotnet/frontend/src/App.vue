@@ -3,8 +3,7 @@
     <navbar></navbar>
     <transition name="fade" mode="out-in">
     <router-view />
-    </transition>
-    <b-button v-on:click="getUser">User</b-button>
+    </transition>    
   </div>
 </template>
 
