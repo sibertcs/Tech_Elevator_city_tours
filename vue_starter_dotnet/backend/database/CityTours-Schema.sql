@@ -552,11 +552,35 @@ CREATE PROCEDURE DeleteItinerary
 	@itinerary_id	INT
 AS
 BEGIN TRANSACTION
+	DECLARE @user_id INT = (SELECT user_id FROM Itineraries WHERE itinerary_id = @itinerary_id)
+
 	DELETE FROM ItineraryLandmarks
 	WHERE itinerary_id = @itinerary_id
 
 	DELETE FROM Itineraries
 	WHERE itinerary_id = @itinerary_id
+
+	-- Set a different itinerary to active
+	IF((SELECT COUNT(*) FROM UserItineraryLandmarks WHERE user_id = @user_id)>0)
+	BEGIN
+		DECLARE @next_itinerary_id INT =
+		(
+			SELECT TOP 1
+				itinerary_id
+			FROM
+				Itineraries
+			WHERE
+				user_id = @user_id
+			ORDER BY
+				itinerary_date DESC
+				
+		)
+
+		UPDATE Itineraries
+		SET currently_selected = 1
+		WHERE
+			itinerary_id = @next_itinerary_id
+	END
 COMMIT TRANSACTION
 GO
 
@@ -683,3 +707,4 @@ EXECUTE RemoveLandmarkFromItinerary 1, 3
 --EXECUTE EditItinerary 3, null, '04/12/2020', '1234 Main St'
 --EXECUTE SetSelectedItinerary 1, 1
 --EXECUTE GetUsersItineraries 1
+
