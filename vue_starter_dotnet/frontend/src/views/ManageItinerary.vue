@@ -36,7 +36,7 @@
       </div>
       <div>
         <select id="itineraryDropDown" v-model="getUserItinerary" v-on:change="onSelectChange">
-            
+        
           <option
             v-for="itineraryOption in userItineraries"
             v-bind:key="itineraryOption.itineraryID"
@@ -45,6 +45,8 @@
       </div>
       <div class="float-right">
         <button type="submit" class="btn btn-lg btn-primary btn-block btn-secondary">Save Itinerary</button>
+      </div>
+      <div>
       </div>
     </div>
   </form>
