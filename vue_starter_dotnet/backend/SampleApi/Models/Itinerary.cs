@@ -104,4 +104,10 @@ namespace SampleApi.Models
             return compareResult;
         }
     }
+
+    public class RemoveLandmarkRequestBody
+    {
+        public int LandmarkID { get; set; }
+        public int ItineraryID { get; set; }
+    }
 }

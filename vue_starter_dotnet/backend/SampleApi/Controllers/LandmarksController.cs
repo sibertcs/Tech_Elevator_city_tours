@@ -108,9 +108,9 @@ namespace SampleApi.Controllers
 
         [HttpDelete("RemoveLandmarkFromItinerary")]
         [Consumes("application/json")]
-        public IActionResult RemoveLandmarkFromItinerary(int itineraryID, int landmarkID)
+        public IActionResult RemoveLandmarkFromItinerary(RemoveLandmarkRequestBody body)
         {
-            landmarksDAO.RemoveLandmarkFromItinerary(itineraryID, landmarkID);
+            landmarksDAO.RemoveLandmarkFromItinerary(body.ItineraryID, body.LandmarkID);
             return Ok();
         }
 
