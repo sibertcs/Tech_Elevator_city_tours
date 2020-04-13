@@ -76,7 +76,6 @@
               id="itineraryDropDown"
               v-on:change="onSelectChange"
             >
-              <!-- <div Needs to be userID in order to get the right itinerary> -->
               <option
                 v-for="itineraryOption in userItineraries"
                 v-bind:key="'dropdown' + itineraryOption.itineraryID"
@@ -84,7 +83,7 @@
                 v-text="itineraryOption.name"
               ></option>
             </select>
-            <b-button id="addALandmark" v-on:click="addALandmark">Add Landmark</b-button>
+            <b-button id="addALandmark" v-on:click="redirectMethod">Add Landmark</b-button>
             <b-button id="deleteItinerary" v-on:click="deleteItinerary">Delete Itinerary</b-button>
             <b-button id="createItinerary" v-on:click="createItinerary">Create New Itinerary</b-button>
           </div>
@@ -129,14 +128,15 @@ export default {
       landmarkAddedOnDB: false,
       serverMessage: "",
       searchQuery: "",
-      incomingLandmarkID: Number
+      incomingLandmarkID: Number,
+      userID: auth.getUser().id
     };
   },
   methods: {
     //New method:
     getItinerary() {
-      const userID = auth.getUser().id;
-      const apiEndpoint = `getuseritinerary/${userID}`;
+      //const userID = auth.getUser().id;
+      const apiEndpoint = `getuseritinerary/${this.userID}`;
       console.log("fetching: getuseritinerary");
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
         method: "GET",
@@ -415,8 +415,8 @@ export default {
         });
       }
     },
-    addALandmark() {
-      // To implement
+    redirectMethod() {
+      this.$router.push({path: "/"});
     },
     moveLandmarkUp(landmark) {
       // landmark

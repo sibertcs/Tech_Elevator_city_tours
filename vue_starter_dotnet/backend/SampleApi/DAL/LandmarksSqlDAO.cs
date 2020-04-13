@@ -177,6 +177,14 @@ namespace SampleApi.DAL
                     itineraries.Add(itinerary);
                 }
                 reader.Close();
+                foreach(Itinerary itinerary in itineraries)
+                {
+                    GetItineraryLandmarks(itinerary, conn);
+                    foreach (ItineraryLandmark itineraryLandmark in itinerary.Landmarks)
+                    {
+                        itineraryLandmark.Landmark = LandmarkSearch(itineraryLandmark.LandmarkID);
+                    }
+                }
             }
 
             return itineraries;

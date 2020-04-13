@@ -24,8 +24,8 @@
             class="form-control"
             id="startDate"
             placeholder="YYYY/MM/DD"
-             v-model="itinerary.itineraryDate.split('T')[0]"
-            v-on:changed="dateChanged"
+            v-model="itinerary.itineraryDate.split('T')[0]"
+            v-on:change="dateChanged"
           />
           <div>Please provide a valid date.</div>
         </div>
@@ -53,13 +53,55 @@
 </template>
 
 <script>
+import auth from "../auth";
 export default {
   name: "create-itinerary",
   data() {
     return {
       itinerary: Object,
-      userItineraries: [Object]
+      userItineraries: [Object],
+      userID: auth.getUser().id
     };
+  },
+  methods: {
+    dateChanged() {
+      this.itinerary.itineraryDate = document.getElementById("startDate").value;
+    },
+    saveChanges() {
+      const apiEndpoint = `edititinerary`;
+      fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.getUser()
+        },
+        body: JSON.stringify(this.itinerary)
+      })
+        .then(response => {
+          if (response.ok) {
+            this.$router.push("/");
+          }
+        });
+        
+    }
+  },
+  created() {
+    const apiEndpoint = `createitinerary/${this.userID}`;
+    fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + auth.getUser()
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then(data => {
+        this.itinerary = data;
+      });
   }
 };
 </script>
