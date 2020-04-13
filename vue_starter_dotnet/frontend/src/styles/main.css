@@ -138,6 +138,21 @@
     color: whitesmoke;
     font-family: "Josefin Sans";
   }
+
+  .all-itineraries {
+    margin-right: 33%;
+    margin-left: 33%;  
+    background-color: var(--main-bg-color);
+    margin-top: 2em;
+    padding: 1em;
+    color: whitesmoke;
+    font-family: "Josefin Sans";
+  }
+
+  #manage-itinerary-button {
+    margin-bottom:1em;
+  }
+
 .landmark-details img {
   height:100%;
   width:100%;

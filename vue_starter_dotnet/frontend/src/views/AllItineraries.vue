@@ -1,7 +1,10 @@
 <template>
   <div>
-      <div v-for="itinerary in itineraries" v-bind:key="'itinerary'+itinerary.itineraryID">
-        <p>{{itinerary.name}}</p>
+    <b-button id="createItinerary" class="all-itineraries card"  v-on:click="redirectMethod">Create New Itinerary</b-button>
+      <div class="all-itineraries card" v-for="itinerary in itineraries" v-bind:key="'itinerary'+itinerary.itineraryID">
+        <p>{{itinerary.name}},  Starting Date: {{itinerary.itineraryDate.split('T')[0]}}</p>
+        <b-button id="manage-itinerary-button" to="/ManageItinerary/0">Manage Itinerary</b-button> 
+        <b-button id="deleteItinerary" v-on:click="deleteItinerary">Delete Itinerary</b-button>
       </div>
   </div>
 </template>
@@ -34,10 +37,10 @@ export default {
           this.itineraries = data;          
         });
     },
-    deleteItinerary(itineraryIDToDelete) {
+    deleteItinerary() {
       if (confirm("Are you sure?")) {
         //actually delete it now
-        const apiEndpoint = `deleteitinerary/${itineraryIDToDelete}`;
+        const apiEndpoint = `deleteitinerary/${this.itinerary.itineraryID}`;
         fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
           method: "DELETE",
           headers: {
@@ -50,7 +53,10 @@ export default {
           }
         });
       }
-    }
+    },
+    redirectMethod() {
+      this.$router.push({path: "/CreateItinerary"});
+    },
   },
   created(){
       this.getUserItineraries();
