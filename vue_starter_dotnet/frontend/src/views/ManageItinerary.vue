@@ -60,9 +60,10 @@
         </div>
         <div>
           <select id="itineraryDropDown" v-on:change="onSelectChange">
+            <!-- <div Needs to be userID in order to get the right itinerary> -->
             <option
               v-for="itineraryOption in userItineraries"
-              v-bind:key="itineraryOption.itineraryID"
+              v-bind:key="itineraryOption.userID"
               v-bind:value="itineraryOption.itineraryID"
               v-text="itineraryOption.name"
             ></option>
@@ -73,6 +74,7 @@
           <button
             type="submit"
             class="btn btn-lg btn-primary btn-block btn-secondary"
+            v-model:
           >Save Itinerary</button>
         </div>
       </div>
@@ -141,6 +143,25 @@ export default {
         });
     },
     onSelectChange() {
+      // const userID = auth.getUser().id;
+      // const apiEndpoint = `setSelectedItinerary/${userID.itineraryID}`;
+      // console.log("fetching: setSelectedItinerary");
+      // fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "Bearer " + auth.getUser()
+      //   }
+      // })
+      //   .then(response => {
+      //     if (response.ok) {
+      //       return response.json();
+      //     }
+      //   })
+      //   .then(userItineraries => {
+      //     this.itinerary = userItineraries.find(itinerary => itinerary.id == new selected id)
+      //     this.getItinerary()
+      //   });
       // get the new selected itineraryID from drop down
       // set this.itinerary = userItineraries.find(itinerary => itinerary.id == new selected id)
       // call setSelectedItinerary()
