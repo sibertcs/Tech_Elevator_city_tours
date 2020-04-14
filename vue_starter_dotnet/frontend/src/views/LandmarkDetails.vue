@@ -26,7 +26,6 @@
     </div>
     <div class="containing-feedback">
       <vue-feedback-reaction id="feedback" v-model="feedback" v-on:input="rateLandmark" />
-      
     </div>
     <div>
       <button
@@ -77,9 +76,9 @@ export default {
   components: {
     VueFeedbackReaction
   },
-  props:{
-       id: Number,
-       labels: null
+  props: {
+    id: Number
+    //labels: [String]
   },
   methods: {
     goBack() {
@@ -122,13 +121,13 @@ export default {
           });
       }
     },
-    getUsersRating(){
+    getUsersRating() {
       if (auth.getUser() != null) {
         this.isLoggedIn = true;
         const userID = auth.getUser().id;
         let getRatingBody = {
-          "UserID": userID,
-          "LandmarkID": this.selectedLandmark.id
+          UserID: userID,
+          LandmarkID: this.selectedLandmark.id
         };
         const apiEndpoint = `GetUserLandmarkRatings/`;
         fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
@@ -136,7 +135,8 @@ export default {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + auth.getUser()
-          }, body: JSON.stringify(getRatingBody)
+          },
+          body: JSON.stringify(getRatingBody)
         })
           .then(response => {
             if (response.ok) {
@@ -145,18 +145,20 @@ export default {
           })
           .then(data => {
             //alert(data);
-            if(data.ratingType != 0){
+            if (data.ratingType != 0) {
               this.usersRating = data;
-            }            
+              this.feedback = this.usersRating.ratingName;
+              //this.VueFeedbackReaction.props.value = this.feedback;
+              //document.getElementsByClassName("vue-reaction")[(this.usersRating - 1)].click();
+            }
             //alert(this.userItineraries);
           });
       }
     },
     onSelectChange() {
       //alert(JSON.stringify(this.selectedItinerary));
-      this.selectedItinerary = this.userItineraries.find(itinerary => {        
+      this.selectedItinerary = this.userItineraries.find(itinerary => {
         return (
-          
           itinerary.itineraryID ==
           document.getElementById("itineraryDropDown").value
         );
@@ -182,15 +184,15 @@ export default {
         })
         .catch(err => console.error(err));
     },
-     rateLandmark(){
-       const apiEndpoint = `ratelandmark`;
-       const userID = auth.getUser().id;
-       let submitRatingBody = {
-          "landmarkId": this.selectedLandmark.id,
-          "userID": userID,
-          "ratingType": this.feedback
-       }
-       console.log(JSON.stringify(submitRatingBody));
+    rateLandmark() {
+      const apiEndpoint = `ratelandmark`;
+      const userID = auth.getUser().id;
+      let submitRatingBody = {
+        landmarkId: this.selectedLandmark.id,
+        userID: userID,
+        ratingType: this.feedback
+      };
+      console.log(JSON.stringify(submitRatingBody));
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
         method: "POST",
         headers: {
@@ -205,8 +207,7 @@ export default {
           }
         })
         .catch(err => console.error(err));
-    },
-   
+    }
   },
   created() {
     fetch(
@@ -220,10 +221,9 @@ export default {
       .then(data => {
         this.selectedLandmark = data;
         this.getUserItineraries();
-        this.getUsersRating()
+        this.getUsersRating();
       })
       .catch(err => console.error(err));
-    
   }
 
   //this.landmark = this.allLandmarks.find(l => l.id == this.$route.params.id)
