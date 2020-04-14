@@ -135,10 +135,20 @@ namespace SampleApi.Models
 
         public LandmarkRating(IDataReader data)
         {
-            RatingType = Convert.ToInt32(data["rating_type_id"]);
-            RatingName = Convert.ToString(data["rating_name"]);
-            RatingCount = Convert.ToInt32(data["rating_count"]);
+            if (!(data["rating_type_id"] is DBNull || data["rating_name"] is DBNull || data["rating_count"] is DBNull))
+            {
+                RatingType = Convert.ToInt32(data["rating_type_id"]);
+                RatingName = Convert.ToString(data["rating_name"]);
+                RatingCount = Convert.ToInt32(data["rating_count"]);
+            }
+            else
+            {
+                RatingType = 0;
+                RatingName = "Null";
+                RatingCount = 0;
+            }
         }
+
     }
     /// <summary>
     /// 

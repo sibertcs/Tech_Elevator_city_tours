@@ -70,7 +70,8 @@ export default {
       userItineraries: [],
       selectedItinerary: Object,
       isLoggedIn: false,
-      feedback: ""
+      feedback: "",
+      usersRating: Object
     };
   },
   components: {
@@ -121,6 +122,36 @@ export default {
           });
       }
     },
+    getUsersRating(){
+      if (auth.getUser() != null) {
+        this.isLoggedIn = true;
+        const userID = auth.getUser().id;
+        let getRatingBody = {
+          "UserID": userID,
+          "LandmarkID": this.selectedLandmark.id
+        };
+        const apiEndpoint = `GetUserLandmarkRatings/`;
+        fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + auth.getUser()
+          }, body: JSON.stringify(getRatingBody)
+        })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+          })
+          .then(data => {
+            //alert(data);
+            if(data.ratingType != 0){
+              this.usersRating = data;
+            }            
+            //alert(this.userItineraries);
+          });
+      }
+    },
     onSelectChange() {
       //alert(JSON.stringify(this.selectedItinerary));
       this.selectedItinerary = this.userItineraries.find(itinerary => {        
@@ -152,8 +183,7 @@ export default {
         .catch(err => console.error(err));
     },
      rateLandmark(){
-       //const apiEndpoint = `ratelandmark`;
-       //let feedbackChoice = document.getElementById('feedback').value;
+       const apiEndpoint = `ratelandmark`;
        const userID = auth.getUser().id;
        let submitRatingBody = {
           "landmarkId": this.selectedLandmark.id,
@@ -161,20 +191,20 @@ export default {
           "ratingType": this.feedback
        }
        console.log(JSON.stringify(submitRatingBody));
-      // fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
-      //   method: "PUT",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: "Bearer " + auth.getToken()
-      //   },
-      //   body: JSON.stringify(submitRatingBody)
-      // })
-      //   .then(response => {
-      //     if (response.ok) {
-      //       //this.$router.go(0);
-      //     }
-      //   })
-      //   .catch(err => console.error(err));
+      fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.getToken()
+        },
+        body: JSON.stringify(submitRatingBody)
+      })
+        .then(response => {
+          if (response.ok) {
+            //this.$router.go(0);
+          }
+        })
+        .catch(err => console.error(err));
     },
    
   },
@@ -189,9 +219,11 @@ export default {
       })
       .then(data => {
         this.selectedLandmark = data;
+        this.getUserItineraries();
+        this.getUsersRating()
       })
       .catch(err => console.error(err));
-    this.getUserItineraries();
+    
   }
 
   //this.landmark = this.allLandmarks.find(l => l.id == this.$route.params.id)

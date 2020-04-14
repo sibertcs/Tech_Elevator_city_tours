@@ -129,7 +129,7 @@ namespace SampleApi.Controllers
             return Ok();
         }
 
-        [HttpGet("GetUserLandmarkRatings")]
+        [HttpPut("GetUserLandmarkRatings")]
         [Consumes("application/json")]
         public GetUserRatingResponseBody GetUserLandmarkRatings([FromBody]GetUserRatingRequestBody requestBody)
         {
