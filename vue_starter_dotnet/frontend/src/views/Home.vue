@@ -14,7 +14,7 @@
 <script>
 import LandmarkSearch from "@/components/LandmarkSearch";
 import LandmarkSearchResults from "@/components/LandmarkSearchResults";
-
+//import AppVue from "@/App"
 export default {
   name: "home",
 
@@ -34,6 +34,7 @@ export default {
     searchforResult(searchQuery) {
       //This method gets the searchQuery string from LandmarkSearch.vue using v-bind in the template above. IA      
       this.searchQuery = searchQuery;
+      this.$parent.lastSearchQuery = searchQuery;
       if(this.showLandmarkResults){
           this.searchResultsKey += 1; //force re-render
       }
@@ -41,6 +42,11 @@ export default {
           this.showLandmarkResults = true; // first render          
       }
       
+    }
+  },
+  created(){
+    if(this.$parent.lastSearchQuery != ""){
+      this.searchforResult(this.$parent.lastSearchQuery);
     }
   }
 };

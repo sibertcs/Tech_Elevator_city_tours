@@ -16,8 +16,12 @@ import auth from "./auth";
 import Navbar from "@/components/Navbar.vue";
 
 export default {
+  name: "AppVue",
   data() {
-    return { user: auth.getUser() };
+    return { 
+      user: auth.getUser(),
+      lastSearchQuery: ""
+       };
   },
   components: {
     Navbar

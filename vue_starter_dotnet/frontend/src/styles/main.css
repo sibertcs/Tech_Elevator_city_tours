@@ -181,10 +181,18 @@
   margin-bottom: 1em;
 }
 
+.containing-feedback {
+  display:flex;
+  justify-content: center;
+  
+}
+.vue-reaction img {
+  width:45px;
+}
 
 #dropdown-create-delete {
   display:flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .landmark-sort-order-wrapper{
@@ -250,7 +258,7 @@
       margin-top:1em;
     }
   }
-  @media only screen and (max-width: 800px) {
+  @media only screen and (max-width: 1000px) {
     .login-box {
      border-top: solid white;
      border-bottom:solid white;     

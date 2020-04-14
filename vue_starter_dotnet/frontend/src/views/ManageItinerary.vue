@@ -47,8 +47,8 @@
             v-bind:key="'landmark'+landmark.landmarkID"
           >
             <div class="landmark-sort-order-wrapper">
-              <span>{{landmark.sortOrder}})</span>
-              <span>{{landmark.landmark.name}}</span>
+              <span>{{landmark.sortOrder}}) </span>
+              <a class="linkToDetails" v-on:click="redirectToDetails(landmark.landmarkID)">{{landmark.landmark.name}}</a>
             </div>
             <div class="landmark-name-wrapper">
               <b-button
@@ -71,7 +71,7 @@
         </div>
         <div id="four-buttons">
           <div id="dropdown-create-delete">
-            <select
+            <!--<select
               class="btn btn-secondary dropdown-toggle"
               id="itineraryDropDown"
               v-on:change="onSelectChange"
@@ -82,10 +82,10 @@
                 v-bind:value="itineraryOption.itineraryID"
                 v-text="itineraryOption.name"
               ></option>
-            </select>
+            </select>-->
             <b-button id="addALandmark" v-on:click="redirectMethod">Add Landmark</b-button>
             <b-button id="deleteItinerary" v-on:click="deleteItinerary">Delete Itinerary</b-button>
-            <b-button id="createItinerary" v-on:click="createItinerary">Create New Itinerary</b-button>
+            <!--<b-button id="createItinerary" v-on:click="createItinerary">Create New Itinerary</b-button>-->
           </div>
         </div>
 
@@ -106,6 +106,12 @@
     </div>
   </div>
 </template>
+<style scoped>
+  .linkToDetails:hover{
+    cursor: pointer;
+    text-decoration: underline;
+  }
+</style>
 
 <script>
 import auth from "../auth";
@@ -152,7 +158,7 @@ export default {
         })
         .then(data => {
           this.itinerary = data;
-          this.getIncomingLandmark();
+          this.getIncomingLandmark();          
         });
     },
     dateChanged(){
@@ -167,7 +173,8 @@ export default {
       if (this.sortOrderChanged) {
         this.updateSortOrders();
       }
-      this.$router.go(0);
+      alert("changes saved successfully");
+      this.$router.push({path: "/"});
     },
     //New method:
     EditItinerary() {
@@ -364,7 +371,7 @@ export default {
           }
         }).then(response => {
           if (response.ok) {
-            this.$router.go(0);
+            this.$router.push({path: "/AllItineraries"});
           }
         });
       }
@@ -410,13 +417,29 @@ export default {
                 return landmark.landmarkID != landmarkIdToRemove;
               }
             );
-            this.$router.go(0);
+            if(this.itinerary.landmarks.length == 0){
+              this.$router.push("/");
+            }
+            if(landmarkIdToRemove ==  this.incomingLandmarkID && this.incomingLandmarkID != 0){
+              this.incomingLandmarkID = 0;
+              this.$router.push("/ManageItinerary/0");
+            }
+            this.getItinerary();                                    
           }
         });
       }
     },
     redirectMethod() {
+      if (!this.landmarkAddedOnDB) {
+        this.AddLandmarksToItinerary();
+      }
       this.$router.push({path: "/"});
+    },
+    redirectToDetails(id) {
+      if (!this.landmarkAddedOnDB) {
+        this.AddLandmarksToItinerary();
+      }
+      this.$router.push({path: "/LandmarkDetails/" + id});
     },
     moveLandmarkUp(landmark) {
       // landmark
@@ -477,6 +500,7 @@ export default {
           if (response.ok) {
             this.sortOrderChanged = false;
             //this.$router.go(0);
+            this.$router.push(("/ManageItinerary/" + this.incomingLandmarkID.toString()))
           }
         })
         .catch(err => console.error(err));

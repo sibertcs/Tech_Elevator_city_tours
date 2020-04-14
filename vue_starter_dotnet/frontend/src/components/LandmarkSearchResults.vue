@@ -26,6 +26,7 @@
 
 <script>
 export default {
+  name: "landmark-search-results",
   data() {
     return {
       landmarkResults: []
