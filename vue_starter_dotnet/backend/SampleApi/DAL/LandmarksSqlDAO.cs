@@ -84,6 +84,7 @@ namespace SampleApi.DAL
                 if (landmark != null)
                 {
                     GetLandmarkImages(landmark, conn);
+                    GetLandmarkRatings(landmark, conn);
                 }
             }
 
@@ -105,7 +106,7 @@ namespace SampleApi.DAL
 
         public Itinerary CreateItinerary(int userID)
         {
-            Itinerary itinerary = null;
+            //Itinerary itinerary = null;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -322,6 +323,55 @@ namespace SampleApi.DAL
                 cmd.Parameters.AddWithValue("@itinerary_id", itineraryID);
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public void RateLandmark(int landmarkID, int userID, int ratingType)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("RateLandmark", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@landmark_id", landmarkID);
+                cmd.Parameters.AddWithValue("@user_id", userID);
+                cmd.Parameters.AddWithValue("@rating_type", ratingType);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void GetLandmarkRatings(Landmark landmark, SqlConnection conn)
+        {
+            SqlCommand cmd = new SqlCommand("GetLandmarkRatings", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@landmark_id", landmark.ID);
+            IDataReader reader = cmd.ExecuteReader();
+            landmark.AddRatings(reader);
+            reader.Close();
+        }
+
+        public GetUserRatingResponseBody GetUserLandmarkRatings(int userID, int landmarkID)
+        {
+            GetUserRatingResponseBody responseBody = new GetUserRatingResponseBody();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("GetUserLandmarkRating", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@landmark_id", landmarkID);
+                cmd.Parameters.AddWithValue("@user_id", userID);                
+                IDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    responseBody.RatingType = Convert.ToInt32(reader["rating_type_id"]);
+                    responseBody.RatingName = Convert.ToString(reader["rating_name"]);
+                }
+                
+                reader.Close();
+            }
+
+            return responseBody;
         }
     }
 }

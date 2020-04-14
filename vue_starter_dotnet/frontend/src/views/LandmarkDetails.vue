@@ -25,7 +25,8 @@
       <span>Address: {{selectedLandmark.streetAddress}} {{selectedLandmark.city}}, {{selectedLandmark.state}} {{selectedLandmark.zipCode}}</span>
     </div>
     <div class="containing-feedback">
-      <vue-feedback-reaction v-model="feedback" />
+      <vue-feedback-reaction id="feedback" v-model="feedback" v-on:input="rateLandmark" />
+      
     </div>
     <div>
       <button
@@ -149,7 +150,33 @@ export default {
           }
         })
         .catch(err => console.error(err));
-    }
+    },
+     rateLandmark(){
+       //const apiEndpoint = `ratelandmark`;
+       //let feedbackChoice = document.getElementById('feedback').value;
+       const userID = auth.getUser().id;
+       let submitRatingBody = {
+          "landmarkId": this.selectedLandmark.id,
+          "userID": userID,
+          "ratingType": this.feedback
+       }
+       console.log(JSON.stringify(submitRatingBody));
+      // fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
+      //   method: "PUT",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "Bearer " + auth.getToken()
+      //   },
+      //   body: JSON.stringify(submitRatingBody)
+      // })
+      //   .then(response => {
+      //     if (response.ok) {
+      //       //this.$router.go(0);
+      //     }
+      //   })
+      //   .catch(err => console.error(err));
+    },
+   
   },
   created() {
     fetch(

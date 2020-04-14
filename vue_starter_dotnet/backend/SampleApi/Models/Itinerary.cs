@@ -110,4 +110,23 @@ namespace SampleApi.Models
         public int LandmarkID { get; set; }
         public int ItineraryID { get; set; }
     }
+
+    public class RateLandmarkRequestBody
+    {
+        public int LandmarkID { get; set; }
+        public int UserID { get; set; }
+        public int RatingType { get; set; }
+    }
+
+    public class GetUserRatingRequestBody
+    {
+        public int UserID { get; set; }
+        public int LandmarkID { get; set; }
+    }
+
+    public class GetUserRatingResponseBody
+    {
+        public int RatingType { get; set; }
+        public string RatingName { get; set; }
+    }
 }

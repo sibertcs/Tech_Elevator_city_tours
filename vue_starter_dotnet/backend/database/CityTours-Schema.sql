@@ -11,6 +11,10 @@ GO
 USE CityTours;
 GO
 
+IF OBJECT_ID('LandmarkRatings')			IS NOT NULL DROP TABLE LandmarkRatings;
+
+IF OBJECT_ID('RatingTypes')				IS NOT NULL DROP TABLE RatingTypes
+
 IF OBJECT_ID('ItineraryLandmarks')		IS NOT NULL DROP TABLE ItineraryLandmarks;
 
 IF OBJECT_ID('Itineraries')				IS NOT NULL DROP TABLE Itineraries;
@@ -85,17 +89,46 @@ CREATE TABLE LandmarkImages(
 	CONSTRAINT	LandmarkImages_PK PRIMARY KEY (landmark_id, image_id)
 )
 
+CREATE TABLE LandmarkRatings(
+	landmark_id			INT				NOT NULL,
+	user_id				INT				NOT NULL,
+	rating_type_id		INT				NOT NULL,
+	CONSTRAINT LandmarkRatings_PK PRIMARY KEY (landmark_id,user_id)
+)
+
+CREATE TABLE RatingTypes(
+	rating_type_id			INT				IDENTITY(1,1),
+	name					VARCHAR(50)		NOT NULL,
+	rating_image_filepath	VARCHAR(100)	NULL,
+	CONSTRAINT RatingTypes_PK PRIMARY KEY (rating_type_id)
+)
+
 ALTER TABLE Landmarks ADD CONSTRAINT LandmarkImages_Landmarks_FK
 FOREIGN KEY (landmark_id) REFERENCES Landmarks (landmark_id)
 
 ALTER TABLE Itineraries ADD CONSTRAINT Itineraries_Users_FK
 FOREIGN KEY (user_id) REFERENCES Users (user_id)
 
+ALTER TABLE LandmarkRatings ADD CONSTRAINT LandmarkRatings_Landmarks_FK
+FOREIGN KEY (landmark_id) REFERENCES Landmarks(landmark_id)
+
+ALTER TABLE LandmarkRatings ADD CONSTRAINT LandmarkRatings_Users_FK
+FOREIGN KEY (user_id) REFERENCES Users(user_id)
+
+ALTER TABLE LandmarkRatings ADD CONSTRAINT LandmarkRatings_RatingTypes_FK
+FOREIGN KEY (rating_type_id) REFERENCES RatingTypes (rating_type_id)
+
 COMMIT TRANSACTION
 GO
 
 --Add Test Data
 BEGIN TRANSACTION
+
+SET IDENTITY_INSERT RatingTypes ON;
+INSERT INTO RatingTypes(rating_type_id,name)
+VALUES (1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')
+SET IDENTITY_INSERT RatingTypes OFF;
+
 SET IDENTITY_INSERT LandmarkCategories ON;
 	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(1, 'Food');
 	INSERT INTO LandmarkCategories (category_id, category_name) VALUES(2, 'Park');
@@ -169,9 +202,46 @@ REFERENCES LandmarkCategories(category_id);
 COMMIT TRANSACTION
 GO
 
+IF OBJECT_ID('LandmarkRatingsInfo') IS NOT NULL DROP VIEW LandmarkRatingsInfo
+GO
 
+CREATE VIEW LandmarkRatingsInfo
+AS
+SELECT
+	L.landmark_id,
+	L.landmark_name,
+	LR.user_id,
+	RT.rating_type_id,
+	RT.name AS rating_name
+FROM
+	Landmarks AS L
+	FULL OUTER JOIN LandmarkRatings AS LR
+		FULL OUTER JOIN RatingTypes AS RT
+		ON (LR.rating_type_id = RT.rating_type_id)
+	ON L.landmark_id = LR.landmark_id
+GO
 
+IF OBJECT_ID('LandmarkRatingCounts') IS NOT NULL DROP VIEW LandmarkRatingCounts
+GO
 
+CREATE VIEW LandmarkRatingCounts
+AS
+SELECT
+	landmark_id,
+	landmark_name,
+	rating_type_id,
+	rating_name,
+	COALESCE(COUNT(user_id),0) AS rating_count
+FROM
+	LandmarkRatingsInfo
+GROUP BY
+	landmark_id,
+	landmark_name,
+	rating_type_id,
+	rating_name
+GO
+
+--SELECT * FROM LandmarkRatings
 GO
 CREATE PROCEDURE RegisterUser
 	@emailAddress	VARCHAR(254),
@@ -679,9 +749,111 @@ BEGIN TRANSACTION
 
 COMMIT TRANSACTION
 GO
+
+IF OBJECT_ID('GetLandmarkRatings') IS NOT NULL DROP PROCEDURE GetLandmarkRatings
+GO
+CREATE PROCEDURE GetLandmarkRatings
+	@landmark_id INT
+AS
+BEGIN
+	SELECT 
+		*
+	FROM
+		LandmarkRatingCounts
+	WHERE
+		landmark_id = @landmark_id
+END
+GO
+
+IF OBJECT_ID('GetUserLandmarkRating') IS NOT NULL DROP PROCEDURE GetUserLandmarkRating
+GO
+CREATE PROCEDURE GetUserLandmarkRating
+	@user_id INT, @landmark_id INT
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		LandmarkRatingsInfo
+	WHERE
+		user_id = @user_id
+	AND landmark_id = @landmark_id
+
+END
+GO
+
+IF OBJECT_ID('RateLandmark') IS NOT NULL DROP PROCEDURE RateLandmark
+GO
+
+CREATE PROCEDURE RateLandmark
+	@landmark_id INT,
+	@user_id INT,
+	@rating_type INT
+AS
+BEGIN TRANSACTION
+	
+	-- If the user submits a rating that is the same as the rating
+	-- that is already in the database for them, remove it
+	IF
+	(
+		(
+			SELECT
+				COUNT(*)
+			FROM
+				LandmarkRatings
+			WHERE
+				user_id = @user_id
+			AND	landmark_id = @landmark_id
+			AND rating_type_id = @rating_type			
+		)
+		> 0
+	)
+	BEGIN
+		DELETE FROM LandmarkRatings
+		WHERE landmark_id = @landmark_id AND user_id = @user_id
+	END
+	ELSE
+		BEGIN
+		-- If the user has already rated, update their rating
+		IF
+		(
+			(
+				SELECT
+					count(*)
+				FROM
+					LandmarkRatings
+				WHERE
+					user_id = @user_id
+				AND	landmark_id = @landmark_id
+			)
+			> 0
+		)
+		BEGIN
+			UPDATE LandmarkRatings
+			SET rating_type_id = @rating_type
+			WHERE
+				landmark_id = @landmark_id
+			AND	user_id = @user_id
+		END	
+		ELSE
+		-- User hasn't rated, insert
+		BEGIN
+			INSERT INTO LandmarkRatings (landmark_id, user_id, rating_type_id)
+			VALUES (@landmark_id, @user_id, @rating_type)
+		END
+	END
+COMMIT TRANSACTION
+GO
+
 SET IDENTITY_INSERT Users ON
 INSERT INTO Users(user_id, email, password, salt, role)
-VALUES (1, 'test', 'test', 'test1234', 'test')
+VALUES	(1, 'test1', 'test', 'test1234', 'test'),
+		(2, 'test2', 'test', 'test1234', 'test'),
+		(3, 'test3', 'test', 'test1234', 'test'),
+		(4, 'test4', 'test', 'test1234', 'test'),
+		(5, 'test5', 'test', 'test1234', 'test'),
+		(6, 'test6', 'test', 'test1234', 'test'),
+		(7, 'test7', 'test', 'test1234', 'test')
 SET IDENTITY_INSERT Users OFF
 
 SET IDENTITY_INSERT Itineraries ON
@@ -695,9 +867,24 @@ VALUES	(1,1,1),
 		(1,3,3),
 		(1,5,4)
 
+INSERT INTO LandmarkRatings(landmark_id, user_id, rating_type_id)
+VALUES	(1, 1, 1),
+		(1, 2, 1),
+		(1, 3, 1),
+		(1, 4, 1),
+		(1, 5, 2),
+		(1, 6, 2),
+		(1, 7, 2),
+		(2, 1, 1),
+		(2, 2, 1),
+		(2, 3, 1),
+		(2, 4, 1),
+		(2, 5, 2),
+		(2, 6, 2),
+		(2, 7, 2)
 
 --EXECUTE RemoveLandmarkFromItinerary 1, 2
---SELECT * FROM UserItineraryLandmarks AS A JOIN landmarks AS B ON A.landmark_id = B.landmark_ID
+--SELECT * FROM UserItineraryLandmarks AS A LEFT JOIN landmarks AS B ON A.landmark_id = B.landmark_ID
 --SELECT * FROM Itineraries
 SELECT * FROM Users
 EXECUTE RemoveLandmarkFromItinerary 1, 3
@@ -707,4 +894,52 @@ EXECUTE RemoveLandmarkFromItinerary 1, 3
 --EXECUTE EditItinerary 3, null, '04/12/2020', '1234 Main St'
 --EXECUTE SetSelectedItinerary 1, 1
 --EXECUTE GetUsersItineraries 1
+
+SELECT 
+	*
+FROM
+	LandmarkRatingCounts
+
+SELECT
+	*
+FROM
+	LandmarkRatings AS LR
+	FULL JOIN RatingTypes AS RT
+		FULL JOIN RatingTypes AS RT_ALL
+		ON RT.rating_type_id = RT_ALL.rating_type_id
+	ON LR.rating_type_id = RT.rating_type_id
+GO
+
+IF OBJECT_ID('LandmarkRatingTypes') IS NOT NULL DROP VIEW LandmarkRatingTypes
+GO
+CREATE VIEW LandmarkRatingTypes
+AS
+SELECT DISTINCT
+	LR.landmark_id,
+	RT.rating_type_id
+FROM
+	LandmarkRatings AS LR
+		FULL JOIN RatingTypes AS RT
+		ON 0 = 0
+GO
+
+--{"landmarkId":1,"userID":"8","ratingType":"5"}
+EXECUTE RateLandmark 1, 7, 5
+EXECUTE GetLandmarkRatings 1
+EXECUTE RateLandmark 1, 4, 4
+EXECUTE RateLandmark 5, 3, 3
+EXECUTE GetLandmarkRatings 1
+SELECT
+	*
+FROM
+	LandmarkRatingCounts
+
+SELECT
+	LRT.*,
+	COALESCE(LR.rating_count,0)
+FROM
+	LandmarkRatingCounts AS LR
+	FULL JOIN LandmarkRatingTypes AS LRT
+	ON LR.landmark_id = LRT.landmark_id AND LR.rating_type_id = LRT.rating_type_id
+
 

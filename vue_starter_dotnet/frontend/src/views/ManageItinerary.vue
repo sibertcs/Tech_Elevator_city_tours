@@ -71,21 +71,10 @@
         </div>
         <div id="four-buttons">
           <div id="dropdown-create-delete">
-            <!--<select
-              class="btn btn-secondary dropdown-toggle"
-              id="itineraryDropDown"
-              v-on:change="onSelectChange"
-            >
-              <option
-                v-for="itineraryOption in userItineraries"
-                v-bind:key="'dropdown' + itineraryOption.itineraryID"
-                v-bind:value="itineraryOption.itineraryID"
-                v-text="itineraryOption.name"
-              ></option>
-            </select>-->
             <b-button id="addALandmark" v-on:click="redirectMethod">Add Landmark</b-button>
             <b-button id="deleteItinerary" v-on:click="deleteItinerary">Delete Itinerary</b-button>
-            <!--<b-button id="createItinerary" v-on:click="createItinerary">Create New Itinerary</b-button>-->
+            <b-button>Create Travel Route</b-button>
+            <!--add functionality for button-->
           </div>
         </div>
 
@@ -100,8 +89,7 @@
     </form>
     <div>
       <div class="site-search">
-        <!-- <landmark-search v-if="isAddALandmark" v-on:search="searchforResult"></landmark-search>
-        <landmark-summary :key="searchResultsKey" v-if="isAddALandmark" v-bind:searchQuery="searchQuery"></landmark-summary>-->
+        <!-- <generate-travel-route></generate-travel-route> -->
       </div>
     </div>
   </div>
@@ -118,11 +106,13 @@ import auth from "../auth";
 //import AppVue from '../App.vue';
 //import LandmarkSearch from "@/components/LandmarkSearch";
 //import LandmarkSummary from "@/components/LandmarkSummary";
+//import GenerateTravelRoute from "@/components/GenerateTravelRoute";
 export default {
   name: "manage-itinerary",
   // components: {
   // LandmarkSearch,
   // LandmarkSummary
+  //GenerateTravelRoute
   // },
   data() {
     return {

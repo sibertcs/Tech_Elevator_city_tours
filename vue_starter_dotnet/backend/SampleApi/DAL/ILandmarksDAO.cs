@@ -20,5 +20,7 @@ namespace SampleApi.DAL
         Itinerary EditItineraryLandmarkSortOrder(Itinerary itinerary);
         void RemoveLandmarkFromItinerary(int itineraryID, int landmarkID);
         void DeleteItinerary(int itineraryID);
+        void RateLandmark(int landmarkID, int userID, int ratingType);
+        GetUserRatingResponseBody GetUserLandmarkRatings(int userID, int landmarkID);
     }
 }

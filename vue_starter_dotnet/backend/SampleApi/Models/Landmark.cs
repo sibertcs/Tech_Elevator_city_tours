@@ -55,6 +55,14 @@ namespace SampleApi.Models
         /// List of image objects
         /// </summary>
         private List<LandmarkImage> _images = new List<LandmarkImage>();
+        private List<LandmarkRating> _ratings = new List<LandmarkRating>();
+        public IEnumerable<LandmarkRating> Ratings
+        {
+            get
+            {
+                return _ratings;
+            }
+        }
         /// <summary>
         /// Returns the contents of the private list of images
         /// </summary>
@@ -103,8 +111,35 @@ namespace SampleApi.Models
                 _images.Add(image);
             }
         }
+
+        public void AddRatings(IDataReader reader)
+        {
+            while (reader.Read())
+            {
+                LandmarkRating rating = new LandmarkRating(reader);
+                _ratings.Add(rating);
+            }
+        }
     }
 
+    public class LandmarkRating
+    {
+        public int RatingType { get; set; }
+        public string RatingName { get; set; }
+        public int RatingCount { get; set; } = 0;
+
+        public LandmarkRating()
+        {
+
+        }
+
+        public LandmarkRating(IDataReader data)
+        {
+            RatingType = Convert.ToInt32(data["rating_type_id"]);
+            RatingName = Convert.ToString(data["rating_name"]);
+            RatingCount = Convert.ToInt32(data["rating_count"]);
+        }
+    }
     /// <summary>
     /// 
     /// </summary>

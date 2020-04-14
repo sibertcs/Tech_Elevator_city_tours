@@ -108,7 +108,7 @@ namespace SampleApi.Controllers
 
         [HttpDelete("RemoveLandmarkFromItinerary")]
         [Consumes("application/json")]
-        public IActionResult RemoveLandmarkFromItinerary(RemoveLandmarkRequestBody body)
+        public IActionResult RemoveLandmarkFromItinerary([FromBody]RemoveLandmarkRequestBody body)
         {
             landmarksDAO.RemoveLandmarkFromItinerary(body.ItineraryID, body.LandmarkID);
             return Ok();
@@ -120,5 +120,21 @@ namespace SampleApi.Controllers
             landmarksDAO.DeleteItinerary(itineraryID);
             return Ok();
         }
+
+        [HttpPost("RateLandmark")]
+        [Consumes("application/json")]
+        public IActionResult RateLandmark ([FromBody]RateLandmarkRequestBody body)
+        {
+            landmarksDAO.RateLandmark(body.LandmarkID, body.UserID, body.RatingType);
+            return Ok();
+        }
+
+        [HttpGet("GetUserLandmarkRatings")]
+        [Consumes("application/json")]
+        public GetUserRatingResponseBody GetUserLandmarkRatings([FromBody]GetUserRatingRequestBody requestBody)
+        {
+            return landmarksDAO.GetUserLandmarkRatings(requestBody.UserID, requestBody.LandmarkID);
+        }
+
     }
 }
