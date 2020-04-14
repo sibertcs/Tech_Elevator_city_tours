@@ -75,9 +75,10 @@ export default {
   components: {
     VueFeedbackReaction
   },
-  // props:{
-  //      id: Number
-  // },
+  props:{
+       id: Number,
+       labels: null
+  },
   methods: {
     goBack() {
       this.$router.go(-1);
@@ -120,7 +121,7 @@ export default {
       }
     },
     onSelectChange() {
-      alert(JSON.stringify(this.selectedItinerary));
+      //alert(JSON.stringify(this.selectedItinerary));
       this.selectedItinerary = this.userItineraries.find(itinerary => {        
         return (
           
@@ -128,7 +129,9 @@ export default {
           document.getElementById("itineraryDropDown").value
         );
       });
-      alert(JSON.stringify(this.selectedItinerary));
+      this.setSelectedItinerary();
+      this.getUserItineraries();
+      //alert(JSON.stringify(this.selectedItinerary));
     },
     setSelectedItinerary() {
       const apiEndpoint = `setselecteditinerary`;
