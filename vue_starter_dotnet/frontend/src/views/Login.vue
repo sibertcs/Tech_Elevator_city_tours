@@ -90,6 +90,7 @@ export default {
             auth.saveToken(token);
             this.$emit("update", []);
             AppVue.user = auth.getUser();
+            this.$parent.justLoggedIn = true;
             //alert(JSON.stringify(AppVue.user));
             //this.$router.
             //this.$parent.$children.find

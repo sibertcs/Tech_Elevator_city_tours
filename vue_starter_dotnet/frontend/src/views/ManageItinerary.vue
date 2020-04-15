@@ -1,9 +1,10 @@
 <template>
+<div id="manage-whole-page">
   <div id="manageItineraryWrapper">
     <div id="serverResponse" v-if="serverMessage.length > 0">
       <span>{{serverMessage}}</span>
     </div>
-    <form @submit.prevent="saveChanges">
+    <form @submit.prevent="saveChanges" v-if="itinerary != null && displayMode == 'manage'">
       <div class="manage-itinerary card">
         <div class="form-group">
           <label for="itineraryName">Itinerary Name</label>
@@ -35,7 +36,7 @@
             type="text"
             class="form-control"
             id="startingAddress"
-            placeholder="1234 Main St"
+            placeholder="1234 Main St, City, State, Zip Code."
             v-model.trim="itinerary.startingLocation"
           />
           <div>Please provide a valid starting address.</div>
@@ -73,7 +74,7 @@
           <div id="dropdown-create-delete">
             <b-button id="addALandmark" v-on:click="redirectMethod">Add Landmark</b-button>
             <b-button id="deleteItinerary" v-on:click="deleteItinerary">Delete Itinerary</b-button>
-            <b-button id="createTravelRoute" v-on:click="getTravelRoute">Create Travel Route</b-button>
+            <b-button id="createTravelRoute" v-on:click="swapView">Create Travel Route</b-button>
             <!--add functionality for button-->
           </div>
         </div>
@@ -87,11 +88,32 @@
         </div>
       </div>
     </form>
-    <div>
+    <div id="travel-route" v-if="travelRoute != null && travelRoute.length > 0 && displayMode == 'route'" class="card">
       <div class="site-search">
         <!-- Render travel route here..? -->
+        <b-button v-on:click="swapView">Back To Manage</b-button><h1>Courtesy Of MapQuest</h1>
+        <b-button v-on:click="print">Print</b-button>
+        <div class="travel-route-direction" v-for="direction in travelRoute" v-bind:key="'tr-' + travelRoute.indexOf(direction)">
+          <p>{{direction}}</p>
+        </div>
       </div>
     </div>
+    <!-- <div id="travel-routes" v-if="travelRoutes != null" class="card">
+      <div class="site-search">
+        
+        <h1>Courtesy Of MapQuest</h1>
+        <div class="travel-route-direction" v-for="setOfDirections in travelRoutes.setOfDirections" v-bind:key="'trs-' + travelRoutes.setOfDirections.indexOf(setOfDirections)">
+          <div class="section-of-directions">
+            <p>Total Distance: {{setOfDirections.distance}} Miles</p>
+            <p>Duration: {{setOfDirections.time}} </p>
+             <div class="travel-route-direction" v-for="direction in setOfDirections" v-bind:key="'dirs-' + setOfDirections.indexOf(direction)">
+              <p>{{direction}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
   </div>
 </template>
 <style scoped>
@@ -125,7 +147,11 @@ export default {
       serverMessage: "",
       searchQuery: "",
       incomingLandmarkID: Number,
-      userID: auth.getUser().id
+      userID: auth.getUser().id,
+      mapquestData: null,
+      travelRoute: [],
+      travelRoutes: { "setOfDirections": []},
+      displayMode: "manage"
     };
   },
   methods: {
@@ -133,7 +159,7 @@ export default {
     getItinerary() {
       //const userID = auth.getUser().id;
       const apiEndpoint = `getuseritinerary/${this.userID}`;
-      console.log("fetching: getuseritinerary");
+      //console.log("fetching: getuseritinerary");
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
         method: "GET",
         headers: {
@@ -163,6 +189,7 @@ export default {
       if (this.sortOrderChanged) {
         this.updateSortOrders();
       }
+      this.mapquestData = null
       alert("changes saved successfully");
       this.$router.push({path: "/"});
     },
@@ -305,7 +332,7 @@ export default {
     },
     //New method:
     getIncomingLandmark() {
-      console.log(JSON.stringify(this.itinerary));
+      //console.log(JSON.stringify(this.itinerary));
       if (
         this.$route.params.landmark_id != null &&
         this.$route.params.landmark_id != 0
@@ -318,7 +345,7 @@ export default {
             return landmark.landmarkID == this.incomingLandmarkID;
           }) == null
         ) {
-          console.log("fetching: getlandmark");
+          //console.log("fetching: getlandmark");
           fetch(
             `${process.env.VUE_APP_REMOTE_API_LANDMARKS}/getlandmark/${this.incomingLandmarkID}`
           )
@@ -519,6 +546,9 @@ export default {
         let fullAddress = this.itinerary.landmarks[i].landmark.streetAddress + ", " + this.itinerary.landmarks[i].landmark.city + ", " + this.itinerary.landmarks[i].landmark.state;
         addresses.push(fullAddress);
       }
+      if(addresses.length < 2 && addresses[0] != ''){
+        return;
+      }
       let options = {
         "avoids": [],
         "avoidTimedConditions": false,
@@ -537,20 +567,61 @@ export default {
         "locations": addresses,
         "options": options
       };
-      fetch(`http://www.mapquestapi.com/directions/v2/route?key=${process.env.VUE_APP_MAP_QUEST_API_KEY}}`, {
+      fetch(`http://www.mapquestapi.com/directions/v2/route?key=${process.env.VUE_APP_MAP_QUEST_API_KEY}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        mode: 'no-cors',
+        mode: 'cors',
         body: JSON.stringify(requestBody)
       })
         .then(response => {
+          //console.log(response)
           if (response.ok) {
-            console.log(JSON.stringify(response));
+            //console.log(JSON.stringify(response.json()));
+            return response.json();
+            
           }
+        }).then(data => {
+
+          this.mapquestData = data;
+          for(let i = 0; i < data.route.legs.length; i++){
+            let setOfDirections = {              
+              "directions": [],
+              "time": String,
+              "distance": Number
+              };
+            for(let j = 0; j < data.route.legs[i].maneuvers.length; j++){
+              this.travelRoute.push(data.route.legs[i].maneuvers[j].narrative);
+              setOfDirections.directions.push(data.route.legs[i].maneuvers[j].narrative);
+              setOfDirections.time = data.route.legs[i].formattedTime;
+              setOfDirections.distance = data.route.legs[i].distance;
+            }
+            this.travelRoute.push(`--ARRIVE AT ${this.itinerary.landmarks[i].landmark.name }--`);
+            this.travelRoutes.setOfDirections.push(setOfDirections);
+            this.displayMode = "route";
+          }
+          console.log(this.travelRoute);
+          console.log(this.travelRoutes);
         });
       
+    },
+    backToManage(){
+      this.displayMode = "manage";
+    },
+    swapView(){
+      if(this.displayMode == "manage"){
+        this.displayMode = "route";
+        if(this.mapquestData == null){
+            this.getTravelRoute();
+        }
+      }
+      else{
+        this.displayMode = "manage";
+      }
+    },
+    print(){
+      window.print();
     }
   },
   created() {

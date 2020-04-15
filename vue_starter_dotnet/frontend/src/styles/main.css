@@ -64,6 +64,7 @@
     padding-bottom: 5px;
     padding-top: 8px;
     font-family: "Josefin Sans";
+    text-align: center;
   
   }
 
@@ -165,16 +166,7 @@
   margin-top:7px;
 }
 
-.manage-itinerary {
-  margin-right: 33%;
-    margin-left: 33%;  
-    background-color: var(--main-bg-color);
-    margin-top: 2em;
-    padding: 1em;
-    color: whitesmoke;
-    font-family: "Josefin Sans";
-    font-size: large;
-}
+
 
 #itinerary-buttons {
   margin-left: 1em;
@@ -211,6 +203,28 @@
     color: whitesmoke;
     font-family: "Josefin Sans";
   }
+  .manage-itinerary {
+    margin-right: 33%;
+    margin-left: 33%;  
+      background-color: var(--main-bg-color);
+      margin-top: 2em;
+      padding: 1em;
+      color: whitesmoke;
+      font-family: "Josefin Sans";
+      font-size: large;
+  }
+
+  #travel-route {
+    margin-right: 33%;
+    margin-left: 33%;  
+    background-color: var(--main-bg-color);
+    margin-top: 2em;
+    padding: 1em;
+    color: whitesmoke;
+    font-family: "Josefin Sans";
+  }
+
+ 
 
   #navbar {
     background-color: var(--main-bg-color);
@@ -236,13 +250,20 @@
       padding-right: 1em;
   }
 
-  .landmark-image {
+  .all-itineraries-names {
     margin-bottom:1em;
+  }
+
+  .landmarks-wrapper {
+    display:grid;
+    margin-left:2em;
   }
   
   .home{
     overflow-y: hidden;
   }
+
+
   @media only screen and (max-width: 1900px) {
     #dropdown-create-delete {
       display:grid;
@@ -257,10 +278,9 @@
     }
     #deleteItinerary {
       margin-top:1em;
+      margin-bottom:1em;
     }
-    #createItinerary {
-      margin-top:1em;
-    }
+ 
   }
   @media only screen and (max-width: 1000px) {
     .login-box {
@@ -292,10 +312,13 @@
     }
     #deleteItinerary {
       margin-top:1em;
+      margin-bottom:1em;
     }
-    #createItinerary {
-      margin-top:1em;
+    #travel-route {
+      margin-right: 5%;
+      margin-left: 5%;
     }
+   
 }
 
 
@@ -309,4 +332,5 @@
 .fade-leave-active {
   opacity: 0;
 }
+
   

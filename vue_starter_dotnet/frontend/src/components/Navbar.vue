@@ -20,19 +20,20 @@ export default {
       return this.user != null;
     },
     getUser() {
-      alert(JSON.stringify(this.user));
+      JSON.stringify(this.user);
     },
     logout() {
-      alert(JSON.stringify(arguments));
+      //alert(JSON.stringify(arguments));
       if (this.isLoggedIn()) {
-        alert("logging out");
+        //alert("logging out");
         this.$nextTick(function() {
           auth.logout();
           this.updateUser();
+          this.$router.push({path: "/login"});
           //auth.destroyToken();
         });        
         //document.getElementById("home").click();
-        //this.$router.push(0);
+        //this.$router.go(0);
       }
     },
     updateUser(){

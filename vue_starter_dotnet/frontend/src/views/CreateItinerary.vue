@@ -35,7 +35,7 @@
             type="text"
             class="form-control"
             id="startingAddress"
-            placeholder="1234 Main St"
+            placeholder="1234 Main St, City, State, Zip Code."
             v-model.trim="itinerary.startingLocation"
           />
           <div>Please provide a valid starting address.</div>

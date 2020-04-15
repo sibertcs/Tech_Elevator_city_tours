@@ -1,7 +1,7 @@
 <template>
   <div class="nav-button">
     <div class="home">
-      <h1>🦠 Fauci's Social Distancing Tours 🧼</h1>
+      <h1>City Tours When the Quarantine is Over</h1>
       <div class="site-search">
         <landmark-search v-on:search="searchforResult"></landmark-search>
         <landmark-search-results :key="searchResultsKey" v-if="showLandmarkResults" v-bind:searchQuery="searchQuery"></landmark-search-results>
@@ -45,6 +45,10 @@ export default {
     }
   },
   created(){
+    if(this.$parent.justLoggedIn){
+      this.$parent.justLoggedIn = false;
+      this.$router.go(0);
+    }
     if(this.$parent.lastSearchQuery != ""){
       this.searchforResult(this.$parent.lastSearchQuery);
     }

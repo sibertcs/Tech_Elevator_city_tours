@@ -20,7 +20,8 @@ export default {
   data() {
     return { 
       user: auth.getUser(),
-      lastSearchQuery: ""
+      lastSearchQuery: "",
+      justLoggedIn: false
        };
   },
   components: {

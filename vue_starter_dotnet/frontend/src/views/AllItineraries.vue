@@ -1,35 +1,59 @@
 <template>
   <div>
-    <b-button id="createItinerary" class="all-itineraries card"  v-on:click="redirectMethod">Create New Itinerary</b-button>
-      <div class="all-itineraries card" v-for="itinerary in itineraries" v-bind:key="'itinerary'+itinerary.itineraryID">
-        <p v-if="itinerary.itineraryDate != null">{{itinerary.name}},  Starting Date: {{itinerary.itineraryDate.split('T')[0]}}</p>
-        <div class="landmarks-wrapper" v-if=" itinerary != null && itinerary.landmarks.length != []">
-            <div v-for="landmark in itinerary.landmarks" v-bind:key="landmark.landmarkID.toString() + '-' + itinerary.itineraryID.toString()">
-              <b-img
-                  class="landmark-image"
-                  v-if="landmark.landmark.images.length > 0"
-                  v-bind:src="landmark.landmark.images[0].url"
-                  v-on:click="redirectToDetails(landmark.landmarkID)"
-                />     
-              <span> {{landmark.sortOrder}}) </span>
-              <a class="linkToDetails" v-on:click="redirectToDetails(landmark.landmarkID)">{{landmark.landmark.name}}</a>                    
-            </div>
+    <h1>My Itineraries</h1>
+    <b-button
+      id="createItinerary"
+      class="all-itineraries card"
+      v-on:click="redirectMethod"
+    >Create New Itinerary</b-button>
+    <div
+      class="all-itineraries card"
+      v-for="itinerary in itineraries"
+      v-bind:key="'itinerary'+itinerary.itineraryID"
+    >
+      <p
+        v-if="itinerary.itineraryDate != null"
+      >{{itinerary.name}}, Starting Date: {{itinerary.itineraryDate.split('T')[0]}}</p>
+      <div class="landmarks-wrapper" v-if=" itinerary != null && itinerary.landmarks.length != []">
+        <div
+          v-for="landmark in itinerary.landmarks"
+          v-bind:key="landmark.landmarkID.toString() + '-' + itinerary.itineraryID.toString()"
+        >
+          <div class="all-itineraries-image">
+            <b-img
+              class="landmark-image"
+              v-if="landmark.landmark.images.length > 0"
+              v-bind:src="landmark.landmark.images[0].url"
+              v-on:click="redirectToDetails(landmark.landmarkID)"
+            />
+          </div>
+          <div class="all-itineraries-names">
+            <span>{{landmark.sortOrder}}) </span>
+            <a
+              class="linkToDetails"
+              v-on:click="redirectToDetails(landmark.landmarkID)"
+            >{{landmark.landmark.name}}</a>
+          </div>
         </div>
-        <b-button id="manage-itinerary-button" v-on:click="goToManagePage(itinerary)">Manage Itinerary</b-button> 
-        <b-button id="deleteItinerary" v-on:click="deleteItinerary(itinerary.itineraryID)">Delete Itinerary</b-button>
       </div>
+      <b-button id="manage-itinerary-button" v-on:click="goToManagePage(itinerary)">Manage Itinerary</b-button>
+      <b-button
+        id="deleteItinerary"
+        v-on:click="deleteItinerary(itinerary.itineraryID)"
+      >Delete Itinerary</b-button>
+    </div>
   </div>
 </template>
 <style scoped>
-  .linkToDetails:hover{
-    cursor: pointer;
-    text-decoration: underline;
-  }
+.linkToDetails:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
 
-  .landmark-image{
-    height: 100px;
-    cursor: pointer;
-  }
+.landmark-image {
+  height: 100px;
+  cursor: pointer;
+}
 </style>
 <script>
 import auth from "../auth";
@@ -41,7 +65,7 @@ export default {
     };
   },
   methods: {
-    getUserItineraries() {      
+    getUserItineraries() {
       const apiEndpoint = `getusersitineraries/${this.userID}`;
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
         method: "GET",
@@ -56,7 +80,7 @@ export default {
           }
         })
         .then(data => {
-          this.itineraries = data;          
+          this.itineraries = data;
         });
     },
     deleteItinerary(itineraryIdToDelete) {
@@ -77,14 +101,14 @@ export default {
       }
     },
     redirectMethod() {
-      this.$router.push({path: "/CreateItinerary"});
+      this.$router.push({ path: "/CreateItinerary" });
     },
     redirectToDetails(id) {
-      this.$router.push({path: "/LandmarkDetails/" + id});
+      this.$router.push({ path: "/LandmarkDetails/" + id });
     },
-    goToManagePage(itinerary){
+    goToManagePage(itinerary) {
       this.setSelectedItinerary(itinerary);
-      this.$router.push({path:"/ManageItinerary/0"});
+      this.$router.push({ path: "/ManageItinerary/0" });
     },
     setSelectedItinerary(nextItinerary) {
       const apiEndpoint = `setselecteditinerary`;
@@ -104,8 +128,8 @@ export default {
         .catch(err => console.error(err));
     }
   },
-  created(){
-      this.getUserItineraries();
+  created() {
+    this.getUserItineraries();
   }
 };
 </script>
