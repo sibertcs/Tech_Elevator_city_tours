@@ -144,7 +144,7 @@ namespace SampleApi.Models
             else
             {
                 RatingType = 0;
-                RatingName = "Null";
+                RatingName = "";
                 RatingCount = 0;
             }
         }

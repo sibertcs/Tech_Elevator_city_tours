@@ -73,7 +73,7 @@
           <div id="dropdown-create-delete">
             <b-button id="addALandmark" v-on:click="redirectMethod">Add Landmark</b-button>
             <b-button id="deleteItinerary" v-on:click="deleteItinerary">Delete Itinerary</b-button>
-            <b-button>Create Travel Route</b-button>
+            <b-button id="createTravelRoute" v-on:click="getTravelRoute">Create Travel Route</b-button>
             <!--add functionality for button-->
           </div>
         </div>
@@ -89,7 +89,7 @@
     </form>
     <div>
       <div class="site-search">
-        <!-- <generate-travel-route></generate-travel-route> -->
+        <!-- Render travel route here..? -->
       </div>
     </div>
   </div>
@@ -419,18 +419,21 @@ export default {
         });
       }
     },
+    //New method:
     redirectMethod() {
       if (!this.landmarkAddedOnDB) {
         this.AddLandmarksToItinerary();
       }
       this.$router.push({path: "/"});
     },
+    //New method:
     redirectToDetails(id) {
       if (!this.landmarkAddedOnDB) {
         this.AddLandmarksToItinerary();
       }
       this.$router.push({path: "/LandmarkDetails/" + id});
     },
+    //New method:
     moveLandmarkUp(landmark) {
       // landmark
 
@@ -445,6 +448,7 @@ export default {
         this.sortLandmarks();
       }
     },
+    //New method:
     moveLandmarkDown(landmark) {
       let maxSortOrder = this.getMaxSortOrder();
       if (landmark.sortOrder < maxSortOrder) {
@@ -458,6 +462,7 @@ export default {
         this.sortLandmarks();
       }
     },
+    //New method:
     getMaxSortOrder() {
       let maxSortOrder = 1;
       if (this.itinerary.landmarks.length > 0) {
@@ -470,12 +475,14 @@ export default {
       }
       return maxSortOrder;
     },
+    //New method:
     sortLandmarks() {
       this.itinerary.landmarks = this.itinerary.landmarks.sort(function(a, b) {
         return a.sortOrder - b.sortOrder;
       });
       this.sortOrderChanged = true;
     },
+    //New method:
     updateSortOrders() {
       const apiEndpoint = `EditItineraryLandmarkSortOrder`;
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
@@ -504,6 +511,46 @@ export default {
       } else {
         this.isAddALandmark = true; // first render
       }
+    },
+    getTravelRoute(){
+      let addresses = [];
+      addresses.push(this.itinerary.startingLocation);
+      for(let i = 0; i < this.itinerary.landmarks.length; i++){
+        let fullAddress = this.itinerary.landmarks[i].landmark.streetAddress + ", " + this.itinerary.landmarks[i].landmark.city + ", " + this.itinerary.landmarks[i].landmark.state;
+        addresses.push(fullAddress);
+      }
+      let options = {
+        "avoids": [],
+        "avoidTimedConditions": false,
+        "doReverseGeocode": true,
+        "shapeFormat": "raw",
+        "generalize": 0,
+        "routeType": "fastest",
+        "timeType": 1,
+        "locale": "en_US",
+        "unit": "m",
+        "enhancedNarrative": false,
+        "drivingStyle": 2,
+        "highwayEfficiency": 21.0
+      }
+      let requestBody = {
+        "locations": addresses,
+        "options": options
+      };
+      fetch(`http://www.mapquestapi.com/directions/v2/route?key=${process.env.VUE_APP_MAP_QUEST_API_KEY}}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        mode: 'no-cors',
+        body: JSON.stringify(requestBody)
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log(JSON.stringify(response));
+          }
+        });
+      
     }
   },
   created() {

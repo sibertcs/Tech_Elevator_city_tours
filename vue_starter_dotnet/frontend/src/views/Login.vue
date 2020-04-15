@@ -92,6 +92,7 @@ export default {
             AppVue.user = auth.getUser();
             //alert(JSON.stringify(AppVue.user));
             //this.$router.
+            //this.$parent.$children.find
             this.$router.push("/");
             
           }

@@ -1,7 +1,7 @@
 <template>
   <div class="nav-button">
     <div class="home">
-      <h1>🚗These Tours Aren't Made For Walking 🚕</h1>
+      <h1>🦠 Fauci's Social Distancing Tours 🧼</h1>
       <div class="site-search">
         <landmark-search v-on:search="searchforResult"></landmark-search>
         <landmark-search-results :key="searchResultsKey" v-if="showLandmarkResults" v-bind:searchQuery="searchQuery"></landmark-search-results>

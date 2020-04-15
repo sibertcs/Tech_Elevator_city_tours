@@ -8,8 +8,7 @@
       class="landmark-search-result-tile card"
       v-on:click="redirectMethod(landmark.id)"
     >
-      <div>
-      
+      <div>      
         <div>
           {{landmark.name}}
         </div>
@@ -17,14 +16,13 @@
           class="landmark-search-result-image"
           v-if="landmark.images.length > 0"
           v-bind:src="landmark.images[0].url"
-        />
-      
+        />      
       </div>
     </div>
   </div>
 </template>
 
-// <script>
+<script>
 // export default {
 //   data() {
 //     return {
@@ -63,8 +61,8 @@
 //     this.loadLandmarkResults();
 //   }
 // };
-// </script>
+ </script>
 
-// <style>
+<style>
 
-// </style>
+</style>

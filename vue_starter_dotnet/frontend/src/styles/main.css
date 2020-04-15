@@ -162,7 +162,7 @@
 }
 
 #go-back-button {
-  margin-bottom:5px;
+  margin-top:7px;
 }
 
 .manage-itinerary {
@@ -234,6 +234,10 @@
 
   #nav > a{
       padding-right: 1em;
+  }
+
+  .landmark-image {
+    margin-bottom:1em;
   }
   
   .home{
