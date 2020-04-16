@@ -70,9 +70,9 @@ export default {
 
 @media only screen and (max-width: 4000px) {
 .landmark-results-wrapper {
-  max-width: 50%;
-  margin-left: 25%;
-  margin-right: 25%;
+  max-width: 70%;
+  margin-left: 15%;
+  margin-right: 15%;
   align-content: center;
 }
 }
