@@ -10,7 +10,7 @@
     >
       <div>
       
-        <div>
+        <div class="search-results-tile-name">
           {{landmark.name}}
         </div>
         <b-img
@@ -67,23 +67,38 @@ export default {
 </script>
 
 <style>
+
+@media only screen and (max-width: 4000px) {
 .landmark-results-wrapper {
   max-width: 50%;
   margin-left: 25%;
   margin-right: 25%;
   align-content: center;
 }
-
+}
+@media only screen and (max-width: 1000px) {
+.landmark-results-wrapper {
+  margin-left: 5%;
+  margin-right: 5%;
+  align-content: center;
+  max-width: 100%;
+}
+.search-results-tile-name{
+  font-size: medium;
+}
+}
 .landmark-search-result-tile {
   background-color: var(--main-bg-color);
   margin-left: 10%;
   margin-right: 10%;
-  max-height: 300px;
+  max-height: 450px;
   margin-bottom: 1em;
   cursor: pointer;
   overflow: hidden;
 }
-
+.search-results-tile-name{
+  text-align: center;
+}
 .landmark-search-result-image {
   max-height: 80%;
   

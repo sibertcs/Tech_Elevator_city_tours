@@ -74,8 +74,7 @@
           <div id="dropdown-create-delete">
             <b-button id="addALandmark" v-on:click="redirectMethod">Add Landmark</b-button>
             <b-button id="deleteItinerary" v-on:click="deleteItinerary">Delete Itinerary</b-button>
-            <b-button id="createTravelRoute" v-on:click="swapView">Create Travel Route</b-button>
-            <!--add functionality for button-->
+            <b-button id="createTravelRoute" v-on:click="swapView">Generate Travel Route</b-button>
           </div>
         </div>
 
@@ -90,29 +89,13 @@
     </form>
     <div id="travel-route" v-if="travelRoute != null && travelRoute.length > 0 && displayMode == 'route'" class="card">
       <div class="site-search">
-        <!-- Render travel route here..? -->
-        <b-button v-on:click="swapView">Back To Manage</b-button><h1>Courtesy Of MapQuest</h1>
+        <b-button v-on:click="swapView" style="margin-bottom: 1em;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back To Manage</b-button><h1>Courtesy Of {{mapquestData.info.copyright.text}}</h1>
         <b-button v-on:click="print">Print</b-button>
         <div class="travel-route-direction" v-for="direction in travelRoute" v-bind:key="'tr-' + travelRoute.indexOf(direction)">
           <p>{{direction}}</p>
         </div>
       </div>
     </div>
-    <!-- <div id="travel-routes" v-if="travelRoutes != null" class="card">
-      <div class="site-search">
-        
-        <h1>Courtesy Of MapQuest</h1>
-        <div class="travel-route-direction" v-for="setOfDirections in travelRoutes.setOfDirections" v-bind:key="'trs-' + travelRoutes.setOfDirections.indexOf(setOfDirections)">
-          <div class="section-of-directions">
-            <p>Total Distance: {{setOfDirections.distance}} Miles</p>
-            <p>Duration: {{setOfDirections.time}} </p>
-             <div class="travel-route-direction" v-for="direction in setOfDirections" v-bind:key="'dirs-' + setOfDirections.indexOf(direction)">
-              <p>{{direction}}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
   </div>
 </template>
@@ -126,16 +109,8 @@
 <script>
 import auth from "../auth";
 //import AppVue from '../App.vue';
-//import LandmarkSearch from "@/components/LandmarkSearch";
-//import LandmarkSummary from "@/components/LandmarkSummary";
-//import GenerateTravelRoute from "@/components/GenerateTravelRoute";
 export default {
   name: "manage-itinerary",
-  // components: {
-  // LandmarkSearch,
-  // LandmarkSummary
-  //GenerateTravelRoute
-  // },
   data() {
     return {
       itinerary: Object,
@@ -157,9 +132,7 @@ export default {
   methods: {
     //New method:
     getItinerary() {
-      //const userID = auth.getUser().id;
       const apiEndpoint = `getuseritinerary/${this.userID}`;
-      //console.log("fetching: getuseritinerary");
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
         method: "GET",
         headers: {
@@ -195,7 +168,6 @@ export default {
     },
     //New method:
     EditItinerary() {
-      //const userID = auth.getUser().id;
       const apiEndpoint = `edititinerary`;
       fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
         method: "PUT",
@@ -284,9 +256,7 @@ export default {
           }
         })
         .then(data => {
-          //alert(data);
           this.userItineraries = data;
-          //alert(this.userItineraries);
         });
     },
     //New method:
@@ -332,20 +302,16 @@ export default {
     },
     //New method:
     getIncomingLandmark() {
-      //console.log(JSON.stringify(this.itinerary));
       if (
         this.$route.params.landmark_id != null &&
         this.$route.params.landmark_id != 0
       ) {
         this.incomingLandmarkID = this.$route.params.landmark_id;
-
-        //if (this.itinerary.landmarks != [] && this.itinerary.landmarks != null) {
         if (
           this.itinerary.landmarks.find(landmark => {
             return landmark.landmarkID == this.incomingLandmarkID;
           }) == null
         ) {
-          //console.log("fetching: getlandmark");
           fetch(
             `${process.env.VUE_APP_REMOTE_API_LANDMARKS}/getlandmark/${this.incomingLandmarkID}`
           )
@@ -373,12 +339,10 @@ export default {
           this.landmarkAddedOnDB = true;
         }
       }
-      //}
     },
     //New method:
     deleteItinerary() {
       if (confirm("Are you sure?")) {
-        //actually delete it now
         const apiEndpoint = `deleteitinerary/${this.itinerary.itineraryID}`;
         fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
           method: "DELETE",
@@ -416,9 +380,6 @@ export default {
           itineraryID: this.itinerary.itineraryID,
           landmarkID: landmarkIdToRemove
         };
-        // console.log(body);
-        // alert('look at console');
-        //actually delete it now
         const apiEndpoint = `RemoveLandmarkFromItinerary/`;
         fetch(`${process.env.VUE_APP_REMOTE_API_LANDMARKS}/${apiEndpoint}`, {
           method: "DELETE",
@@ -462,8 +423,6 @@ export default {
     },
     //New method:
     moveLandmarkUp(landmark) {
-      // landmark
-
       if (landmark.sortOrder > 1) {
         landmark.sortOrder--;
         this.itinerary.landmarks.find(otherLandmark => {
@@ -523,7 +482,6 @@ export default {
         .then(response => {
           if (response.ok) {
             this.sortOrderChanged = false;
-            //this.$router.go(0);
             this.$router.push(("/ManageItinerary/" + this.incomingLandmarkID.toString()))
           }
         })
@@ -531,7 +489,6 @@ export default {
     },
     //New method:
     searchforResult(searchQuery) {
-      //This method gets the searchQuery string from LandmarkSearch.vue using v-bind in the template above. IA
       this.searchQuery = searchQuery;
       if (this.isAddALandmark) {
         this.searchResultsKey += 1; //force re-render
@@ -576,9 +533,7 @@ export default {
         body: JSON.stringify(requestBody)
       })
         .then(response => {
-          //console.log(response)
           if (response.ok) {
-            //console.log(JSON.stringify(response.json()));
             return response.json();
             
           }
@@ -591,8 +546,9 @@ export default {
               "time": String,
               "distance": Number
               };
+            this.travelRoute.push("Distance: " + data.route.legs[i].distance.toString() + " miles. Est duration: " + data.route.legs[i].formattedTime);
             for(let j = 0; j < data.route.legs[i].maneuvers.length; j++){
-              this.travelRoute.push(data.route.legs[i].maneuvers[j].narrative);
+              this.travelRoute.push(data.route.legs[i].maneuvers[j].narrative + "    (" + data.route.legs[i].maneuvers[j].distance + "mi)");
               setOfDirections.directions.push(data.route.legs[i].maneuvers[j].narrative);
               setOfDirections.time = data.route.legs[i].formattedTime;
               setOfDirections.distance = data.route.legs[i].distance;

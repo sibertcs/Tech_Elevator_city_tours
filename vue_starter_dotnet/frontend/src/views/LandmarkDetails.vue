@@ -32,7 +32,7 @@
         v-bind:labels="getLandmarkRatings()"
       />
     </div>  
-    <div v-if="isLoggedIn">
+    <div id="dropdown-and-add" v-if="isLoggedIn">
       <select
         class="btn btn-lg btn-primary btn-block btn-secondary dropdown-toggle"
         id="itineraryDropDown"
@@ -48,6 +48,7 @@
         ></option>
       </select>
       <button
+      id="add-to-itinerary-button"
         class="btn btn-lg btn-primary btn-block btn-secondary"
         v-on:click="addToItinerary"
       >ADD TO ITINERARY</button>
@@ -63,7 +64,6 @@
 </template>
 
 <script>
-//import data from ''
 import auth from "../auth";
 import { VueFeedbackReaction } from "vue-feedback-reaction";
 export default {
@@ -170,8 +170,7 @@ export default {
           document.getElementById("itineraryDropDown").value
         );
       });
-      this.setSelectedItinerary();
-      this.getUserItineraries();
+      this.setSelectedItinerary();      
       //alert(JSON.stringify(this.selectedItinerary));
     },
     setSelectedItinerary() {
@@ -187,6 +186,7 @@ export default {
         .then(response => {
           if (response.ok) {
             //this.$router.go(0);
+            this.getUserItineraries();
           }
         })
         .catch(err => console.error(err));
@@ -222,31 +222,9 @@ export default {
     },
     getLandmarkRatings() {
       let ratings = [];
-      // for (let i = 1; i <= 5; i++) {
-      //   if (this.selectedLandmark.ratings[i - 1] != null) {
-      //     //console.log(this.selectedLandmark.ratings[i - 1]);
-      //     ratings.push(
-      //       // "ratingType": this.selectedLandmark.ratings[i - 1].ratingType,
-      //       // "ratingName": this.selectedLandmark.ratings[i - 1].ratingName,
-      //       //"ratingCount":
-      //       this.selectedLandmark.ratings[i - 1].ratingCount
-      //     );
-      //   } else {
-      //     ratings.push("0");
-      //   }
-      // }
-
-      // this.$components.$VueFeedbackReaction.props.labels = [ratings[0].ratingCount,
-      //         ratings[1].ratingCount,
-      //         ratings[2].ratingCount,
-      //         ratings[3].ratingCount,
-      //         ratings[4].ratingCount];
-
       for(let i = 0; i < this.selectedLandmark.ratings.length; i++){
         ratings.push(this.selectedLandmark.ratings[i].ratingCount.toString());
       }
-
-
       return ratings;
     },
     getLandmarkData() {
@@ -274,9 +252,11 @@ export default {
             }
           }
           this.selectedLandmark.ratings = this.selectedLandmark.ratings.sort(function(a, b){return a.ratingType-b.ratingType});
+          if(this.selectedLandmark.ratings.length > 5){
+            this.selectedLandmark.ratings.shift();
+          }
           this.getUserItineraries();
           this.getUsersRating();
-          //this.getLandmarkRatings();
         })
         .catch(err => console.error(err));
     }

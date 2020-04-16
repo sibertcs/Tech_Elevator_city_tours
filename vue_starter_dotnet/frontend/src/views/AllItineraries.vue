@@ -13,7 +13,7 @@
     >
       <p
         v-if="itinerary.itineraryDate != null"
-      >{{itinerary.name}}, Starting Date: {{itinerary.itineraryDate.split('T')[0]}}</p>
+      >{{itinerary.name}}, {{prettyDateString(itinerary.itineraryDate)}}</p>
       <div class="landmarks-wrapper" v-if=" itinerary != null && itinerary.landmarks.length != []">
         <div
           v-for="landmark in itinerary.landmarks"
@@ -49,10 +49,65 @@
   cursor: pointer;
   text-decoration: underline;
 }
-
+@media only screen and (max-width: 3000px) {
 .landmark-image {
-  height: 100px;
+  max-height: 275px;
   cursor: pointer;
+}
+.all-itineraries{
+    margin-right: 33%;
+    margin-left: 33%; 
+}
+}
+@media only screen and (max-width: 1700px) {
+.landmark-image {
+  max-height: 275px;
+  cursor: pointer;
+}
+.all-itineraries{
+    margin-right: 25%;
+    margin-left: 25%; 
+}
+.landmarks-wrapper{
+  margin-left: 10px;
+  margin-right: 10px;
+  overflow:hidden;
+}
+}
+@media only screen and (max-width: 1000px) {
+.landmark-image {
+  max-height: 250px;
+  cursor: pointer;
+}
+.all-itineraries{
+    margin-right: 20%;
+    margin-left: 20%; 
+}
+.landmarks-wrapper{
+  margin-left: 10px;
+  margin-right: 10px;
+  overflow:hidden;
+}
+}
+@media only screen and (max-width: 750px) {
+.landmark-image {
+  max-height: 150px;
+  cursor: pointer;
+}
+.all-itineraries{
+    margin-right: 10%;
+    margin-left: 10%; 
+}
+.landmarks-wrapper{
+  margin: 0px;
+}
+}
+.landmark-wrapper{
+    overflow: hidden;
+    display: grid;
+    /* margin: 2em; */
+    margin-left: 10%;
+    margin-right: 10%;
 }
 </style>
 <script>
@@ -105,6 +160,12 @@ export default {
     },
     redirectToDetails(id) {
       this.$router.push({ path: "/LandmarkDetails/" + id });
+    },
+    prettyDateString(dateString){
+        let s = dateString.split("T")[0];
+        let d = new Date(s);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return d.toLocaleDateString(undefined,options);
     },
     goToManagePage(itinerary) {
       this.setSelectedItinerary(itinerary);
